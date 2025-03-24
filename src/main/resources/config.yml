@@ -1,0 +1,85 @@
+hwaskyblock-system:
+  prefix: "&a&l[섬]&7 "
+
+sky-block-max: 1 # 유저가 보유할 수 있는 최대 섬
+sky-block-buy: 100000 # 유저가 섬를 구매할 때 사용하는 금액
+sky-block-number: 0 # 서버 섬 갯수
+
+main-spawn-world: "world" # 메인 스폰월드 이름입니다.
+
+gui-name:
+  global_setting: "섬 관리" # 섬 관리 GUI 이름
+  sharer_setting: "공유 관리" # 섬 관리 GUI 이름
+  global_use_list: "비공유자 사용 금지 목록" # 비공유자들의 블럭 사용금지 GUI 이름
+  sharer_use_list: "공유자 사용 금지 목록" # 공유자들의 블럭 사용금지 GUI 이름
+  sky_block_menu_list: "섬 메뉴" # 플레이어 섬 메뉴 GUI 이름
+
+Custom-Crop-Interact:
+  apple_stage_6: "customcrops:cabbage"
+  cabbage_stage_4: "customcrops:cabbage"
+  chinese_cabbage_stage_4: "customcrops:chinese_cabbage"
+  corn_stage_4: "customcrops:corn"
+  eggplant_stage_4: "customcrops:eggplant"
+  garlic_stage_4: "customcrops:garlic"
+  grape_stage_4: "customcrops:grape"
+  hop_stage_4: "customcrops:hop"
+  pepper_stage_5: "customcrops:pepper"
+  pineapple_stage_4: "customcrops:pineapple"
+  pitaya_stage_6: "customcrops:pitaya"
+  tomato_stage_4: "customcrops:tomato"
+# 클릭형 커스텀 농작물
+
+command-help-message:
+  - "&a&l[섬]&7 &7&lChunk Command Help"
+  - "&a&l---------------------------------------------"
+  - " &7&l/섬"
+  - "  &a&lL &r&7구매 &a&l- &r&7섬를 구매합니다."
+  - "  &a&lL &r&7메뉴 &a&l- &r&7섬 메뉴를 오픈합니다."
+  - "  &a&lL &r&7이동 [섬번호] &a&l- &r&7섬에 이동합니다."
+  - "  &a&lL &r&7공유추가 [닉네임] &a&l- &r&7섬에 공유 유저를 추가합니다."
+  - "  &a&lL &r&7공유제거 [닉네임] &a&l- &r&7섬에 공유 유저를 제거합니다."
+  - "  &a&lL &r&7권한관리 [글로벌,공유자] &a&l- &r&7기본 섬 권한을 관리합니다."
+  - "  &a&lL &r&7세부관리 [환영말,스폰설정,공중분해,양도] [양도유저] &a&l- &r&7섬 세부관리를 진행합니다."
+  - "&a&l---------------------------------------------"
+
+setting-command-help-message:
+  - "&a&l[섬]&7 &7&lChunk Setting Command Help"
+  - "&a&l---------------------------------"
+  - " &7&l/섬설정"
+  - "  &a&lL &r&7금지구역 &a&l- &r&7금지구역을 설정합니다."
+  - "  &a&lL &r&7금지구역 &a&l- &r&7금지구역을 설정합니다."
+  - "  &a&lL &r&7금지목록 &a&l- &r&7금지구역 목록을 확인합니다."
+  - "  &a&lL &r&7주인변경 &a&l- &r&7섬 주인을 변경합니다."
+  - "  &a&lL &r&7공중분해 &a&l- &r&7섬를 공중분해 합니다."
+  - "&a&l---------------------------------"
+
+message-event:
+  no_permission: "당신은 권한이 없습니다."
+  not_the_owner: "당신은 해당 섬의 주인이 아닙니다."
+  forced_refund_of_skyblock_zones: "당신의 섬 구역이 금지구역으로 변경됨으로써 구매비용을 환급 받았습니다."
+  disassembly_refund: "당신의 섬 구역을 공중분해하고 구매비용을 환급받았습니다."
+  forced_disassembly_completed: "해당 위치의 섬 구역을 공중분해 했습니다."
+  create_restricted_area: "해당 위치의 섬 구역을 금지 구역으로 만들었습니다."
+  no_sky_block: "해당 위치는 섬 정보가 존재하지 않습니다."
+  same_previous_owner: "해당 위치의 섬 구역의 주인장이 변경을 진행할 유저와 동일합니다."
+  change_owner: "해당 위치의 섬 구역의 주인장을 변경했습니다."
+  owner_existence: "해당 위치는 이미 주인이 있습니다."
+  hold_the_maximum: "당신은 이미 섬를 최대치로 보유하고 있습니다."
+  purchase_completed: "섬를 구매했습니다."
+  insufficient_funds: "보유 금액이 부족해서 구매할 수 없습니다."
+  nickname_blank: "닉네임을 적어주세요."
+  number_blank: "번호를 적어주세요."
+  number_check: "섬 번호는 숫자만 작성할 수 있습니다."
+  existing_sharer: "해당 유저는 이미 공유 유저로 추가되어 있습니다."
+  sharer_added_completed": "닉네임의 유저를 공유 유저로 추가했습니다."
+  sharer_without: "해당 유저는 공유 유저로 추가되어 있지 않습니다."
+  remove_sharer: "닉네임의 유저를 공유 유저에서 제거했습니다."
+  write_down_global_or_sharers: "글로벌,공유자 중 하나를 적어주세요."
+  welcome_message_transfer_of_spawn_settings_public_disassembly: "환영말,스폰설정,양도,공중분해 중 하나를 적어주세요."
+  welcome_message_setting: "환영말을 설정했습니다."
+  spawn_settings: "해당 위치로 스폰을 설정했습니다."
+  transferred_user_maximum: "해당 유저는 섬를 최대치로 보유하고 있습니다."
+  refund_after_transfer: "당신의 섬 구역을 양도하고 구매 비용을 환급받았습니다."
+  transfer_completed: "당신의 섬 구역을 정상적으로 양도했습니다."
+  received_transfer: "당신은 섬를 양도 받았습니다."
+  join_refusal: "섬 방문이 금지되어 있습니다."
