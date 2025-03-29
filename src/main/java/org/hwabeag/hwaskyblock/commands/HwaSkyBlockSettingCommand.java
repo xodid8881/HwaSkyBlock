@@ -1,6 +1,5 @@
 package org.hwabeag.hwaskyblock.commands;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -10,15 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.hwabeag.hwaskyblock.HwaSkyBlock;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static org.hwabeag.hwaskyblock.HwaSkyBlock.getPlugin;
 
 public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor {
 
@@ -69,47 +65,22 @@ public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor 
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.get(id + ".주인장") == null) {
+                if (SkyBlockConfig.get(id + ".leader") == null) {
                     player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
                     return true;
                 }
-                if (Objects.equals(SkyBlockConfig.getString(id + ".주인장"), args[1])) {
+                if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), args[1])) {
                     player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.same_previous_owner"))));
                     return true;
                 }
-                String chunk_master = SkyBlockConfig.getString(id + ".주인장");
-                PlayerConfig.set(chunk_master + ".섬.보유갯수", PlayerConfig.getInt(chunk_master + ".섬.보유갯수") - 1);
-                PlayerConfig.set(chunk_master + ".섬.보유." + id, null);
-                SkyBlockConfig.set(id + ".주인장", args[1]);
-                PlayerConfig.set(args[1] + ".섬.보유갯수", PlayerConfig.getInt(chunk_master + ".섬.보유갯수") + 1);
-                PlayerConfig.set(args[1] + ".섬.보유." + id, name);
+                String skyblock_master = SkyBlockConfig.getString(id + ".leader");
+                PlayerConfig.set(skyblock_master + ".skyblock.possession_count", PlayerConfig.getInt(skyblock_master + ".skyblock.possession_count") - 1);
+                PlayerConfig.set(skyblock_master + ".skyblock.possession." + id, null);
+                SkyBlockConfig.set(id + ".leader", args[1]);
+                PlayerConfig.set(args[1] + ".skyblock.possession_count", PlayerConfig.getInt(skyblock_master + ".skyblock.possession_count") + 1);
+                PlayerConfig.set(args[1] + ".skyblock.possession." + id, name);
                 ConfigManager.saveConfigs();
                 player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.change_owner"))));
-                return true;
-            }
-        }
-        if (args[0].equalsIgnoreCase("공중분해")) {
-            World world = player.getWorld();
-            String world_name = world.getWorldFolder().getName();
-            String[] number = world_name.split("\\.");
-            if (Objects.equals(number[0], "HwaSkyBlock")) {
-                String id = number[1];
-                if (SkyBlockConfig.get(id + ".주인장") == null) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
-                    return true;
-                }
-                String chunk_master = SkyBlockConfig.getString(id + ".주인장");
-                Economy econ = HwaSkyBlock.getEconomy();
-                econ.depositPlayer(chunk_master, Config.getInt("chunk-buy"));
-                PlayerConfig.set(chunk_master + ".섬.보유갯수", PlayerConfig.getInt(chunk_master + ".섬.보유갯수") - 1);
-                PlayerConfig.set(chunk_master + ".섬.보유." + id, null);
-                SkyBlockConfig.set(String.valueOf(id), null);
-                getPlugin().setRemoveIsland(id);
-                Player PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull(chunk_master));
-                if (PlayerExact != null) {
-                    PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.forced_refund_of_skyblock_zones"))));
-                }
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.forced_disassembly_completed"))));
                 return true;
             }
         }

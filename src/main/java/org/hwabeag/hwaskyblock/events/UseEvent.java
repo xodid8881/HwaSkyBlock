@@ -40,15 +40,15 @@ public class UseEvent implements Listener {
         String[] number = world_name.split("\\.");
         if (Objects.equals(number[0], "HwaSkyBlock")) {
             String id = number[1];
-            if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                    if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+            if (SkyBlockConfig.getString(id + ".leader") != null) {
+                if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                    if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".break")) {
                             damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     } else {
-                        if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.break")) {
+                        if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.break")) {
                             damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
@@ -68,15 +68,15 @@ public class UseEvent implements Listener {
         String[] number = world_name.split("\\.");
         if (Objects.equals(number[0], "HwaSkyBlock")) {
             String id = number[1];
-            if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                    if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+            if (SkyBlockConfig.getString(id + ".leader") != null) {
+                if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                    if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".use.break")) {
                             damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     } else {
-                        if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.break")) {
+                        if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.break")) {
                             damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
@@ -97,17 +97,19 @@ public class UseEvent implements Listener {
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                    if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                        if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                if (SkyBlockConfig.getString(id + ".leader") != null) {
+                    if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                        if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.minecart")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
+                                return;
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.minecart")) {
+                            if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.minecart")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
+                                return;
                             }
                         }
                     }
@@ -121,15 +123,15 @@ public class UseEvent implements Listener {
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                    if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                        if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                if (SkyBlockConfig.getString(id + ".leader") != null) {
+                    if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                        if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.boat")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.boat")) {
+                            if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.boat")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
@@ -151,17 +153,19 @@ public class UseEvent implements Listener {
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                    if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                        if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                if (SkyBlockConfig.getString(id + ".leader") != null) {
+                    if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                        if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.minecart")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
+                                return;
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.minecart")) {
+                            if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.minecart")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
+                                return;
                             }
                         }
                     }
@@ -175,15 +179,15 @@ public class UseEvent implements Listener {
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                    if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                        if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                if (SkyBlockConfig.getString(id + ".leader") != null) {
+                    if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                        if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.boat")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.boat")) {
+                            if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.boat")) {
                                 player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
@@ -205,23 +209,25 @@ public class UseEvent implements Listener {
             String[] number = world_name.split("\\.");
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
-                if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                    if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
+                if (SkyBlockConfig.getString(id + ".leader") != null) {
+                    if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
                         if (customBlock != null) {
                             ItemStack CustomCrop = ItemsAdder.getCustomBlock(block);
                             @NotNull String CustomCrop_DisplayName = CustomCrop.getItemMeta().getDisplayName();
                             for (String type : Objects.requireNonNull(Config.getConfigurationSection("Custom-Crop-Interact")).getKeys(false)) {
                                 if (CustomCrop_DisplayName.contains(type)) {
-                                    if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                                    if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                         if (!SkyBlockConfig.getBoolean(id + ".use.farm")) {
                                             player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                             event.setCancelled(true);
+                                            return;
                                         }
                                     } else {
-                                        if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.farm")) {
+                                        if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.farm")) {
                                             player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                             event.setCancelled(true);
+                                            return;
                                         }
                                     }
                                 }
@@ -229,119 +235,135 @@ public class UseEvent implements Listener {
                             return;
                         }
                         if (block.getType().name().contains("CHEST")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.chest")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.chest")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.chest")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("TRAPDOOR")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.trapdoor")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.trapdoor")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.trapdoor")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("DOOR")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.door")) {
-                                    event.setCancelled(true);
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.door")) {
-                                    event.setCancelled(true);
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.door")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("BARREL")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.barrel")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.barrel")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.barrel")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("HOPPER")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.hopper")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.hopper")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.hopper")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("FURNACE")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.furnace")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.furnace")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.furnace")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("BLAST")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.furnace")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.furnace")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.furnace")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("SHULKER")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.shulker")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.shulker")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.shulker")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
+                                    return;
                                 }
                             }
                             return;
                         }
                         if (block.getType().name().contains("BUTTON")) {
-                            if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                            if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.button")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
@@ -376,7 +398,7 @@ public class UseEvent implements Listener {
                                     }
                                 }
                             } else {
-                                if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.button")) {
+                                if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.button")) {
                                     player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
@@ -412,32 +434,33 @@ public class UseEvent implements Listener {
                                 return;
                             }
                             if (block.getType().name().contains("ANVIL")) {
-                                if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                                if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                     if (!SkyBlockConfig.getBoolean(id + ".use.anvil")) {
                                         player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
+                                        return;
                                     }
                                 } else {
-                                    if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.anvil")) {
+                                    if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.anvil")) {
                                         player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
+                                        return;
                                     }
                                 }
                                 return;
                             }
                             if (block.getType().name().contains("BEACON")) {
-                                if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+                                if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                     if (!SkyBlockConfig.getBoolean(id + ".use.beacon")) {
                                         player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                     }
                                 } else {
-                                    if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".use.beacon")) {
+                                    if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.beacon")) {
                                         player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                     }
                                 }
-                                return;
                             }
                         }
                     }
@@ -454,7 +477,7 @@ public class UseEvent implements Listener {
         String[] number = world_name.split("\\.");
         if (Objects.equals(number[0], "HwaSkyBlock")) {
             String id = number[1];
-            if (SkyBlockConfig.getString(id + ".주인장") != null) {
+            if (SkyBlockConfig.getString(id + ".leader") != null) {
                 if (!SkyBlockConfig.getBoolean(id + ".pvp")) {
                     event.setCancelled(true);
                 }

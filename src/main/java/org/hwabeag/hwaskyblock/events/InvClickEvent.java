@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
 import org.hwabeag.hwaskyblock.inventorys.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -32,11 +33,14 @@ public class InvClickEvent implements Listener {
             if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sky_block_menu_list"))))) {
                 e.setCancelled(true);
                 String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                if (PlayerConfig.getConfigurationSection(name + ".섬.보유") != null) {
-                    for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".섬.보유")).getKeys(false)) {
-                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7" + key + " &a- &7나의 섬"))) {
+                if (PlayerConfig.getConfigurationSection(name + ".skyblock.possession") != null) {
+                    for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.possession")).getKeys(false)) {
+
+                        @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.my");
+                        display_name = Objects.requireNonNull(display_name).replace("{name}", key);
+                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.SHIFT_LEFT) {
-                                if (Objects.equals(SkyBlockConfig.getString(key + ".주인장"), name)) {
+                                if (Objects.equals(SkyBlockConfig.getString(key + ".leader"), name)) {
                                     HwaSkyBlockGlobalFragGUI inv = null;
                                     inv = new HwaSkyBlockGlobalFragGUI(player, key);
                                     inv.open(player);
@@ -48,8 +52,8 @@ public class InvClickEvent implements Listener {
                                 return;
                             }
                             if (e.getClick() == ClickType.SHIFT_RIGHT) {
-                                if (Objects.equals(SkyBlockConfig.getString(key + ".주인장"), name)) {
-                                    PlayerConfig.set(name + ".섬.설정", key);
+                                if (Objects.equals(SkyBlockConfig.getString(key + ".leader"), name)) {
+                                    PlayerConfig.set(name + ".skyblock.setting", key);
                                     ConfigManager.saveConfigs();
                                     HwaSkyBlockSharerGUI inv = null;
                                     inv = new HwaSkyBlockSharerGUI(player, key);
@@ -96,9 +100,11 @@ public class InvClickEvent implements Listener {
                         }
                     }
                 }
-                if (PlayerConfig.getConfigurationSection(name + ".섬.공유") != null) {
-                    for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".섬.공유")).getKeys(false)) {
-                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7" + key + " &a- &7공유 섬"))) {
+                if (PlayerConfig.getConfigurationSection(name + ".skyblock.sharer") != null) {
+                    for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.sharer")).getKeys(false)) {
+                        @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.sharer");
+                        display_name = Objects.requireNonNull(display_name).replace("{name}", key);
+                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.LEFT) {
                                 e.getInventory().clear();
                                 player.closeInventory();
@@ -116,20 +122,20 @@ public class InvClickEvent implements Listener {
                         }
                     }
                 }
-                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a이전 페이지"))) {
-                    int page = PlayerConfig.getInt(name + ".섬.페이지");
+                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))))) {
+                    int page = PlayerConfig.getInt(name + ".skyblock.page");
                     int plus = page - 1;
-                    PlayerConfig.set(name + ".섬.페이지", plus);
+                    PlayerConfig.set(name + ".skyblock.page", plus);
                     ConfigManager.saveConfigs();
                     HwaSkyBlockMenuGUI inv = null;
                     inv = new HwaSkyBlockMenuGUI(player);
                     inv.open(player);
                     return;
                 }
-                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a다음 페이지"))) {
-                    int page = PlayerConfig.getInt(name + ".섬.페이지");
+                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))))) {
+                    int page = PlayerConfig.getInt(name + ".skyblock.page");
                     int plus = page + 1;
-                    PlayerConfig.set(name + ".섬.페이지", plus);
+                    PlayerConfig.set(name + ".skyblock.page", plus);
                     ConfigManager.saveConfigs();
                     HwaSkyBlockMenuGUI inv = null;
                     inv = new HwaSkyBlockMenuGUI(player);
@@ -142,7 +148,7 @@ public class InvClickEvent implements Listener {
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 접근 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join"))))) {
                         boolean player_join = SkyBlockConfig.getBoolean(id + ".join");
                         if (player_join) {
                             SkyBlockConfig.set(id + ".join", false);
@@ -155,7 +161,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 파괴 권한 설정"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break"))))) {
                         boolean block_break = SkyBlockConfig.getBoolean(id + ".break");
                         if (block_break) {
                             SkyBlockConfig.set(id + ".break", false);
@@ -168,7 +174,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 설치 권한 설정"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place"))))) {
                         boolean block_place = SkyBlockConfig.getBoolean(id + ".place");
                         if (block_place) {
                             SkyBlockConfig.set(id + ".place", false);
@@ -181,13 +187,13 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 이용 권한 설정"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.use"))))) {
                         HwaSkyBlockGlobalUseGUI inv = null;
                         inv = new HwaSkyBlockGlobalUseGUI(player);
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7전투 권한 설정"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp"))))) {
                         boolean pvp = SkyBlockConfig.getBoolean(id + ".pvp");
                         if (pvp) {
                             SkyBlockConfig.set(id + ".pvp", false);
@@ -208,13 +214,15 @@ public class InvClickEvent implements Listener {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                     for (String key : Objects.requireNonNull(SkyBlockConfig.getConfigurationSection(id + ".공유")).getKeys(false)) {
-                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a&l" + key + " &7님 (공유자)"))) {
+                        @Nullable String display_name = Config.getString("gui-slot-item-name.sharer_setting.sharer");
+                        display_name = Objects.requireNonNull(display_name).replace("{name}", key);
+                        if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.SHIFT_LEFT) {
-                                boolean player_join = SkyBlockConfig.getBoolean(id + ".공유." + key + ".join");
+                                boolean player_join = SkyBlockConfig.getBoolean(id + ".sharer." + key + ".join");
                                 if (player_join) {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".join", false);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".join", false);
                                 } else {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".join", true);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".join", true);
                                 }
                                 ConfigManager.saveConfigs();
                                 HwaSkyBlockSharerGUI inv = null;
@@ -223,11 +231,11 @@ public class InvClickEvent implements Listener {
                                 return;
                             }
                             if (e.getClick() == ClickType.SHIFT_RIGHT) {
-                                boolean block_break = SkyBlockConfig.getBoolean(id + ".공유." + key + ".break");
+                                boolean block_break = SkyBlockConfig.getBoolean(id + ".sharer." + key + ".break");
                                 if (block_break) {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".break", false);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".break", false);
                                 } else {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".break", true);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".break", true);
                                 }
                                 ConfigManager.saveConfigs();
                                 HwaSkyBlockSharerGUI inv = null;
@@ -236,11 +244,11 @@ public class InvClickEvent implements Listener {
                                 return;
                             }
                             if (e.getClick() == ClickType.LEFT) {
-                                boolean block_place = SkyBlockConfig.getBoolean(id + ".공유." + key + ".place");
+                                boolean block_place = SkyBlockConfig.getBoolean(id + ".sharer." + key + ".place");
                                 if (block_place) {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".place", false);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".place", false);
                                 } else {
-                                    SkyBlockConfig.set(id + ".공유." + key + ".place", true);
+                                    SkyBlockConfig.set(id + ".sharer." + key + ".place", true);
                                 }
                                 ConfigManager.saveConfigs();
                                 HwaSkyBlockSharerGUI inv = null;
@@ -249,7 +257,7 @@ public class InvClickEvent implements Listener {
                                 return;
                             }
                             if (e.getClick() == ClickType.RIGHT) {
-                                PlayerConfig.set(name + ".섬.설정", key);
+                                PlayerConfig.set(name + ".skyblock.setting", key);
                                 ConfigManager.saveConfigs();
                                 HwaSkyBlockSharerUseGUI inv = null;
                                 inv = new HwaSkyBlockSharerUseGUI(player, key);
@@ -258,20 +266,20 @@ public class InvClickEvent implements Listener {
                             }
                         }
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a이전 페이지"))) {
-                        int page = PlayerConfig.getInt(name + ".섬.페이지");
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))))) {
+                        int page = PlayerConfig.getInt(name + ".skyblock.page");
                         int plus = page - 1;
-                        PlayerConfig.set(name + ".섬.페이지", plus);
+                        PlayerConfig.set(name + ".skyblock.page", plus);
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerGUI inv = null;
                         inv = new HwaSkyBlockSharerGUI(player, id);
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a다음 페이지"))) {
-                        int page = PlayerConfig.getInt(name + ".섬.페이지");
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))))) {
+                        int page = PlayerConfig.getInt(name + ".skyblock.page");
                         int plus = page + 1;
-                        PlayerConfig.set(name + ".섬.페이지", plus);
+                        PlayerConfig.set(name + ".skyblock.page", plus);
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerGUI inv = null;
                         inv = new HwaSkyBlockSharerGUI(player, id);
@@ -285,7 +293,7 @@ public class InvClickEvent implements Listener {
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7문 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_DOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.door")) {
                             SkyBlockConfig.set(id + ".use.door", false);
                         } else {
@@ -297,7 +305,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7창고 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.CHEST"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.chest")) {
                             SkyBlockConfig.set(id + ".use.chest", false);
                         } else {
@@ -309,7 +317,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7통 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BARREL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.barrel")) {
                             SkyBlockConfig.set(id + ".use.barrel", false);
                         } else {
@@ -321,19 +329,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7화로 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".use.furnace")) {
-                            SkyBlockConfig.set(id + ".use.furnace", false);
-                        } else {
-                            SkyBlockConfig.set(id + ".use.furnace", true);
-                        }
-                        ConfigManager.saveConfigs();
-                        HwaSkyBlockGlobalUseGUI inv = null;
-                        inv = new HwaSkyBlockGlobalUseGUI(player);
-                        inv.open(player);
-                        return;
-                    }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7호퍼 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.HOPPER"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.hopper")) {
                             SkyBlockConfig.set(id + ".use.hopper", false);
                         } else {
@@ -345,7 +341,19 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7용광로 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.FURNACE"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".use.furnace")) {
+                            SkyBlockConfig.set(id + ".use.furnace", false);
+                        } else {
+                            SkyBlockConfig.set(id + ".use.furnace", true);
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockGlobalUseGUI inv = null;
+                        inv = new HwaSkyBlockGlobalUseGUI(player);
+                        inv.open(player);
+                        return;
+                    }
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BLAST_FURNACE"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.blast_furnace")) {
                             SkyBlockConfig.set(id + ".use.blast_furnace", false);
                         } else {
@@ -357,7 +365,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7셜커상자 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.SHULKER_BOX"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.shulker_box")) {
                             SkyBlockConfig.set(id + ".use.shulker_box", false);
                         } else {
@@ -369,7 +377,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7다락문 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_TRAPDOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.trapdoor")) {
                             SkyBlockConfig.set(id + ".use.trapdoor", false);
                         } else {
@@ -381,7 +389,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7버튼 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_BUTTON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.button")) {
                             SkyBlockConfig.set(id + ".use.button", false);
                         } else {
@@ -393,7 +401,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7모루 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.ANVIL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.anvil")) {
                             SkyBlockConfig.set(id + ".use.anvil", false);
                         } else {
@@ -405,7 +413,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭형 농작물 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.SWEET_BERRIES"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.farm")) {
                             SkyBlockConfig.set(id + ".use.farm", false);
                         } else {
@@ -417,7 +425,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7신호기 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BEACON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.beacon")) {
                             SkyBlockConfig.set(id + ".use.beacon", false);
                         } else {
@@ -429,7 +437,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7카트 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.MINECART"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.minecart")) {
                             SkyBlockConfig.set(id + ".use.minecart", false);
                         } else {
@@ -441,7 +449,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7보트 권한 관리"))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_BOAT"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.boat")) {
                             SkyBlockConfig.set(id + ".use.boat", false);
                         } else {
@@ -460,12 +468,12 @@ public class InvClickEvent implements Listener {
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    String user_name = PlayerConfig.getString(name + ".섬.설정");
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7문 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.door")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.door", false);
+                    String user_name = PlayerConfig.getString(name + ".skyblock.setting");
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_DOOR"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.door")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.door", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.door", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.door", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -473,11 +481,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7창고 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.chest")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.chest", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.CHEST"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.chest")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.chest", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.chest", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.chest", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -485,11 +493,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7통 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.barrel")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.barrel", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BARREL"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.barrel")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.barrel", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.barrel", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.barrel", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -497,11 +505,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7호퍼 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.hopper")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.hopper", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.HOPPER"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.hopper")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.hopper", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.hopper", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.hopper", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -509,11 +517,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7화로 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.furnace")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.furnace", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.FURNACE"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.furnace")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.furnace", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.furnace", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.furnace", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -521,11 +529,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7용광로 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.blast_furnace")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.blast_furnace", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BLAST_FURNACE"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.blast_furnace")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.blast_furnace", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.blast_furnace", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.blast_furnace", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -533,11 +541,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7셜커상자 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.shulker_box")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.shulker_box", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.SHULKER_BOX"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.shulker_box")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.shulker_box", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.shulker_box", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.shulker_box", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -545,11 +553,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7다락문 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.trapdoor")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.trapdoor", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_TRAPDOOR"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.trapdoor")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.trapdoor", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.trapdoor", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.trapdoor", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -557,11 +565,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7버튼 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.button")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.button", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_BUTTON"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.button")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.button", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.button", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.button", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -569,11 +577,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7모루 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.anvil")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.anvil", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.ANVIL"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.anvil")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.anvil", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.anvil", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.anvil", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -581,11 +589,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭형 농작물 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.farm")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.farm", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.SWEET_BERRIES"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.farm")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.farm", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.farm", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.farm", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -593,11 +601,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7신호기 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.beacon")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.beacon", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BEACON"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.beacon")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.beacon", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.beacon", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.beacon", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -605,11 +613,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7카트 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.minecart")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.minecart", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.MINECART"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.minecart")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.minecart", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.minecart", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.minecart", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;
@@ -617,11 +625,11 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', "&a- &7보트 권한 관리"))) {
-                        if (SkyBlockConfig.getBoolean(id + ".공유." + user_name + ".use.boat")) {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.boat", false);
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_BOAT"))))) {
+                        if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.boat")) {
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.boat", false);
                         } else {
-                            SkyBlockConfig.set(id + ".공유." + user_name + ".use.boat", true);
+                            SkyBlockConfig.set(id + ".sharer." + user_name + ".use.boat", true);
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockSharerUseGUI inv = null;

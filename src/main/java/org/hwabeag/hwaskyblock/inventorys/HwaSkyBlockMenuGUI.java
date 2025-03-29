@@ -10,9 +10,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class HwaSkyBlockMenuGUI implements Listener {
@@ -30,24 +30,29 @@ public class HwaSkyBlockMenuGUI implements Listener {
         String name = player.getName();
         int N = 0;
         int Page = 1;
-        if (PlayerConfig.getConfigurationSection(name + ".섬.보유") != null) {
-            for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".섬.보유")).getKeys(false)) {
-                int PlayerPage = PlayerConfig.getInt(name + ".섬.페이지");
+        if (PlayerConfig.getConfigurationSection(name + ".skyblock.possession") != null) {
+            for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.possession")).getKeys(false)) {
+                int PlayerPage = PlayerConfig.getInt(name + ".skyblock.page");
                 if (Page == PlayerPage) {
                     ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7" + key + " &a- &7나의 섬"));
+                    @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.my");
+                    display_name = Objects.requireNonNull(display_name).replace("{number}", key);
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name));
                     ArrayList<String> loreList = new ArrayList<>();
                     String world_name = player.getWorld().getWorldFolder().getName();
                     String[] number = world_name.split("\\.");
                     if (Objects.equals(number[0], "HwaSkyBlock")) {
                         String id = number[1];
-                        if (Objects.equals(id, key)){
-                            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &fSHIFT 좌클릭 &7시 해당 섬 글로벌 권한관리"));
-                            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &fSHIFT 우클릭 &7시 해당 섬 공유자 권한관리"));
+                        if (Objects.equals(id, key)) {
+                            for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.my-lore")) {
+                                loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+                            }
                         }
                     }
-                    loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &f좌클릭 &7시 해당 섬로 텔레포트"));
+                    for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
+                        loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+                    }
                     itemMeta.setLore(loreList);
                     item.setItemMeta(itemMeta);
                     inv.setItem(N, item);
@@ -59,15 +64,19 @@ public class HwaSkyBlockMenuGUI implements Listener {
                 }
             }
         }
-        if (PlayerConfig.getConfigurationSection(name + ".섬.공유") != null) {
-            for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".섬.공유")).getKeys(false)) {
-                int PlayerPage = PlayerConfig.getInt(name + ".섬.페이지");
+        if (PlayerConfig.getConfigurationSection(name + ".skyblock.sharer") != null) {
+            for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.sharer")).getKeys(false)) {
+                int PlayerPage = PlayerConfig.getInt(name + ".skyblock.page");
                 if (Page == PlayerPage) {
                     ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7" + key + " &a- &7공유 섬"));
+                    @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.sharer");
+                    display_name = Objects.requireNonNull(display_name).replace("{number}", key);
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name));
                     ArrayList<String> loreList = new ArrayList<>();
-                    loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &f좌클릭 &7시 해당 섬로 텔레포트"));
+                    for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
+                        loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+                    }
                     itemMeta.setLore(loreList);
                     item.setItemMeta(itemMeta);
                     inv.setItem(N, item);
@@ -82,16 +91,24 @@ public class HwaSkyBlockMenuGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.PAPER, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a이전 페이지"));
-        itemMeta.setLore(List.of(ChatColor.translateAlternateColorCodes('&', "&a- &f클릭 시 이전 페이지로 이동합니다.")));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))));
+        ArrayList<String> loreList = new ArrayList<>();
+        for (String lore : Config.getStringList("gui-slot-item-name.previous_page-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+        }
+        itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
         inv.setItem(45, item);
 
 
         item = new ItemStack(Material.PAPER, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a다음 페이지"));
-        itemMeta.setLore(List.of(ChatColor.translateAlternateColorCodes('&', "&a- &f클릭 시 다음 페이지로 이동합니다.")));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))));
+        loreList = new ArrayList<>();
+        for (String lore : Config.getStringList("gui-slot-item-name.next_page-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+        }
+        itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
         inv.setItem(53, item);
     }

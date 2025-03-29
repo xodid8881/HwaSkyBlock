@@ -28,21 +28,36 @@ public class BreakEvent implements Listener {
         String[] number = world_name.split("\\.");
         if (Objects.equals(number[0], "HwaSkyBlock")) {
             String id = number[1];
-            if (SkyBlockConfig.getString(id + ".주인장") != null) {
-                if (!Objects.equals(SkyBlockConfig.getString(id + ".주인장"), name)) {
-                    if (SkyBlockConfig.getString(id + ".공유." + name) == null) {
+            if (SkyBlockConfig.getString(id + ".leader") != null) {
+                if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                    if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".break")) {
                             player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
+                            return;
                         }
                     } else {
-                        if (!SkyBlockConfig.getBoolean(id + ".공유." + name + ".break")) {
+                        if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".break")) {
                             player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
                             event.setCancelled(true);
+                            return;
                         }
+                    }
+                    if (!isInRegion(event.getBlock(), id)) {
+                        event.setCancelled(true);
                     }
                 }
             }
         }
+    }
+
+    private boolean isInRegion(Block block, String id) {
+        int x = block.getX();
+        int y = block.getY();
+        int z = block.getZ();
+
+        return (x >= 0 && x < 100 + SkyBlockConfig.getInt(id + ".size")) &&
+                (y >= 0 && y < 256) &&
+                (z >= 0 && z < 100 + SkyBlockConfig.getInt(id + ".size"));
     }
 }

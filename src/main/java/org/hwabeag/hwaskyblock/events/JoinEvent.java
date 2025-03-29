@@ -14,12 +14,12 @@ public class JoinEvent implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String name = player.getName();
-        if (PlayerConfig.get(name + ".섬") == null) {
-            PlayerConfig.addDefault(name + ".섬.보유갯수", 0);
-            PlayerConfig.set(name + ".섬.보유갯수", 0);
-            PlayerConfig.set(name + ".섬.위치", 0);
-            PlayerConfig.set(name + ".섬.페이지", 1);
-            PlayerConfig.set(name + ".섬.설정", "");
+        if (PlayerConfig.get(name + ".skyblock") == null) {
+            PlayerConfig.addDefault(name + ".skyblock.possession_count", 0);
+            PlayerConfig.set(name + ".skyblock.possession_count", 0);
+            PlayerConfig.set(name + ".skyblock.pos", 0);
+            PlayerConfig.set(name + ".skyblock.page", 1);
+            PlayerConfig.set(name + ".skyblock.setting", "");
             ConfigManager.saveConfigs();
         }
     }

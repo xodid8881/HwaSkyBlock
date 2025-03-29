@@ -22,10 +22,10 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
     public HwaSkyBlockGlobalFragGUI(Player player, String key) {
         inv = Bukkit.createInventory(null, 27, Objects.requireNonNull(Config.getString("gui-name.global_setting")));
-        initItemSetting(player, key);
+        initItemSetting(key);
     }
 
-    private void initItemSetting(Player player, String id) {
+    private void initItemSetting(String id) {
         boolean player_join = SkyBlockConfig.getBoolean(id + ".join");
         boolean block_break = SkyBlockConfig.getBoolean(id + ".break");
         boolean block_place = SkyBlockConfig.getBoolean(id + ".place");
@@ -33,14 +33,15 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.SPYGLASS, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 접근 권한 관리"));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join"))));
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭 시 &a섬 접근 권한 &7을 설정합니다."));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."));
+        for (String key : Config.getStringList("gui-slot-item-name.global_setting.join-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', key));
+        }
         if (player_join) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 접근 &a허용"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 접근 &c거부"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -48,14 +49,15 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         item = new ItemStack(Material.WOODEN_AXE, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 파괴 권한 설정"));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break"))));
         loreList = new ArrayList<>();
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭을 진행하면 &a블럭 파괴 권한 &7을 설정합니다."));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."));
+        for (String key : Config.getStringList("gui-slot-item-name.global_setting.break-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', key));
+        }
         if (block_break) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 블럭 파괴 &a허용"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 블럭 파괴 &c거부"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -64,13 +66,14 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
         item = new ItemStack(Material.SCAFFOLDING, 1);
         itemMeta = item.getItemMeta();
         loreList = new ArrayList<>();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 설치 권한 설정"));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭을 진행하면 &a블럭 설치 권한 &7을 설정합니다."));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place"))));
+        for (String key : Config.getStringList("gui-slot-item-name.global_setting.place-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', key));
+        }
         if (block_place) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 블럭 설치 &a허용"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7섬 블럭 설치 &c거부"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -78,10 +81,11 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         item = new ItemStack(Material.CHEST, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7블럭 이용 권한 설정"));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.use"))));
         loreList = new ArrayList<>();
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭을 진행하면 &a블럭 이용 권한 &7을 설정합니다."));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."));
+        for (String key : Config.getStringList("gui-slot-item-name.global_setting.use-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', key));
+        }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
         inv.setItem(14, item);
@@ -89,12 +93,14 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
         item = new ItemStack(Material.DIAMOND_SWORD, 1);
         itemMeta = item.getItemMeta();
         loreList = new ArrayList<>();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a- &7전투 권한 설정"));
-        loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7클릭을 진행하면 &a전투 권한 &7을 설정합니다."));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp"))));
+        for (String key : Config.getStringList("gui-slot-item-name.global_setting.pvp-lore")) {
+            loreList.add(ChatColor.translateAlternateColorCodes('&', key));
+        }
         if (pvp_place) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7전투 &a허용"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', "&a- &7전투 &c거부"));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);

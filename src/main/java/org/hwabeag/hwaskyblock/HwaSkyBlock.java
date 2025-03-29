@@ -34,6 +34,10 @@ public final class HwaSkyBlock extends JavaPlugin {
             configManager = new ConfigManager();
     }
 
+    public static Economy getEconomy() {
+        return econ;
+    }
+
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new BreakEvent(), this);
         getServer().getPluginManager().registerEvents(new InvClickEvent(), this);
@@ -61,17 +65,6 @@ public final class HwaSkyBlock extends JavaPlugin {
         }
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new HwaSkyBlockTask(), 20 * 2, 20 * 2);
         Bukkit.getScheduler().runTaskTimer(this, new UnloadTask(), 0L, 400L);
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        Bukkit.getLogger().info("[HwaSkyBlock] Disable");
-        ConfigManager.saveConfigs();
-    }
-
-    public static Economy getEconomy() {
-        return econ;
     }
 
     private boolean setupEconomy() {
@@ -111,7 +104,7 @@ public final class HwaSkyBlock extends JavaPlugin {
                 if (source.isDirectory()) {
                     if (!target.exists())
                         if (!target.mkdirs())
-                            throw new IOException("Couldn't create world directory!");
+                            throw new IOException("세계 디렉토리를 만들 수 없습니다!");
                     String files[] = source.list();
                     for (String file : files) {
                         File srcFile = new File(source, file);
@@ -171,6 +164,13 @@ public final class HwaSkyBlock extends JavaPlugin {
         } catch (Exception e) {
             throw new RuntimeException("파일 삭제 중 오류 발생", e);
         }
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        Bukkit.getLogger().info("[HwaSkyBlock] Disable");
+        ConfigManager.saveConfigs();
     }
 }
 

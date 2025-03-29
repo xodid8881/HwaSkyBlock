@@ -21,23 +21,23 @@ public class HwaSkyBlockTask implements Runnable {
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String name = player.getName();
-            if (PlayerConfig.get(name + ".섬") != null) {
+            if (PlayerConfig.get(name + ".skyblock") != null) {
                 @NotNull Chunk chunk = player.getLocation().getChunk();
                 long chunkZ = chunk.getZ();
                 long chunkX = chunk.getX();
                 long id = chunkZ ^ (chunkX << 32);
-                long player_chunk = PlayerConfig.getLong(name + ".섬.위치");
+                long player_chunk = PlayerConfig.getLong(name + ".skyblock.pos");
                 if (player_chunk != id) {
-                    if (SkyBlockConfig.get(id + ".주인장") != null) {
+                    if (SkyBlockConfig.get(id + ".leader") != null) {
                         String welcome_message = SkyBlockConfig.getString(id + ".welcome_message");
                         player.sendMessage(Prefix + " " + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(welcome_message)));
-                        String chunk_master = SkyBlockConfig.getString(id + ".주인장");
+                        String chunk_master = SkyBlockConfig.getString(id + ".leader");
                         player.sendTitle(Prefix, ChatColor.translateAlternateColorCodes('&', "&r주인장 &f: &e" + chunk_master));
-                        PlayerConfig.set(name + ".섬.위치", id);
+                        PlayerConfig.set(name + ".skyblock.pos", id);
                         ConfigManager.saveConfigs();
                     }
                 }
-                PlayerConfig.set(name + ".섬.위치", id);
+                PlayerConfig.set(name + ".skyblock.pos", id);
                 ConfigManager.saveConfigs();
             }
         }
