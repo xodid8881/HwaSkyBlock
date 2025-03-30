@@ -15,7 +15,6 @@ import org.hwabeag.hwaskyblock.config.ConfigManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class HwaSkyBlockSharerGUI implements Listener {

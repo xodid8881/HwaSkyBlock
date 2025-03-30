@@ -55,9 +55,8 @@ public class PlaceEvent implements Listener {
         int x = block.getX();
         int y = block.getY();
         int z = block.getZ();
-
-        return (x >= 0 && x < 100 + SkyBlockConfig.getInt(id + ".size")) &&
+        return (x >= 0 && x < SkyBlockConfig.getInt(id + ".size")) &&
                 (y >= 0 && y < 256) &&
-                (z >= 0 && z < 100 + SkyBlockConfig.getInt(id + ".size"));
+                (z >= 0 && z < SkyBlockConfig.getInt(id + ".size"));
     }
 }

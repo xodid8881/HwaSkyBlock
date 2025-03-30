@@ -20,7 +20,7 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
     FileConfiguration Config = ConfigManager.getConfig("setting");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
 
-    public HwaSkyBlockGlobalFragGUI(Player player, String key) {
+    public HwaSkyBlockGlobalFragGUI(String key) {
         inv = Bukkit.createInventory(null, 27, Objects.requireNonNull(Config.getString("gui-name.global_setting")));
         initItemSetting(key);
     }
@@ -110,5 +110,4 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
     public void open(Player player) {
         player.openInventory(inv);
     }
-
 }

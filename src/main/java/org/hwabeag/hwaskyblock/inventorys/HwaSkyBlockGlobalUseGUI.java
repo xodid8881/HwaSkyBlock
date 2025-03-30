@@ -276,5 +276,4 @@ public class HwaSkyBlockGlobalUseGUI implements Listener {
     public void open(Player player) {
         player.openInventory(inv);
     }
-
 }

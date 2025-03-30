@@ -11,12 +11,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.hwabeag.hwaskyblock.HwaSkyBlock;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
+import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockBuyGUI;
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI;
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockMenuGUI;
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,51 +103,8 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             return true;
         }
         if (args[0].equalsIgnoreCase("구매")) {
-            File worldDir = new File(Bukkit.getServer().getWorldContainer(), "worlds/HwaSkyBlock");
-            if (!worldDir.exists()) {
-                player.sendMessage("해당 월드를 찾을 수 없습니다.");
-                return true;
-            }
-            int count = Config.getInt("sky-block-number");
-            int id = count + 1;
-            Economy econ = HwaSkyBlock.getEconomy();
-            if (econ.has(player, Config.getInt("chunk-buy"))) {
-                if (PlayerConfig.getInt(name + ".skyblock.possession_count") >= Config.getInt("sky-block-max")) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.hold_the_maximum"))));
-                    return true;
-                }
-                econ.withdrawPlayer(player, Config.getInt("chunk-buy"));
-                SkyBlockConfig.set(id + ".leader", name);
-                SkyBlockConfig.set(id + ".join", true);
-                SkyBlockConfig.set(id + ".break", false);
-                SkyBlockConfig.set(id + ".place", false);
-                SkyBlockConfig.set(id + ".use.door", false);
-                SkyBlockConfig.set(id + ".use.chest", false);
-                SkyBlockConfig.set(id + ".use.barrel", false);
-                SkyBlockConfig.set(id + ".use.hopper", false);
-                SkyBlockConfig.set(id + ".use.furnace", false);
-                SkyBlockConfig.set(id + ".use.blast_furnace", false);
-                SkyBlockConfig.set(id + ".use.shulker_box", false);
-                SkyBlockConfig.set(id + ".use.trapdoor", false);
-                SkyBlockConfig.set(id + ".use.button", false);
-                SkyBlockConfig.set(id + ".use.anvil", false);
-                SkyBlockConfig.set(id + ".use.farm", false);
-                SkyBlockConfig.set(id + ".use.beacon", false);
-                SkyBlockConfig.set(id + ".use.minecart", false);
-                SkyBlockConfig.set(id + ".use.boat", false);
-                SkyBlockConfig.set(id + ".pvp", false);
-                SkyBlockConfig.set(id + ".welcome_message", "환영합니다.");
-                SkyBlockConfig.set(id + ".home", 0);
-                SkyBlockConfig.set(id + ".size", 0);
-                PlayerConfig.set(name + ".skyblock.possession_count", PlayerConfig.getInt(name + ".skyblock.possession_count") + 1);
-                PlayerConfig.set(name + ".skyblock.possession." + id, name);
-                Config.set("sky-block-number", id);
-                ConfigManager.saveConfigs();
-                HwaSkyBlock.addIsland(player, id);
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.purchase_completed"))));
-            } else {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.insufficient_funds"))));
-            }
+            HwaSkyBlockBuyGUI inv = new HwaSkyBlockBuyGUI();
+            inv.open(player);
             return true;
         }
         if (args[0].equalsIgnoreCase("메뉴")) {
@@ -163,7 +120,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             }
             if (args[1].matches("[+-]?\\d*(\\.\\d+)?")) {
                 if (!Objects.equals(SkyBlockConfig.getString(args[1] + ".leader"), name)) {
-                    if (SkyBlockConfig.getString(args[1] + ".sharer." + name) == null) {
+                    if (SkyBlockConfig.getString(args[1] + ".sharer." + name) != null) {
                         if (!SkyBlockConfig.getBoolean(args[1] + ".sharer." + name + ".join")) {
                             player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.join_refusal"))));
                             return true;
@@ -300,7 +257,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                     }
                     if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         if (args[1].equals("글로벌")) {
-                            HwaSkyBlockGlobalFragGUI inv = new HwaSkyBlockGlobalFragGUI(player, id);
+                            HwaSkyBlockGlobalFragGUI inv = new HwaSkyBlockGlobalFragGUI(id);
                             inv.open(player);
                             return true;
                         }

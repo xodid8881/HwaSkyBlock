@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -7,10 +8,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.hwabeag.hwaskyblock.HwaSkyBlock;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
 import org.hwabeag.hwaskyblock.inventorys.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.Objects;
 
 public class InvClickEvent implements Listener {
@@ -30,19 +33,78 @@ public class InvClickEvent implements Listener {
             World world = player.getWorld();
             String world_name = world.getWorldFolder().getName();
             String[] number = world_name.split("\\.");
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.buy"))))) {
+                e.setCancelled(true);
+                String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
+                for (String skyblock_name : Objects.requireNonNull(Config.getConfigurationSection("sky-block-world")).getKeys(false)) {
+                    String item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("sky-block-world." + skyblock_name + ".item-name")));
+                    if (item_name.equals(clickitem)) {
+                        int buy = Config.getInt("sky-block-world." + skyblock_name + ".item-buy");
+                        int size = Config.getInt("sky-block-world." + skyblock_name + ".max-size");
+                        String filepath = Config.getString("sky-block-world." + skyblock_name + ".world-filepath");
+                        File worldDir = new File(Bukkit.getServer().getWorldContainer(), Objects.requireNonNull(filepath));
+                        if (!worldDir.exists()) {
+                            player.sendMessage("해당 월드를 찾을 수 없습니다.");
+                            return;
+                        }
+                        int count = Config.getInt("sky-block-number");
+                        int id = count + 1;
+                        Economy econ = HwaSkyBlock.getEconomy();
+                        if (econ.has(player, buy)) {
+                            if (PlayerConfig.getInt(name + ".skyblock.possession_count") >= Config.getInt("sky-block-max")) {
+                                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.hold_the_maximum"))));
+                                return;
+                            }
+                            econ.withdrawPlayer(player, buy);
+                            SkyBlockConfig.set(id + ".leader", name);
+                            SkyBlockConfig.set(id + ".join", true);
+                            SkyBlockConfig.set(id + ".break", false);
+                            SkyBlockConfig.set(id + ".place", false);
+                            SkyBlockConfig.set(id + ".use.door", false);
+                            SkyBlockConfig.set(id + ".use.chest", false);
+                            SkyBlockConfig.set(id + ".use.barrel", false);
+                            SkyBlockConfig.set(id + ".use.hopper", false);
+                            SkyBlockConfig.set(id + ".use.furnace", false);
+                            SkyBlockConfig.set(id + ".use.blast_furnace", false);
+                            SkyBlockConfig.set(id + ".use.shulker_box", false);
+                            SkyBlockConfig.set(id + ".use.trapdoor", false);
+                            SkyBlockConfig.set(id + ".use.button", false);
+                            SkyBlockConfig.set(id + ".use.anvil", false);
+                            SkyBlockConfig.set(id + ".use.farm", false);
+                            SkyBlockConfig.set(id + ".use.beacon", false);
+                            SkyBlockConfig.set(id + ".use.minecart", false);
+                            SkyBlockConfig.set(id + ".use.boat", false);
+                            SkyBlockConfig.set(id + ".pvp", false);
+                            SkyBlockConfig.set(id + ".welcome_message", "환영합니다.");
+                            SkyBlockConfig.set(id + ".home", 0);
+                            SkyBlockConfig.set(id + ".size", size);
+                            PlayerConfig.set(name + ".skyblock.possession_count", PlayerConfig.getInt(name + ".skyblock.possession_count") + 1);
+                            PlayerConfig.set(name + ".skyblock.possession." + id, name);
+                            Config.set("sky-block-number", id);
+                            ConfigManager.saveConfigs();
+                            HwaSkyBlock.addIsland(player, id, filepath);
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.purchase_completed"))));
+                        } else {
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.insufficient_funds"))));
+                        }
+                        e.getInventory().clear();
+                        player.closeInventory();
+                        return;
+                    }
+                }
+            }
             if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sky_block_menu_list"))))) {
                 e.setCancelled(true);
                 String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                 if (PlayerConfig.getConfigurationSection(name + ".skyblock.possession") != null) {
                     for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.possession")).getKeys(false)) {
-
                         @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.my");
-                        display_name = Objects.requireNonNull(display_name).replace("{name}", key);
+                        display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.SHIFT_LEFT) {
                                 if (Objects.equals(SkyBlockConfig.getString(key + ".leader"), name)) {
                                     HwaSkyBlockGlobalFragGUI inv = null;
-                                    inv = new HwaSkyBlockGlobalFragGUI(player, key);
+                                    inv = new HwaSkyBlockGlobalFragGUI(key);
                                     inv.open(player);
                                 } else {
                                     e.getInventory().clear();
@@ -103,7 +165,7 @@ public class InvClickEvent implements Listener {
                 if (PlayerConfig.getConfigurationSection(name + ".skyblock.sharer") != null) {
                     for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.sharer")).getKeys(false)) {
                         @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.sharer");
-                        display_name = Objects.requireNonNull(display_name).replace("{name}", key);
+                        display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.LEFT) {
                                 e.getInventory().clear();
@@ -157,7 +219,7 @@ public class InvClickEvent implements Listener {
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockGlobalFragGUI inv = null;
-                        inv = new HwaSkyBlockGlobalFragGUI(player, id);
+                        inv = new HwaSkyBlockGlobalFragGUI(id);
                         inv.open(player);
                         return;
                     }
@@ -170,7 +232,7 @@ public class InvClickEvent implements Listener {
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockGlobalFragGUI inv = null;
-                        inv = new HwaSkyBlockGlobalFragGUI(player, id);
+                        inv = new HwaSkyBlockGlobalFragGUI(id);
                         inv.open(player);
                         return;
                     }
@@ -183,7 +245,7 @@ public class InvClickEvent implements Listener {
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockGlobalFragGUI inv = null;
-                        inv = new HwaSkyBlockGlobalFragGUI(player, id);
+                        inv = new HwaSkyBlockGlobalFragGUI(id);
                         inv.open(player);
                         return;
                     }
@@ -202,7 +264,7 @@ public class InvClickEvent implements Listener {
                         }
                         ConfigManager.saveConfigs();
                         HwaSkyBlockGlobalFragGUI inv = null;
-                        inv = new HwaSkyBlockGlobalFragGUI(player, id);
+                        inv = new HwaSkyBlockGlobalFragGUI(id);
                         inv.open(player);
                         return;
                     }
@@ -213,7 +275,7 @@ public class InvClickEvent implements Listener {
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    for (String key : Objects.requireNonNull(SkyBlockConfig.getConfigurationSection(id + ".공유")).getKeys(false)) {
+                    for (String key : Objects.requireNonNull(SkyBlockConfig.getConfigurationSection(id + ".sharer")).getKeys(false)) {
                         @Nullable String display_name = Config.getString("gui-slot-item-name.sharer_setting.sharer");
                         display_name = Objects.requireNonNull(display_name).replace("{name}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
@@ -635,7 +697,6 @@ public class InvClickEvent implements Listener {
                         HwaSkyBlockSharerUseGUI inv = null;
                         inv = new HwaSkyBlockSharerUseGUI(player, user_name);
                         inv.open(player);
-                        return;
                     }
                 }
             }

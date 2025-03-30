@@ -38,51 +38,10 @@ public final class HwaSkyBlock extends JavaPlugin {
         return econ;
     }
 
-    private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new BreakEvent(), this);
-        getServer().getPluginManager().registerEvents(new InvClickEvent(), this);
-        getServer().getPluginManager().registerEvents(new JoinEvent(), this);
-        getServer().getPluginManager().registerEvents(new MoveEvent(), this);
-        getServer().getPluginManager().registerEvents(new PlaceEvent(), this);
-        getServer().getPluginManager().registerEvents(new UseEvent(), this);
-    }
-
-    private void registerCommands() {
-        Objects.requireNonNull(getServer().getPluginCommand("섬")).setExecutor(new HwaSkyBlockCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("섬설정")).setExecutor(new HwaSkyBlockSettingCommand());
-    }
-
-    @Override
-    public void onEnable() {
-        Bukkit.getLogger().info("[HwaSkyBlock] Enable");
-        this.saveDefaultConfig();
-        getConfigManager();
-        registerCommands();
-        registerEvents();
-        if (!setupEconomy()) {
-            getLogger().severe(String.format("[%s] - Vault 종속성이 발견되지 않아 비활성화됨!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-        }
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new HwaSkyBlockTask(), 20 * 2, 20 * 2);
-        Bukkit.getScheduler().runTaskTimer(this, new UnloadTask(), 0L, 400L);
-    }
-
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return true;
-    }
-
-    public static void addIsland(Player player, int id) {
-        World world = Bukkit.getServer().getWorld("worlds/HwaSkyBlock");
+    public static void addIsland(Player player, int id, String filepath) {
+        World world = Bukkit.getServer().getWorld(filepath);
         if (world == null) {
-            world = new WorldCreator("worlds/HwaSkyBlock").createWorld();
+            world = new WorldCreator(filepath).createWorld();
             String world_name = "worlds/HwaSkyBlock." + id;
             copyFileStructure(Objects.requireNonNull(world).getWorldFolder(), new File(Bukkit.getWorldContainer(), world_name));
             new WorldCreator(world_name).createWorld();
@@ -127,24 +86,6 @@ public final class HwaSkyBlock extends JavaPlugin {
         }
     }
 
-    public void setRemoveIsland(String id) {
-        for (World world : Bukkit.getServer().getWorlds()) {
-            String worldName = world.getWorldFolder().getName();
-            if (("HwaSkyBlock." + id).equals(worldName)) {
-                for (Player player : world.getPlayers()) {
-                    String worldPath = ConfigManager.getConfig("setting").getString("main-spawn-world");
-                    World main_world = Bukkit.getServer().getWorld(Objects.requireNonNull(worldPath));
-                    Location spawnLocation = Objects.requireNonNull(main_world).getSpawnLocation();
-                    player.teleport(spawnLocation);
-                }
-                Bukkit.getServer().unloadWorld(world, true);
-            }
-        }
-        String serverDir = System.getProperty("user.dir");
-        String worldPath = serverDir + "/worlds/HwaSkyBlock." + id;
-        deleteFileStructure(new File(worldPath));
-    }
-
     private static void deleteFileStructure(File target) {
         try {
             if (target.isDirectory()) {
@@ -166,6 +107,65 @@ public final class HwaSkyBlock extends JavaPlugin {
         }
     }
 
+    private void registerEvents() {
+        getServer().getPluginManager().registerEvents(new BreakEvent(), this);
+        getServer().getPluginManager().registerEvents(new InvClickEvent(), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+        getServer().getPluginManager().registerEvents(new MoveEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlaceEvent(), this);
+        getServer().getPluginManager().registerEvents(new UseEvent(), this);
+    }
+
+    private void registerCommands() {
+        Objects.requireNonNull(getServer().getPluginCommand("섬")).setExecutor(new HwaSkyBlockCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("섬설정")).setExecutor(new HwaSkyBlockSettingCommand());
+    }
+
+    @Override
+    public void onEnable() {
+        Bukkit.getLogger().info("[HwaSkyBlock] Enable");
+        this.saveDefaultConfig();
+        getConfigManager();
+        registerCommands();
+        registerEvents();
+        if (!setupEconomy()) {
+            getLogger().severe(String.format("[%s] - Vault 종속성이 발견되지 않아 비활성화됨!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+        }
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new HwaSkyBlockTask(), 20 * 2, 20 * 2);
+        Bukkit.getScheduler().runTaskTimer(this, new UnloadTask(), 0L, 400L);
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return true;
+    }
+
+    public void setRemoveIsland(String id) {
+        for (World world : Bukkit.getServer().getWorlds()) {
+            String worldName = world.getWorldFolder().getName();
+            if (("HwaSkyBlock." + id).equals(worldName)) {
+                for (Player player : world.getPlayers()) {
+                    String worldPath = ConfigManager.getConfig("setting").getString("main-spawn-world");
+                    World main_world = Bukkit.getServer().getWorld(Objects.requireNonNull(worldPath));
+                    Location spawnLocation = Objects.requireNonNull(main_world).getSpawnLocation();
+                    player.teleport(spawnLocation);
+                }
+                Bukkit.getServer().unloadWorld(world, true);
+            }
+        }
+        String serverDir = System.getProperty("user.dir");
+        String worldPath = serverDir + "/worlds/HwaSkyBlock." + id;
+        deleteFileStructure(new File(worldPath));
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -173,4 +173,3 @@ public final class HwaSkyBlock extends JavaPlugin {
         ConfigManager.saveConfigs();
     }
 }
-
