@@ -2,12 +2,12 @@ package org.hwabeag.hwaskyblock.schedules;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.hwabeag.hwaskyblock.HwaSkyBlock;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -28,6 +28,47 @@ public class HwaSkyBlockTask implements Runnable {
                 String[] number = world_name.split("\\.");
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String block_to_id = number[1];
+                    String weather = SkyBlockConfig.getString(block_to_id + ".setting.weather");
+                    String time = SkyBlockConfig.getString(block_to_id + ".setting.time");
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (Objects.equals(weather, "clear")) {
+                                world.setClearWeatherDuration(Integer.MAX_VALUE);
+                            } else {
+                                world.setClearWeatherDuration(0);
+                            }
+                            if (Objects.equals(weather, "rainy")) {
+                                world.setStorm(true);
+                                world.setWeatherDuration(Integer.MAX_VALUE);
+                            } else {
+                                world.setStorm(false);
+                                world.setWeatherDuration(0);
+                            }
+                            if (Objects.equals(weather, "thunder")) {
+                                world.setThunderDuration(Integer.MAX_VALUE);
+                                world.setStorm(true);
+                            } else {
+                                world.setThunderDuration(0);
+                            }
+                            world.setThunderDuration(0);
+                            world.setWeatherDuration(0);
+
+                            if (Objects.equals(time, "morn")) {
+                                long time_l = 1000;
+                                world.setTime(time_l);
+                            }
+                            if (Objects.equals(time, "noon")) {
+                                long time_l = 6000;
+                                world.setTime(time_l);
+                            }
+                            if (Objects.equals(time, "evening")) {
+                                long time_l = 18000;
+                                world.setTime(time_l);
+                            }
+                        }
+                    }.runTask(HwaSkyBlock.getPlugin());
+
                     String player_chunk = PlayerConfig.getString(name + ".skyblock.pos");
                     if (!Objects.equals(player_chunk, block_to_id)) {
                         if (SkyBlockConfig.get(block_to_id + ".leader") != null) {

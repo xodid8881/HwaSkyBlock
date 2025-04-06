@@ -11,10 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.hwabeag.hwaskyblock.HwaSkyBlock;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockBuyGUI;
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI;
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockMenuGUI;
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI;
+import org.hwabeag.hwaskyblock.inventorys.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -75,6 +72,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                 List<String> list = new ArrayList<String>();
                 list.add("환영말");
                 list.add("스폰설정");
+                list.add("환경설정");
                 list.add("공중분해");
                 list.add("양도");
                 return list;
@@ -303,6 +301,11 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                         SkyBlockConfig.set(id + ".home", player.getLocation());
                         ConfigManager.saveConfigs();
                         player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.spawn_settings"))));
+                        return true;
+                    }
+                    if (args[1].equalsIgnoreCase("환경설정")) {
+                        HwaSkyBlockSettingGUI inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
                         return true;
                     }
                     if (args[1].equalsIgnoreCase("공중분해")) {

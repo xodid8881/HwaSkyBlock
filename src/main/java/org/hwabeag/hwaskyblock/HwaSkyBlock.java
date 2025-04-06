@@ -13,7 +13,8 @@ import org.hwabeag.hwaskyblock.commands.HwaSkyBlockSettingCommand;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
 import org.hwabeag.hwaskyblock.events.*;
 import org.hwabeag.hwaskyblock.schedules.HwaSkyBlockTask;
-import org.hwabeag.hwaskyblock.schedules.UnloadTask;
+import org.hwabeag.hwaskyblock.schedules.UnloadBorderTask;
+import org.hwabeag.hwaskyblock.schedules.UnloadWorldTask;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -112,7 +113,9 @@ public final class HwaSkyBlock extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InvClickEvent(), this);
         getServer().getPluginManager().registerEvents(new JoinEvent(), this);
         getServer().getPluginManager().registerEvents(new MoveEvent(), this);
+        getServer().getPluginManager().registerEvents(new PhysicsEvent(), this);
         getServer().getPluginManager().registerEvents(new PlaceEvent(), this);
+        getServer().getPluginManager().registerEvents(new SpawnEvent(), this);
         getServer().getPluginManager().registerEvents(new UseEvent(), this);
     }
 
@@ -133,7 +136,8 @@ public final class HwaSkyBlock extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new HwaSkyBlockTask(), 20 * 2, 20 * 2);
-        Bukkit.getScheduler().runTaskTimer(this, new UnloadTask(), 0L, 400L);
+        Bukkit.getScheduler().runTaskTimer(this, new UnloadWorldTask(), 0L, 400L);
+        Bukkit.getScheduler().runTaskTimer(this, new UnloadBorderTask(), 0L, 400L);
     }
 
     private boolean setupEconomy() {

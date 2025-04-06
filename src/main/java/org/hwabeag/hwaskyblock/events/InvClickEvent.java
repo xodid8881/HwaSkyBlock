@@ -33,6 +33,105 @@ public class InvClickEvent implements Listener {
             World world = player.getWorld();
             String world_name = world.getWorldFolder().getName();
             String[] number = world_name.split("\\.");
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.world_setting"))))) {
+                e.setCancelled(true);
+                if (Objects.equals(number[0], "HwaSkyBlock")) {
+                    String id = number[1];
+                    String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
+                    String item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.monster_spawn")));
+                    if (clickitem.equals(item_name)) {
+                        boolean monster_spawn = SkyBlockConfig.getBoolean(id + ".setting.monster_spawn");
+                        if (monster_spawn) {
+                            SkyBlockConfig.set(id + ".setting.monster_spawn", false);
+                        } else {
+                            SkyBlockConfig.set(id + ".setting.monster_spawn", true);
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.animal_spawn")));
+                    if (clickitem.equals(item_name)) {
+                        boolean animal_spawn = SkyBlockConfig.getBoolean(id + ".setting.animal_spawn");
+                        if (animal_spawn) {
+                            SkyBlockConfig.set(id + ".setting.animal_spawn", false);
+                        } else {
+                            SkyBlockConfig.set(id + ".setting.animal_spawn", true);
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.weather")));
+                    if (clickitem.equals(item_name)) {
+                        String weather = SkyBlockConfig.getString(id + ".setting.weather");
+                        if (Objects.equals(weather, "clear")) {
+                            SkyBlockConfig.set(id + ".setting.weather", "rainy");
+                        } else if (Objects.equals(weather, "rainy")) {
+                            SkyBlockConfig.set(id + ".setting.weather", "thunder");
+                        } else if (Objects.equals(weather, "thunder")) {
+                            SkyBlockConfig.set(id + ".setting.weather", "basic");
+                        } else if (Objects.equals(weather, "basic")) {
+                            SkyBlockConfig.set(id + ".setting.weather", "clear");
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.time")));
+                    if (clickitem.equals(item_name)) {
+                        String time = SkyBlockConfig.getString(id + ".setting.time");
+                        if (Objects.equals(time, "morn")) {
+                            SkyBlockConfig.set(id + ".setting.time", "noon");
+                        } else if (Objects.equals(time, "noon")) {
+                            SkyBlockConfig.set(id + ".setting.time", "evening");
+                        } else if (Objects.equals(time, "evening")) {
+                            SkyBlockConfig.set(id + ".setting.time", "basic");
+                        } else if (Objects.equals(time, "basic")) {
+                            SkyBlockConfig.set(id + ".setting.time", "morn");
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.water_physics")));
+                    if (clickitem.equals(item_name)) {
+                        boolean water_physics = SkyBlockConfig.getBoolean(id + ".setting.water_physics");
+                        if (water_physics) {
+                            SkyBlockConfig.set(id + ".setting.water_physics", false);
+                        } else {
+                            SkyBlockConfig.set(id + ".setting.water_physics", true);
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.lava_physics")));
+                    if (clickitem.equals(item_name)) {
+                        boolean lava_physics = SkyBlockConfig.getBoolean(id + ".setting.lava_physics");
+                        if (lava_physics) {
+                            SkyBlockConfig.set(id + ".setting.lava_physics", false);
+                        } else {
+                            SkyBlockConfig.set(id + ".setting.lava_physics", true);
+                        }
+                        ConfigManager.saveConfigs();
+                        HwaSkyBlockSettingGUI inv = null;
+                        inv = new HwaSkyBlockSettingGUI(id);
+                        inv.open(player);
+                        return;
+                    }
+                }
+            }
             if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.buy"))))) {
                 e.setCancelled(true);
                 String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
@@ -78,6 +177,14 @@ public class InvClickEvent implements Listener {
                             SkyBlockConfig.set(id + ".welcome_message", "환영합니다.");
                             SkyBlockConfig.set(id + ".home", 0);
                             SkyBlockConfig.set(id + ".size", size);
+
+                            SkyBlockConfig.set(id + ".setting.monster_spawn", true);
+                            SkyBlockConfig.set(id + ".setting.animal_spawn", true);
+                            SkyBlockConfig.set(id + ".setting.weather", "basic");
+                            SkyBlockConfig.set(id + ".setting.time", "basic");
+                            SkyBlockConfig.set(id + ".setting.water_physics", true);
+                            SkyBlockConfig.set(id + ".setting.lava_physics", true);
+
                             PlayerConfig.set(name + ".skyblock.possession_count", PlayerConfig.getInt(name + ".skyblock.possession_count") + 1);
                             PlayerConfig.set(name + ".skyblock.possession." + id, name);
                             Config.set("sky-block-number", id);

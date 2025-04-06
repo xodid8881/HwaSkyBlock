@@ -27,7 +27,7 @@ command-help-message:
   - "  &a&lL &r&7공유추가 [닉네임] &a&l- &r&7섬에 공유 유저를 추가합니다."
   - "  &a&lL &r&7공유제거 [닉네임] &a&l- &r&7섬에 공유 유저를 제거합니다."
   - "  &a&lL &r&7권한관리 [글로벌,공유자] &a&l- &r&7기본 섬 권한을 관리합니다."
-  - "  &a&lL &r&7세부관리 [환영말,스폰설정,공중분해,양도] [양도유저] &a&l- &r&7섬 세부관리를 진행합니다."
+  - "  &a&lL &r&7세부관리 [환영말,스폰설정,환경설정,공중분해,양도] [양도유저] &a&l- &r&7섬 세부관리를 진행합니다."
   - "&a&l---------------------------------------------"
 
 setting-command-help-message:
@@ -75,6 +75,7 @@ gui-name:
   sky_block_menu_list: "섬 메뉴" # 플레이어 섬 메뉴 GUI 이름
   sharer_setting: "공유 관리" # 섬 관리 GUI 이름
   sharer_use_list: "공유자 사용 금지 목록" # 공유자들의 블럭 사용금지 GUI 이름
+  world_setting: "월드 환경 설정" # 섬 월드 환경을 설정합니다.
 
 gui-slot-item-name:
   previous_page: "&a이전 페이지"
@@ -83,6 +84,47 @@ gui-slot-item-name:
   next_page: "&a다음 페이지"
   next_page-lore:
     - "&a- &f클릭 시 다음 페이지로 이동합니다."
+    -
+  world_setting:
+    monster_spawn: "&a- &7몬스터 스폰 관리"
+    monster_spawn-lore:
+      - "&a- &7클릭 시 &a몬스터 스폰 &7을 설정합니다."
+    monster_spawn-true: "&a- &7몬스터 스폰 &a허용"
+    monster_spawn-false: "&a- &7몬스터 스폰 &c거부"
+
+    animal_spawn: "&a- &7동물 스폰 관리"
+    animal_spawn-lore:
+      - "&a- &7클릭 시 &a동물 스폰 &7을 설정합니다."
+    animal_spawn-true: "&a- &7동물 스폰 &a허용"
+    animal_spawn-false: "&a- &7동물 스폰 &c거부"
+
+    weather: "&a- &7날씨 관리"
+    weather-lore:
+      - "&a- &7클릭 시 &a월드 날씨 &7를 설정합니다."
+    weather-clear: "&a- &7날씨 &a맑음"
+    weather-rainy: "&a- &7날씨 &b비"
+    weather-thunder: "&a- &7날씨 &c폭풍"
+    weather-basic: "&a- &7날씨 &e자연스러움"
+
+    time: "&a- &7월드 시간 관리"
+    time-lore:
+      - "&a- &7클릭 시 &a월드 시간 &7을 설정합니다."
+    time-morn: "&a- &7월드 시간 &a아침"
+    time-noon: "&a- &7월드 시간 &b점심"
+    time-evening: "&a- &7월드 시간 &c저녁"
+    time-basic: "&a- &7월드 시간 &e자연스러움"
+
+    water_physics: "&a- &7물 흐름 관리"
+    water_physics-lore:
+      - "&a- &7클릭 시 &a물 흐름 &7을 설정합니다."
+    water_physics-true: "&a- &7물 흐름 &a허용"
+    water_physics-false: "&a- &7물 흐름 &c거부"
+
+    lava_physics: "&a- &7용암 흐름 관리"
+    lava_physics-lore:
+      - "&a- &7클릭 시 &a용암 흐름 &7을 설정합니다."
+    lava_physics-true: "&a- &7용암 흐름 &a허용"
+    lava_physics-false: "&a- &7용암 흐름 &c거부"
 
   global_setting:
     join: "&a- &7섬 접근 권한 관리"
