@@ -19,6 +19,7 @@ import java.util.Objects;
 public class InvClickEvent implements Listener {
 
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
@@ -33,12 +34,12 @@ public class InvClickEvent implements Listener {
             World world = player.getWorld();
             String world_name = world.getWorldFolder().getName();
             String[] number = world_name.split("\\.");
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.world_setting"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.world_setting"))))) {
                 e.setCancelled(true);
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    String item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.monster_spawn")));
+                    String item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.monster_spawn")));
                     if (clickitem.equals(item_name)) {
                         boolean monster_spawn = SkyBlockConfig.getBoolean(id + ".setting.monster_spawn");
                         if (monster_spawn) {
@@ -52,7 +53,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.animal_spawn")));
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.animal_spawn")));
                     if (clickitem.equals(item_name)) {
                         boolean animal_spawn = SkyBlockConfig.getBoolean(id + ".setting.animal_spawn");
                         if (animal_spawn) {
@@ -66,7 +67,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.weather")));
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.weather")));
                     if (clickitem.equals(item_name)) {
                         String weather = SkyBlockConfig.getString(id + ".setting.weather");
                         if (Objects.equals(weather, "clear")) {
@@ -84,7 +85,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.time")));
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.time")));
                     if (clickitem.equals(item_name)) {
                         String time = SkyBlockConfig.getString(id + ".setting.time");
                         if (Objects.equals(time, "morn")) {
@@ -102,7 +103,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.water_physics")));
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.water_physics")));
                     if (clickitem.equals(item_name)) {
                         boolean water_physics = SkyBlockConfig.getBoolean(id + ".setting.water_physics");
                         if (water_physics) {
@@ -116,7 +117,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.world_setting.lava_physics")));
+                    item_name = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.world_setting.lava_physics")));
                     if (clickitem.equals(item_name)) {
                         boolean lava_physics = SkyBlockConfig.getBoolean(id + ".setting.lava_physics");
                         if (lava_physics) {
@@ -132,7 +133,7 @@ public class InvClickEvent implements Listener {
                     }
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.buy"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.buy"))))) {
                 e.setCancelled(true);
                 String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                 for (String skyblock_name : Objects.requireNonNull(Config.getConfigurationSection("sky-block-world")).getKeys(false)) {
@@ -151,7 +152,7 @@ public class InvClickEvent implements Listener {
                         Economy econ = HwaSkyBlock.getEconomy();
                         if (econ.has(player, buy)) {
                             if (PlayerConfig.getInt(name + ".skyblock.possession_count") >= Config.getInt("sky-block-max")) {
-                                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.hold_the_maximum"))));
+                                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.hold_the_maximum"))));
                                 return;
                             }
                             econ.withdrawPlayer(player, buy);
@@ -190,9 +191,9 @@ public class InvClickEvent implements Listener {
                             Config.set("sky-block-number", id);
                             ConfigManager.saveConfigs();
                             HwaSkyBlock.addIsland(player, id, filepath);
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.purchase_completed"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.purchase_completed"))));
                         } else {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.insufficient_funds"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.insufficient_funds"))));
                         }
                         e.getInventory().clear();
                         player.closeInventory();
@@ -200,12 +201,12 @@ public class InvClickEvent implements Listener {
                     }
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sky_block_menu_list"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sky_block_menu_list"))))) {
                 e.setCancelled(true);
                 String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                 if (PlayerConfig.getConfigurationSection(name + ".skyblock.possession") != null) {
                     for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.possession")).getKeys(false)) {
-                        @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.my");
+                        @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my");
                         display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.SHIFT_LEFT) {
@@ -216,7 +217,7 @@ public class InvClickEvent implements Listener {
                                 } else {
                                     e.getInventory().clear();
                                     player.closeInventory();
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                                 }
                                 return;
                             }
@@ -230,7 +231,7 @@ public class InvClickEvent implements Listener {
                                 } else {
                                     e.getInventory().clear();
                                     player.closeInventory();
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                                 }
                                 return;
                             }
@@ -271,7 +272,7 @@ public class InvClickEvent implements Listener {
                 }
                 if (PlayerConfig.getConfigurationSection(name + ".skyblock.sharer") != null) {
                     for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection(name + ".skyblock.sharer")).getKeys(false)) {
-                        @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.sharer");
+                        @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.sharer");
                         display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.LEFT) {
@@ -291,7 +292,7 @@ public class InvClickEvent implements Listener {
                         }
                     }
                 }
-                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))))) {
+                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.previous_page"))))) {
                     int page = PlayerConfig.getInt(name + ".skyblock.page");
                     int plus = page - 1;
                     PlayerConfig.set(name + ".skyblock.page", plus);
@@ -301,7 +302,7 @@ public class InvClickEvent implements Listener {
                     inv.open(player);
                     return;
                 }
-                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))))) {
+                if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.next_page"))))) {
                     int page = PlayerConfig.getInt(name + ".skyblock.page");
                     int plus = page + 1;
                     PlayerConfig.set(name + ".skyblock.page", plus);
@@ -312,12 +313,12 @@ public class InvClickEvent implements Listener {
                     return;
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_setting"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_setting"))))) {
                 e.setCancelled(true);
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.join"))))) {
                         boolean player_join = SkyBlockConfig.getBoolean(id + ".join");
                         if (player_join) {
                             SkyBlockConfig.set(id + ".join", false);
@@ -330,7 +331,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.break"))))) {
                         boolean block_break = SkyBlockConfig.getBoolean(id + ".break");
                         if (block_break) {
                             SkyBlockConfig.set(id + ".break", false);
@@ -343,7 +344,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.place"))))) {
                         boolean block_place = SkyBlockConfig.getBoolean(id + ".place");
                         if (block_place) {
                             SkyBlockConfig.set(id + ".place", false);
@@ -356,13 +357,13 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.use"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.use"))))) {
                         HwaSkyBlockGlobalUseGUI inv = null;
                         inv = new HwaSkyBlockGlobalUseGUI(player);
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.pvp"))))) {
                         boolean pvp = SkyBlockConfig.getBoolean(id + ".pvp");
                         if (pvp) {
                             SkyBlockConfig.set(id + ".pvp", false);
@@ -377,13 +378,13 @@ public class InvClickEvent implements Listener {
                     }
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_setting"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_setting"))))) {
                 e.setCancelled(true);
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                     for (String key : Objects.requireNonNull(SkyBlockConfig.getConfigurationSection(id + ".sharer")).getKeys(false)) {
-                        @Nullable String display_name = Config.getString("gui-slot-item-name.sharer_setting.sharer");
+                        @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sharer_setting.sharer");
                         display_name = Objects.requireNonNull(display_name).replace("{name}", key);
                         if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', display_name))) {
                             if (e.getClick() == ClickType.SHIFT_LEFT) {
@@ -435,7 +436,7 @@ public class InvClickEvent implements Listener {
                             }
                         }
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.previous_page"))))) {
                         int page = PlayerConfig.getInt(name + ".skyblock.page");
                         int plus = page - 1;
                         PlayerConfig.set(name + ".skyblock.page", plus);
@@ -445,7 +446,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.next_page"))))) {
                         int page = PlayerConfig.getInt(name + ".skyblock.page");
                         int plus = page + 1;
                         PlayerConfig.set(name + ".skyblock.page", plus);
@@ -457,12 +458,12 @@ public class InvClickEvent implements Listener {
                     }
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list"))))) {
                 e.setCancelled(true);
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_DOOR"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.OAK_DOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.door")) {
                             SkyBlockConfig.set(id + ".use.door", false);
                         } else {
@@ -474,7 +475,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.CHEST"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.CHEST"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.chest")) {
                             SkyBlockConfig.set(id + ".use.chest", false);
                         } else {
@@ -486,7 +487,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BARREL"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.BARREL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.barrel")) {
                             SkyBlockConfig.set(id + ".use.barrel", false);
                         } else {
@@ -498,7 +499,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.HOPPER"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.HOPPER"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.hopper")) {
                             SkyBlockConfig.set(id + ".use.hopper", false);
                         } else {
@@ -510,7 +511,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.FURNACE"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.FURNACE"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.furnace")) {
                             SkyBlockConfig.set(id + ".use.furnace", false);
                         } else {
@@ -522,7 +523,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BLAST_FURNACE"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.BLAST_FURNACE"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.blast_furnace")) {
                             SkyBlockConfig.set(id + ".use.blast_furnace", false);
                         } else {
@@ -534,7 +535,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.SHULKER_BOX"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.SHULKER_BOX"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.shulker_box")) {
                             SkyBlockConfig.set(id + ".use.shulker_box", false);
                         } else {
@@ -546,7 +547,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_TRAPDOOR"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.OAK_TRAPDOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.trapdoor")) {
                             SkyBlockConfig.set(id + ".use.trapdoor", false);
                         } else {
@@ -558,7 +559,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_BUTTON"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.OAK_BUTTON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.button")) {
                             SkyBlockConfig.set(id + ".use.button", false);
                         } else {
@@ -570,7 +571,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.ANVIL"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.ANVIL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.anvil")) {
                             SkyBlockConfig.set(id + ".use.anvil", false);
                         } else {
@@ -582,7 +583,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.SWEET_BERRIES"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.SWEET_BERRIES"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.farm")) {
                             SkyBlockConfig.set(id + ".use.farm", false);
                         } else {
@@ -594,7 +595,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.BEACON"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.BEACON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.beacon")) {
                             SkyBlockConfig.set(id + ".use.beacon", false);
                         } else {
@@ -606,7 +607,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.MINECART"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.MINECART"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.minecart")) {
                             SkyBlockConfig.set(id + ".use.minecart", false);
                         } else {
@@ -618,7 +619,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.global_use_list.OAK_BOAT"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.global_use_list.OAK_BOAT"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".use.boat")) {
                             SkyBlockConfig.set(id + ".use.boat", false);
                         } else {
@@ -632,13 +633,13 @@ public class InvClickEvent implements Listener {
                     }
                 }
             }
-            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list"))))) {
+            if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list"))))) {
                 e.setCancelled(true);
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     String clickitem = e.getCurrentItem().getItemMeta().getDisplayName();
                     String user_name = PlayerConfig.getString(name + ".skyblock.setting");
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_DOOR"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.OAK_DOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.door")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.door", false);
                         } else {
@@ -650,7 +651,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.CHEST"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.CHEST"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.chest")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.chest", false);
                         } else {
@@ -662,7 +663,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BARREL"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.BARREL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.barrel")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.barrel", false);
                         } else {
@@ -674,7 +675,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.HOPPER"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.HOPPER"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.hopper")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.hopper", false);
                         } else {
@@ -686,7 +687,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.FURNACE"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.FURNACE"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.furnace")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.furnace", false);
                         } else {
@@ -698,7 +699,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BLAST_FURNACE"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.BLAST_FURNACE"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.blast_furnace")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.blast_furnace", false);
                         } else {
@@ -710,7 +711,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.SHULKER_BOX"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.SHULKER_BOX"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.shulker_box")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.shulker_box", false);
                         } else {
@@ -722,7 +723,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_TRAPDOOR"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.OAK_TRAPDOOR"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.trapdoor")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.trapdoor", false);
                         } else {
@@ -734,7 +735,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_BUTTON"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.OAK_BUTTON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.button")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.button", false);
                         } else {
@@ -746,7 +747,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.ANVIL"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.ANVIL"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.anvil")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.anvil", false);
                         } else {
@@ -758,7 +759,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.SWEET_BERRIES"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.SWEET_BERRIES"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.farm")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.farm", false);
                         } else {
@@ -770,7 +771,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.BEACON"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.BEACON"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.beacon")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.beacon", false);
                         } else {
@@ -782,7 +783,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.MINECART"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.MINECART"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.minecart")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.minecart", false);
                         } else {
@@ -794,7 +795,7 @@ public class InvClickEvent implements Listener {
                         inv.open(player);
                         return;
                     }
-                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-name.sharer_use_list.OAK_BOAT"))))) {
+                    if (clickitem.equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_use_list.OAK_BOAT"))))) {
                         if (SkyBlockConfig.getBoolean(id + ".sharer." + user_name + ".use.boat")) {
                             SkyBlockConfig.set(id + ".sharer." + user_name + ".use.boat", false);
                         } else {

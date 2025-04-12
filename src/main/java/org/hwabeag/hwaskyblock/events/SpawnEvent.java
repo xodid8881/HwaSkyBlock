@@ -12,6 +12,7 @@ import org.hwabeag.hwaskyblock.config.ConfigManager;
 import java.util.Objects;
 
 public class SpawnEvent implements Listener {
+
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
 
     @EventHandler

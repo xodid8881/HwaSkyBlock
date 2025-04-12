@@ -13,6 +13,7 @@ public class ConfigManager {
     public ConfigManager() {
         String path = plugin.getDataFolder().getAbsolutePath();
         configSet.put("setting", new ConfigMaker(path, "config.yml"));
+        configSet.put("message", new ConfigMaker(path, "message.yml"));
         configSet.put("skyblock", new ConfigMaker(path, "skyblock.yml"));
         configSet.put("player", new ConfigMaker(path, "player.yml"));
         loadSettings();

@@ -24,6 +24,7 @@ import static org.hwabeag.hwaskyblock.HwaSkyBlock.getPlugin;
 public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
 
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
@@ -95,7 +96,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
         }
         String name = player.getName();
         if (args.length == 0) {
-            for (String key : Config.getStringList("command-help-message")) {
+            for (String key : MessageConfig.getStringList("command-help-message")) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', key));
             }
             return true;
@@ -113,19 +114,19 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
         }
         if (args[0].equalsIgnoreCase("이동")) {
             if (args.length == 1) {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.number_blank"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.number_blank"))));
                 return true;
             }
             if (args[1].matches("[+-]?\\d*(\\.\\d+)?")) {
                 if (!Objects.equals(SkyBlockConfig.getString(args[1] + ".leader"), name)) {
                     if (SkyBlockConfig.getString(args[1] + ".sharer." + name) != null) {
                         if (!SkyBlockConfig.getBoolean(args[1] + ".sharer." + name + ".join")) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.join_refusal"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
                             return true;
                         }
                     } else {
                         if (!SkyBlockConfig.getBoolean(args[1] + ".join")) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.join_refusal"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
                             return true;
                         }
                     }
@@ -159,13 +160,13 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                     return true;
                 }
             } else {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.number_check"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.number_check"))));
                 return true;
             }
         }
         if (args[0].equalsIgnoreCase("공유추가")) {
             if (args.length == 1) {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.nickname_blank"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.nickname_blank"))));
                 return true;
             }
             World world = player.getWorld();
@@ -174,12 +175,12 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
                 if (SkyBlockConfig.get(id + ".leader") == null) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_sky_block"))));
                     return true;
                 }
                 if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                     if (SkyBlockConfig.getString(id + ".sharer." + args[1]) != null) {
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.existing_sharer"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.existing_sharer"))));
                         return true;
                     }
                     SkyBlockConfig.set(id + ".sharer." + args[1], args[1]);
@@ -201,17 +202,17 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                     SkyBlockConfig.set(id + ".sharer." + args[1] + ".use.minecart", true);
                     SkyBlockConfig.set(id + ".sharer." + args[1] + ".use.boat", true);
                     PlayerConfig.set(args[1] + ".skyblock.sharer." + id, args[1]);
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.sharer_added_completed"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.sharer_added_completed"))));
                     ConfigManager.saveConfigs();
                 } else {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                 }
                 return true;
             }
         }
         if (args[0].equalsIgnoreCase("공유제거")) {
             if (args.length == 1) {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.nickname_blank"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.nickname_blank"))));
                 return true;
             }
             World world = player.getWorld();
@@ -220,37 +221,37 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
                 if (SkyBlockConfig.getString(id + ".leader") == null) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_sky_block"))));
                     return true;
                 }
                 if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                     if (SkyBlockConfig.getString(id + ".sharer." + args[1]) == null) {
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.sharer_without"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.sharer_without"))));
                         return true;
                     }
                     SkyBlockConfig.set(id + ".sharer." + args[1], null);
                     PlayerConfig.set(args[1] + ".skyblock.sharer." + id, null);
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.remove_sharer"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.remove_sharer"))));
                     ConfigManager.saveConfigs();
                 } else {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                 }
             }
             return true;
         }
         if (args[0].equalsIgnoreCase("권한관리")) {
             if (args.length == 1) {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.write_down_global_or_sharers"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.write_down_global_or_sharers"))));
                 return true;
             }
-            if (args[1].equalsIgnoreCase("글로벌") || args[1].equalsIgnoreCase("공유자")) {
+            if (args[1].equalsIgnoreCase("글로벌") && args[1].equalsIgnoreCase("공유자")) {
                 World world = player.getWorld();
                 String world_name = world.getWorldFolder().getName();
                 String[] number = world_name.split("\\.");
                 if (Objects.equals(number[0], "HwaSkyBlock")) {
                     String id = number[1];
                     if (SkyBlockConfig.get(id + ".leader") == null) {
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_sky_block"))));
                         return true;
                     }
                     if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
@@ -266,17 +267,17 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                             return true;
                         }
                     } else {
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                     }
                 }
             } else {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.write_down_global_or_sharers"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.write_down_global_or_sharers"))));
             }
             return true;
         }
         if (args[0].equalsIgnoreCase("세부관리")) {
             if (args.length == 1) {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.welcome_message_transfer_of_spawn_settings_public_disassembly"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.welcome_message_transfer_of_spawn_settings_public_disassembly"))));
                 return true;
             }
             World world = player.getWorld();
@@ -285,7 +286,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
                 if (SkyBlockConfig.get(id + ".leader") == null) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_sky_block"))));
                     return true;
                 }
                 if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
@@ -294,13 +295,13 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                         String messageArgs = StringUtils.join(msgArgs, " ");
                         SkyBlockConfig.set(id + ".welcome_message", messageArgs);
                         ConfigManager.saveConfigs();
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.welcome_message_setting"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.welcome_message_setting"))));
                         return true;
                     }
                     if (args[1].equalsIgnoreCase("스폰설정")) {
                         SkyBlockConfig.set(id + ".home", player.getLocation());
                         ConfigManager.saveConfigs();
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.spawn_settings"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.spawn_settings"))));
                         return true;
                     }
                     if (args[1].equalsIgnoreCase("환경설정")) {
@@ -318,18 +319,18 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                         getPlugin().setRemoveIsland(id);
                         Player PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull(skyblock_master));
                         if (PlayerExact != null) {
-                            PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.forced_refund_of_skyblock_zones"))));
+                            PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.forced_refund_of_skyblock_zones"))));
                         }
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.forced_disassembly_completed"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.forced_disassembly_completed"))));
                         return true;
                     }
                     if (args[1].equalsIgnoreCase("양도")) {
                         if (args.length == 2) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.nickname_blank"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.nickname_blank"))));
                             return true;
                         }
                         if (PlayerConfig.getInt(args[2] + ".skyblock.possession_count") >= Config.getInt("chunk-max")) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.transferred_user_maximum"))));
+                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.transferred_user_maximum"))));
                             return true;
                         }
                         String skyblock_master = SkyBlockConfig.getString(id + ".leader");
@@ -340,22 +341,22 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
 
                         PlayerConfig.set(args[2] + ".skyblock.possession_count", PlayerConfig.getInt(args[2] + ".skyblock.possession_count") + 1);
                         PlayerConfig.set(args[2] + ".skyblock.possession." + id, args[2]);
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.refund_after_transfer"))));
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.transfer_completed"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.refund_after_transfer"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.transfer_completed"))));
                         Player PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull(args[2]));
                         if (PlayerExact != null) {
-                            PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.received_transfer"))));
+                            PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.received_transfer"))));
                         }
                         return true;
                     }
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.welcome_message_transfer_of_spawn_settings_public_disassembly"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.welcome_message_transfer_of_spawn_settings_public_disassembly"))));
                 } else {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.not_the_owner"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.not_the_owner"))));
                 }
                 return true;
             }
         }
-        for (String key : Config.getStringList("command-help-message")) {
+        for (String key : MessageConfig.getStringList("command-help-message")) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', key));
         }
         return true;

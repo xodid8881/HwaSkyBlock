@@ -27,6 +27,7 @@ import java.util.Objects;
 public class UseEvent implements Listener {
 
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
 
@@ -44,12 +45,12 @@ public class UseEvent implements Listener {
                 if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                     if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".break")) {
-                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     } else {
                         if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.break")) {
-                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     }
@@ -72,12 +73,12 @@ public class UseEvent implements Listener {
                 if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                     if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".use.break")) {
-                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     } else {
                         if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.break")) {
-                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            damager.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     }
@@ -101,13 +102,13 @@ public class UseEvent implements Listener {
                     if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.minecart")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                                 return;
                             }
                         } else {
                             if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.minecart")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                                 return;
                             }
@@ -127,12 +128,12 @@ public class UseEvent implements Listener {
                     if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.boat")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         } else {
                             if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.boat")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         }
@@ -157,13 +158,13 @@ public class UseEvent implements Listener {
                     if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.minecart")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                                 return;
                             }
                         } else {
                             if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.minecart")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                                 return;
                             }
@@ -183,12 +184,12 @@ public class UseEvent implements Listener {
                     if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                         if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                             if (!SkyBlockConfig.getBoolean(id + ".use.boat")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         } else {
                             if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.boat")) {
-                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                 event.setCancelled(true);
                             }
                         }
@@ -219,13 +220,13 @@ public class UseEvent implements Listener {
                                 if (CustomCrop_DisplayName.contains(type)) {
                                     if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                         if (!SkyBlockConfig.getBoolean(id + ".use.farm")) {
-                                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                             event.setCancelled(true);
                                             return;
                                         }
                                     } else {
                                         if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.farm")) {
-                                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                             event.setCancelled(true);
                                             return;
                                         }
@@ -237,13 +238,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("CHEST")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.chest")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.chest")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -253,13 +254,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("TRAPDOOR")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.trapdoor")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.trapdoor")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -269,13 +270,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("DOOR")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.door")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.door")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -285,13 +286,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("BARREL")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.barrel")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.barrel")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -301,13 +302,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("HOPPER")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.hopper")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.hopper")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -317,13 +318,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("FURNACE")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.furnace")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.furnace")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -333,13 +334,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("BLAST")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.furnace")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.furnace")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -349,13 +350,13 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("SHULKER")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.shulker")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.shulker")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -365,7 +366,7 @@ public class UseEvent implements Listener {
                         if (block.getType().name().contains("BUTTON")) {
                             if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                 if (!SkyBlockConfig.getBoolean(id + ".use.button")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -399,7 +400,7 @@ public class UseEvent implements Listener {
                                 }
                             } else {
                                 if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.button")) {
-                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                    player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                     event.setCancelled(true);
                                     return;
                                 }
@@ -436,13 +437,13 @@ public class UseEvent implements Listener {
                             if (block.getType().name().contains("ANVIL")) {
                                 if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                     if (!SkyBlockConfig.getBoolean(id + ".use.anvil")) {
-                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                         return;
                                     }
                                 } else {
                                     if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.anvil")) {
-                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                         return;
                                     }
@@ -452,12 +453,12 @@ public class UseEvent implements Listener {
                             if (block.getType().name().contains("BEACON")) {
                                 if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                                     if (!SkyBlockConfig.getBoolean(id + ".use.beacon")) {
-                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                     }
                                 } else {
                                     if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".use.beacon")) {
-                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                                        player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                                         event.setCancelled(true);
                                     }
                                 }

@@ -15,6 +15,7 @@ import java.util.Objects;
 public class PlaceEvent implements Listener {
 
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
 
@@ -32,13 +33,13 @@ public class PlaceEvent implements Listener {
                 if (!Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
                     if (SkyBlockConfig.getString(id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(id + ".break")) {
-                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                             return;
                         }
                     } else {
                         if (!SkyBlockConfig.getBoolean(id + ".sharer." + name + ".break")) {
-                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                             return;
                         }

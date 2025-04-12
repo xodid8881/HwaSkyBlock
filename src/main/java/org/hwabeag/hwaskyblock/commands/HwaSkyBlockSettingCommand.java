@@ -19,6 +19,7 @@ import java.util.Objects;
 public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor {
 
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
@@ -49,12 +50,12 @@ public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor 
             return true;
         }
         if (!player.isOp()) {
-            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
             return true;
         }
         String name = player.getName();
         if (args.length == 0) {
-            for (String key : Config.getStringList("setting-command-help-message")) {
+            for (String key : MessageConfig.getStringList("setting-command-help-message")) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', key));
             }
             return true;
@@ -66,11 +67,11 @@ public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor 
             if (Objects.equals(number[0], "HwaSkyBlock")) {
                 String id = number[1];
                 if (SkyBlockConfig.get(id + ".leader") == null) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_sky_block"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_sky_block"))));
                     return true;
                 }
                 if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), args[1])) {
-                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.same_previous_owner"))));
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.same_previous_owner"))));
                     return true;
                 }
                 String skyblock_master = SkyBlockConfig.getString(id + ".leader");
@@ -80,11 +81,11 @@ public class HwaSkyBlockSettingCommand implements TabCompleter, CommandExecutor 
                 PlayerConfig.set(args[1] + ".skyblock.possession_count", PlayerConfig.getInt(skyblock_master + ".skyblock.possession_count") + 1);
                 PlayerConfig.set(args[1] + ".skyblock.possession." + id, name);
                 ConfigManager.saveConfigs();
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.change_owner"))));
+                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.change_owner"))));
                 return true;
             }
         }
-        for (String key : Config.getStringList("setting-command-help-message")) {
+        for (String key : MessageConfig.getStringList("setting-command-help-message")) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', key));
         }
         return true;

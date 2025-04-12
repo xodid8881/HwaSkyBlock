@@ -20,12 +20,12 @@ import java.util.Objects;
 public class HwaSkyBlockSharerGUI implements Listener {
     private final Inventory inv;
 
-    FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
 
     public HwaSkyBlockSharerGUI(Player player, String key) {
-        inv = Bukkit.createInventory(null, 54, Objects.requireNonNull(Config.getString("gui-name.sharer_setting")));
+        inv = Bukkit.createInventory(null, 54, Objects.requireNonNull(MessageConfig.getString("gui-name.sharer_setting")));
         initItemSetting(player, key);
     }
 
@@ -41,44 +41,44 @@ public class HwaSkyBlockSharerGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
         SkullMeta skull = (SkullMeta) item.getItemMeta();
-        @Nullable String display_name = Config.getString("gui-slot-item-name.sharer_setting.sharer");
+        @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sharer_setting.sharer");
         display_name = Objects.requireNonNull(display_name).replace("{name}", name);
         skull.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name));
         skull.setOwner(name);
         ArrayList<String> loreList = new ArrayList<>();
         Player player_exact = Bukkit.getServer().getPlayerExact(name);
         if (player_exact != null) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.online-lore"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.online-lore"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.offline-lore"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.offline-lore"))));
         }
 
         loreList.add("");
-        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.join"))));
+        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.join"))));
         if (player_join) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.join-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.join-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.join-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.join-false"))));
         }
 
         loreList.add("");
-        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.break"))));
+        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.break"))));
         if (block_break) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.break-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.break-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.break-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.break-false"))));
         }
 
         loreList.add("");
-        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.place"))));
+        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.place"))));
         if (block_place) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.place-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.place-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.place-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.place-false"))));
         }
 
         loreList.add("");
-        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.sharer_setting.use"))));
+        loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.sharer_setting.use"))));
 
         skull.setLore(loreList);
         item.setItemMeta(skull);
@@ -106,9 +106,9 @@ public class HwaSkyBlockSharerGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.PAPER, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.previous_page"))));
         ArrayList<String> loreList = new ArrayList<>();
-        for (String lore : Config.getStringList("gui-slot-item-name.previous_page-lore")) {
+        for (String lore : MessageConfig.getStringList("gui-slot-item-name.previous_page-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
         }
         itemMeta.setLore(loreList);
@@ -118,9 +118,9 @@ public class HwaSkyBlockSharerGUI implements Listener {
 
         item = new ItemStack(Material.PAPER, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.next_page"))));
         loreList = new ArrayList<>();
-        for (String lore : Config.getStringList("gui-slot-item-name.next_page-lore")) {
+        for (String lore : MessageConfig.getStringList("gui-slot-item-name.next_page-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
         }
         itemMeta.setLore(loreList);

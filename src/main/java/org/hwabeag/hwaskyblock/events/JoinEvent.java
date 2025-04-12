@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.hwabeag.hwaskyblock.config.ConfigManager;
 
 public class JoinEvent implements Listener {
+
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
 
     @EventHandler

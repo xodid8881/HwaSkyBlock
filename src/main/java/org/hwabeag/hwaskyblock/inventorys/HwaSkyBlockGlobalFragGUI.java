@@ -17,11 +17,11 @@ import java.util.Objects;
 public class HwaSkyBlockGlobalFragGUI implements Listener {
     private final Inventory inv;
 
-    FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
 
     public HwaSkyBlockGlobalFragGUI(String key) {
-        inv = Bukkit.createInventory(null, 27, Objects.requireNonNull(Config.getString("gui-name.global_setting")));
+        inv = Bukkit.createInventory(null, 27, Objects.requireNonNull(MessageConfig.getString("gui-name.global_setting")));
         initItemSetting(key);
     }
 
@@ -33,15 +33,15 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.SPYGLASS, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.join"))));
         ArrayList<String> loreList = new ArrayList<>();
-        for (String key : Config.getStringList("gui-slot-item-name.global_setting.join-lore")) {
+        for (String key : MessageConfig.getStringList("gui-slot-item-name.global_setting.join-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', key));
         }
         if (player_join) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.join-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.join-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.join-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -49,15 +49,15 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         item = new ItemStack(Material.WOODEN_AXE, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.break"))));
         loreList = new ArrayList<>();
-        for (String key : Config.getStringList("gui-slot-item-name.global_setting.break-lore")) {
+        for (String key : MessageConfig.getStringList("gui-slot-item-name.global_setting.break-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', key));
         }
         if (block_break) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.break-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.break-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.break-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -66,14 +66,14 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
         item = new ItemStack(Material.SCAFFOLDING, 1);
         itemMeta = item.getItemMeta();
         loreList = new ArrayList<>();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place"))));
-        for (String key : Config.getStringList("gui-slot-item-name.global_setting.place-lore")) {
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.place"))));
+        for (String key : MessageConfig.getStringList("gui-slot-item-name.global_setting.place-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', key));
         }
         if (block_place) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.place-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.place-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.place-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);
@@ -81,9 +81,9 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
 
         item = new ItemStack(Material.CHEST, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.use"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.use"))));
         loreList = new ArrayList<>();
-        for (String key : Config.getStringList("gui-slot-item-name.global_setting.use-lore")) {
+        for (String key : MessageConfig.getStringList("gui-slot-item-name.global_setting.use-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', key));
         }
         itemMeta.setLore(loreList);
@@ -93,14 +93,14 @@ public class HwaSkyBlockGlobalFragGUI implements Listener {
         item = new ItemStack(Material.DIAMOND_SWORD, 1);
         itemMeta = item.getItemMeta();
         loreList = new ArrayList<>();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp"))));
-        for (String key : Config.getStringList("gui-slot-item-name.global_setting.pvp-lore")) {
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.pvp"))));
+        for (String key : MessageConfig.getStringList("gui-slot-item-name.global_setting.pvp-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', key));
         }
         if (pvp_place) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp-true"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.pvp-true"))));
         } else {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.global_setting.pvp-false"))));
+            loreList.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.global_setting.pvp-false"))));
         }
         itemMeta.setLore(loreList);
         item.setItemMeta(itemMeta);

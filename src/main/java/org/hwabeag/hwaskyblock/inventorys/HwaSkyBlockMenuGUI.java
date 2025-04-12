@@ -18,11 +18,11 @@ import java.util.Objects;
 public class HwaSkyBlockMenuGUI implements Listener {
     private final Inventory inv;
 
-    FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
 
     public HwaSkyBlockMenuGUI(Player player) {
-        inv = Bukkit.createInventory(null, 54, Objects.requireNonNull(Config.getString("gui-name.sky_block_menu_list")));
+        inv = Bukkit.createInventory(null, 54, Objects.requireNonNull(MessageConfig.getString("gui-name.sky_block_menu_list")));
         initItemSetting(player);
     }
 
@@ -36,7 +36,7 @@ public class HwaSkyBlockMenuGUI implements Listener {
                 if (Page == PlayerPage) {
                     ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
                     ItemMeta itemMeta = item.getItemMeta();
-                    @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.my");
+                    @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my");
                     display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                     itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name));
                     ArrayList<String> loreList = new ArrayList<>();
@@ -45,12 +45,12 @@ public class HwaSkyBlockMenuGUI implements Listener {
                     if (Objects.equals(number[0], "HwaSkyBlock")) {
                         String id = number[1];
                         if (Objects.equals(id, key)) {
-                            for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.my-lore")) {
+                            for (String lore : MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.my-lore")) {
                                 loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
                             }
                         }
                     }
-                    for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
+                    for (String lore : MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
                         loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
                     }
                     itemMeta.setLore(loreList);
@@ -70,11 +70,11 @@ public class HwaSkyBlockMenuGUI implements Listener {
                 if (Page == PlayerPage) {
                     ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
                     ItemMeta itemMeta = item.getItemMeta();
-                    @Nullable String display_name = Config.getString("gui-slot-item-name.sky_block_menu_list.sharer");
+                    @Nullable String display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.sharer");
                     display_name = Objects.requireNonNull(display_name).replace("{number}", key);
                     itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name));
                     ArrayList<String> loreList = new ArrayList<>();
-                    for (String lore : Config.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
+                    for (String lore : MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
                         loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
                     }
                     itemMeta.setLore(loreList);
@@ -91,9 +91,9 @@ public class HwaSkyBlockMenuGUI implements Listener {
 
         ItemStack item = new ItemStack(Material.PAPER, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.previous_page"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.previous_page"))));
         ArrayList<String> loreList = new ArrayList<>();
-        for (String lore : Config.getStringList("gui-slot-item-name.previous_page-lore")) {
+        for (String lore : MessageConfig.getStringList("gui-slot-item-name.previous_page-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
         }
         itemMeta.setLore(loreList);
@@ -103,9 +103,9 @@ public class HwaSkyBlockMenuGUI implements Listener {
 
         item = new ItemStack(Material.PAPER, 1);
         itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("gui-slot-item-name.next_page"))));
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("gui-slot-item-name.next_page"))));
         loreList = new ArrayList<>();
-        for (String lore : Config.getStringList("gui-slot-item-name.next_page-lore")) {
+        for (String lore : MessageConfig.getStringList("gui-slot-item-name.next_page-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
         }
         itemMeta.setLore(loreList);

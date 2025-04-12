@@ -68,7 +68,6 @@ public class HwaSkyBlockTask implements Runnable {
                             }
                         }
                     }.runTask(HwaSkyBlock.getPlugin());
-
                     String player_chunk = PlayerConfig.getString(name + ".skyblock.pos");
                     if (!Objects.equals(player_chunk, block_to_id)) {
                         if (SkyBlockConfig.get(block_to_id + ".leader") != null) {

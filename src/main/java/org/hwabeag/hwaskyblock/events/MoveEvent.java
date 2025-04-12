@@ -14,7 +14,9 @@ import org.hwabeag.hwaskyblock.config.ConfigManager;
 import java.util.Objects;
 
 public class MoveEvent implements Listener {
+
     FileConfiguration Config = ConfigManager.getConfig("setting");
+    FileConfiguration MessageConfig = ConfigManager.getConfig("message");
     FileConfiguration SkyBlockConfig = ConfigManager.getConfig("skyblock");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("hwaskyblock-system.prefix")));
 
@@ -36,13 +38,13 @@ public class MoveEvent implements Listener {
                     if (SkyBlockConfig.getString(block_to_id + ".sharer." + name) == null) {
                         if (!SkyBlockConfig.getBoolean(block_to_id + ".join")) {
                             player.teleport(blockFrom.getLocation().add(0, 1, 0));
-                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     } else {
                         if (!SkyBlockConfig.getBoolean(block_to_id + ".sharer." + name + ".join")) {
                             player.teleport(blockFrom.getLocation().add(0, 1, 0));
-                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("message-event.no_permission"))));
+                            player.sendActionBar(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))));
                             event.setCancelled(true);
                         }
                     }
