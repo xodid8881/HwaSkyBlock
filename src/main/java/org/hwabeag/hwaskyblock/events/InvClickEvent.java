@@ -156,6 +156,7 @@ public class InvClickEvent implements Listener {
                                 return;
                             }
                             econ.withdrawPlayer(player, buy);
+                            SkyBlockConfig.set(id + ".name", name);
                             SkyBlockConfig.set(id + ".leader", name);
                             SkyBlockConfig.set(id + ".join", true);
                             SkyBlockConfig.set(id + ".break", false);
@@ -175,7 +176,7 @@ public class InvClickEvent implements Listener {
                             SkyBlockConfig.set(id + ".use.minecart", false);
                             SkyBlockConfig.set(id + ".use.boat", false);
                             SkyBlockConfig.set(id + ".pvp", false);
-                            SkyBlockConfig.set(id + ".welcome_message", "환영합니다.");
+                            SkyBlockConfig.set(id + ".welcome_message", "Welcome " + name + " Farm");
                             SkyBlockConfig.set(id + ".home", 0);
                             SkyBlockConfig.set(id + ".size", size);
 

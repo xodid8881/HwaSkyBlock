@@ -71,6 +71,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("세부관리")) {
                 List<String> list = new ArrayList<String>();
+                list.add("섬이름");
                 list.add("환영말");
                 list.add("스폰설정");
                 list.add("환경설정");
@@ -117,52 +118,19 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                 player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.number_blank"))));
                 return true;
             }
-            if (args[1].matches("[+-]?\\d*(\\.\\d+)?")) {
-                if (!Objects.equals(SkyBlockConfig.getString(args[1] + ".leader"), name)) {
-                    if (SkyBlockConfig.getString(args[1] + ".sharer." + name) != null) {
-                        if (!SkyBlockConfig.getBoolean(args[1] + ".sharer." + name + ".join")) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
-                            return true;
-                        }
-                    } else {
-                        if (!SkyBlockConfig.getBoolean(args[1] + ".join")) {
-                            player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
-                            return true;
-                        }
-                    }
-                }
-                if (SkyBlockConfig.getInt(args[1] + ".home") == 0) {
-                    String worldPath = "worlds/HwaSkyBlock." + args[1];
-                    World world = Bukkit.getServer().getWorld(worldPath);
-                    if (world == null) {
-                        world = new WorldCreator(worldPath).createWorld();
-                        Location location = Objects.requireNonNull(world).getSpawnLocation();
-                        player.teleport(location);
-                        return true;
-                    }
-                    Location location = Objects.requireNonNull(world).getSpawnLocation();
-                    player.teleport(location);
-                    return true;
-                } else {
-                    String worldPath = "worlds/HwaSkyBlock." + args[1];
-                    World world = Bukkit.getServer().getWorld(worldPath);
-                    if (world == null) {
-                        World createWorld = new WorldCreator(worldPath).createWorld();
-                        Location location = Objects.requireNonNull(createWorld).getSpawnLocation();
-                        player.teleport(location);
-                        return true;
-                    } else {
-                        Location location = Objects.requireNonNull(world).getSpawnLocation();
-                        player.teleport(location);
-                    }
-                    Location location = SkyBlockConfig.getLocation(args[1] + ".home");
-                    player.teleport(Objects.requireNonNull(location));
-                    return true;
-                }
+            List<String> msgArgs = new ArrayList<String>(Arrays.asList(args).subList(1, args.length));
+            String messageArgs = StringUtils.join(msgArgs, " ");
+            if (messageArgs.matches("[+-]?((\\d+\\.\\d+)|(\\d+)|(\\.\\d+))")) {
+                SkyBlock_Teleport(player, messageArgs);
             } else {
-                player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.number_check"))));
-                return true;
+                for (String key : Objects.requireNonNull(PlayerConfig.getConfigurationSection("")).getKeys(false)) {
+                    String skyblock_name = SkyBlockConfig.getString(key + ".name");
+                    if (messageArgs.equals(skyblock_name)){
+                        SkyBlock_Teleport(player, key);
+                    }
+                }
             }
+            return true;
         }
         if (args[0].equalsIgnoreCase("공유추가")) {
             if (args.length == 1) {
@@ -290,6 +258,14 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                     return true;
                 }
                 if (Objects.equals(SkyBlockConfig.getString(id + ".leader"), name)) {
+                    if (args[1].equalsIgnoreCase("섬이름")) {
+                        List<String> msgArgs = new ArrayList<String>(Arrays.asList(args).subList(2, args.length));
+                        String messageArgs = StringUtils.join(msgArgs, " ");
+                        SkyBlockConfig.set(id + ".name", messageArgs);
+                        ConfigManager.saveConfigs();
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.skyblock_name_setting"))));
+                        return true;
+                    }
                     if (args[1].equalsIgnoreCase("환영말")) {
                         List<String> msgArgs = new ArrayList<String>(Arrays.asList(args).subList(2, args.length));
                         String messageArgs = StringUtils.join(msgArgs, " ");
@@ -317,11 +293,7 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
                         PlayerConfig.set(skyblock_master + ".skyblock.possession." + id, null);
                         SkyBlockConfig.set(String.valueOf(id), null);
                         getPlugin().setRemoveIsland(id);
-                        Player PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull(skyblock_master));
-                        if (PlayerExact != null) {
-                            PlayerExact.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.forced_refund_of_skyblock_zones"))));
-                        }
-                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.forced_disassembly_completed"))));
+                        player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.disassembly_refund"))));
                         return true;
                     }
                     if (args[1].equalsIgnoreCase("양도")) {
@@ -360,5 +332,48 @@ public class HwaSkyBlockCommand implements TabCompleter, CommandExecutor {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', key));
         }
         return true;
+    }
+
+    public void SkyBlock_Teleport(Player player, String number){
+        String name = player.getName();
+        if (!Objects.equals(SkyBlockConfig.getString(number + ".leader"), name)) {
+            if (SkyBlockConfig.getString(number + ".sharer." + name) != null) {
+                if (!SkyBlockConfig.getBoolean(number + ".sharer." + name + ".join")) {
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
+                    return;
+                }
+            } else {
+                if (!SkyBlockConfig.getBoolean(number + ".join")) {
+                    player.sendMessage(Prefix + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(MessageConfig.getString("message-event.join_refusal"))));
+                    return;
+                }
+            }
+        }
+        if (SkyBlockConfig.getInt(number + ".home") == 0) {
+            String worldPath = "worlds/HwaSkyBlock." + number;
+            World world = Bukkit.getServer().getWorld(worldPath);
+            if (world == null) {
+                world = new WorldCreator(worldPath).createWorld();
+                Location location = Objects.requireNonNull(world).getSpawnLocation();
+                player.teleport(location);
+                return;
+            }
+            Location location = Objects.requireNonNull(world).getSpawnLocation();
+            player.teleport(location);
+        } else {
+            String worldPath = "worlds/HwaSkyBlock." + number;
+            World world = Bukkit.getServer().getWorld(worldPath);
+            if (world == null) {
+                World createWorld = new WorldCreator(worldPath).createWorld();
+                Location location = Objects.requireNonNull(createWorld).getSpawnLocation();
+                player.teleport(location);
+                return;
+            } else {
+                Location location = Objects.requireNonNull(world).getSpawnLocation();
+                player.teleport(location);
+            }
+            Location location = SkyBlockConfig.getLocation(number + ".home");
+            player.teleport(Objects.requireNonNull(location));
+        }
     }
 }
