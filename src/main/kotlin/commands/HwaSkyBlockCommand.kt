@@ -25,6 +25,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
 
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onTabComplete(
         sender: CommandSender,
         cmd: Command,

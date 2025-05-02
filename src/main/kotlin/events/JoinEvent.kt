@@ -12,7 +12,7 @@ class JoinEvent : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.getPlayer()
-        val name = player.getName()
+        val name = player.name
         if (PlayerConfig.get("$name.skyblock") == null) {
             PlayerConfig.addDefault("$name.skyblock.possession_count", 0)
             PlayerConfig.set("$name.skyblock.possession_count", 0)

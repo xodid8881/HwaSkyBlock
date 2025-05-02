@@ -7,6 +7,8 @@ import org.bukkit.WorldCreator
 import org.bukkit.command.PluginCommand
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPI
+import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPIImpl
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockCommand
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockSettingCommand
 import org.hwabeag.hwaskyblock.config.ConfigManager
@@ -49,6 +51,7 @@ class HwaSkyBlock : JavaPlugin() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), (20 * 2).toLong(), (20 * 2).toLong())
         Bukkit.getScheduler().runTaskTimer(this, UnloadWorldTask(), 0L, 400L)
         Bukkit.getScheduler().runTaskTimer(this, UnloadBorderTask(), 0L, 400L)
+        api = HwaSkyBlockAPIImpl()
     }
 
     private fun setupEconomy(): Boolean {
@@ -69,6 +72,9 @@ class HwaSkyBlock : JavaPlugin() {
     }
 
     companion object {
+        lateinit var api: HwaSkyBlockAPI
+            private set
+
         val configManager: ConfigManager by lazy { ConfigManager() }
 
         var economy: Economy? = null

@@ -184,7 +184,7 @@ class InvClickEvent : Listener {
                         val id = count + 1
                         val econ: Economy? = HwaSkyBlock.economy
                         if (econ!!.has(player, buy.toDouble())) {
-                            if (PlayerConfig.getInt(name + ".skyblock.possession_count") >= Config.getInt("sky-block-max")) {
+                            if (PlayerConfig.getInt("$name.skyblock.possession_count") >= Config.getInt("sky-block-max")) {
                                 player.sendMessage(
                                     Prefix + ChatColor.translateAlternateColorCodes(
                                         '&',
