@@ -6,13 +6,13 @@
 
 **repositories {**
 
-    **maven("https://jitpack.io")**
+    maven("https://jitpack.io")
     
 **}**
 
 **dependencies {**
 
-    **compileOnly("com.github.xodid8881:HwaSkyBlock:main-SNAPSHOT")**
+    compileOnly("com.github.xodid8881:HwaSkyBlock:main-SNAPSHOT")
     
 **}**
 
@@ -21,6 +21,6 @@
 
 **override fun onEnable() {**
 
-    **val api = HwaSkyBlock.api**
+    val api = HwaSkyBlock.api
     
 **}**
