@@ -14,14 +14,14 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
         return PlayerConfig.getInt("$name.skyblock.possession_count") != 0
     }
 
-    override fun hasOwner(player: Player, number: Int): Boolean { // 섬 리더 확인
+    override fun hasOwner(player: Player, island_number: Int): Boolean { // 섬 리더 확인
         val name = player.name
-        return SkyBlockConfig.getString("$number.leader") != name
+        return SkyBlockConfig.getString("$island_number.leader") != name
     }
 
-    override fun upgradeIsland(player: Player, number: Int, plusSize: Int) {
-        val size = SkyBlockConfig.getInt("$number.size")
-        SkyBlockConfig.set("$number.size", size+plusSize)
+    override fun upgradeIsland(player: Player, island_number: Int, plus_size: Int) {
+        val size = SkyBlockConfig.getInt("$island_number.size")
+        SkyBlockConfig.set("$island_number.size", size+plus_size)
         ConfigManager.saveConfigs()
     }
 }
