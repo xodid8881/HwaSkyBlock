@@ -11,7 +11,8 @@ import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPI
 import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPIImpl
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockCommand
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockSettingCommand
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
 import org.hwabeag.hwaskyblock.events.block.BreakEvent
 import org.hwabeag.hwaskyblock.events.block.PhysicsEvent
 import org.hwabeag.hwaskyblock.events.block.PlaceEvent
@@ -53,23 +54,32 @@ class HwaSkyBlock : JavaPlugin() {
             .setExecutor(HwaSkyBlockSettingCommand())
     }
 
+    lateinit var db: SQLiteManager
+
     @Suppress("DEPRECATION")
     override fun onEnable() {
         Bukkit.getLogger().info("[HwaSkyBlock] Enable")
+
+        SQLiteManager.init(this)
+
         saveResource("message.yml", false)
         saveDefaultConfig()
         configManager
         registerCommands()
         registerEvents()
+
         if (!setupEconomy()) {
             logger.severe(String.format("[%s] - Vault 종속성이 발견되지 않아 비활성화됨!", description.name))
             server.pluginManager.disablePlugin(this)
         }
+
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), (20 * 2).toLong(), (20 * 2).toLong())
         Bukkit.getScheduler().runTaskTimer(this, UnloadWorldTask(), 0L, 400L)
         Bukkit.getScheduler().runTaskTimer(this, UnloadBorderTask(), 0L, 400L)
+
         api = HwaSkyBlockAPIImpl()
     }
+
 
     private fun setupEconomy(): Boolean {
         if (server.pluginManager.getPlugin("Vault") == null) {
@@ -100,7 +110,8 @@ class HwaSkyBlock : JavaPlugin() {
         val plugin: HwaSkyBlock
             get() = getPlugin(HwaSkyBlock::class.java)
 
-        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+        @Suppress(
+            "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
             "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
         )
         fun setRemoveIsland(id: String?) {

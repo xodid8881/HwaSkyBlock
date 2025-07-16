@@ -19,7 +19,7 @@ import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.vehicle.VehicleDamageEvent
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class UseEvent : Listener {

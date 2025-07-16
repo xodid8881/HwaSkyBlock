@@ -5,7 +5,7 @@ import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.scheduler.BukkitRunnable
 import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockTask : Runnable {

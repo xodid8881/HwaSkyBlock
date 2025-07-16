@@ -10,7 +10,7 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {

@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class PhysicsEvent : Listener {
     var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!

@@ -1,9 +1,5 @@
 package org.hwabeag.hwaskyblock.events.click
 
-import database.user.SelectUser
-import database.user.UpdateUser
-import database.utils.hwaskyblock_skyblock
-import database.utils.hwaskyblock_user
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.ConfigurationSection
@@ -14,7 +10,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
+import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
+import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
+import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerUseGUI
 import java.util.*
@@ -38,7 +38,8 @@ class InvSharerClickEvent : Listener {
     }
 
     companion object {
-        var Select_Skyblock_List: java.util.HashMap<String?, hwaskyblock_skyblock?> = HashMap<String?, hwaskyblock_skyblock?>()
+        var Select_Skyblock_List: java.util.HashMap<String?, hwaskyblock_skyblock?> =
+            HashMap<String?, hwaskyblock_skyblock?>()
         var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     }
 

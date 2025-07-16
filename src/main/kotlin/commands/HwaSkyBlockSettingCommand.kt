@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {

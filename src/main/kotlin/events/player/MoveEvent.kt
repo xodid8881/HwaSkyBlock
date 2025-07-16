@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class MoveEvent : Listener {

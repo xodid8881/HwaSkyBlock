@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.inventorys.*
 import java.util.*
 

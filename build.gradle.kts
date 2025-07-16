@@ -27,7 +27,7 @@ repositories {
     maven(url = "https://repo.purpurmc.org/snapshots")
     maven(url = "https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven(url = "https://jitpack.io")
-    maven(url ="https://repo.opencollab.dev/main/")
+    maven(url = "https://repo.opencollab.dev/main/")
 }
 
 dependencies {
@@ -35,4 +35,5 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.LoneDev6:API-ItemsAdder:3.6.3-beta-14")
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
+    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
 }

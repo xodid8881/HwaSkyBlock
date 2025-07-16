@@ -1,9 +1,5 @@
 package org.hwabeag.hwaskyblock.events.click
 
-import database.user.SelectUser
-import database.user.UpdateUser
-import database.utils.hwaskyblock_skyblock
-import database.utils.hwaskyblock_user
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -12,7 +8,11 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
+import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
+import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
+import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSettingGUI
 import java.util.*
 
