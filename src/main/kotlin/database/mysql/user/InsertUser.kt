@@ -35,8 +35,15 @@ class InsertUser {
                 )
                 statement = connection!!.createStatement()
 
-                val createStr =
-                    "CREATE TABLE IF NOT EXISTS hwaskyblock_user(player_uuid varchar(50) not null, player_setting varchar(50) not null, player_possession_count varchar(50) not null, player_pos varchar(50) not null, player_page varchar(50) not null)"
+                val createStr = """
+                    CREATE TABLE IF NOT EXISTS hwaskyblock_user (
+                        player_uuid VARCHAR(50) NOT NULL PRIMARY KEY,
+                        player_setting VARCHAR(50) NOT NULL,
+                        player_possession_count INT NOT NULL,
+                        player_pos INT NOT NULL,
+                        player_page INT NOT NULL
+                    )
+                """.trimIndent()
 
                 statement!!.executeUpdate(createStr)
             }
@@ -48,20 +55,22 @@ class InsertUser {
     }
 
     fun UserInsert(player: Player) {
-        val player_UUID = player.uniqueId
+        val player_UUID = player.uniqueId.toString()
         try {
-            this.openConnection().use { conn ->
-                val sql =
-                    "INSERT INTO hwaskyblock_user (player_uuid, player_setting, player_possession_count, player_pos, player_page) " +
-                            "VALUES (?, ?)"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.setString(1, player_UUID.toString())
-                pstmt.setString(2, player_UUID.toString())
-                pstmt.setInt(3, 0)
-                pstmt.setInt(4, 0)
-                pstmt.setInt(5, 0)
-                pstmt.executeUpdate()
-                pstmt.close()
+            openConnection()?.use { conn ->
+                val sql = """
+                    INSERT INTO hwaskyblock_user 
+                    (player_uuid, player_setting, player_possession_count, player_pos, player_page) 
+                    VALUES (?, ?, ?, ?, ?)
+                """.trimIndent()
+                conn.prepareStatement(sql).use { pstmt ->
+                    pstmt.setString(1, player_UUID)
+                    pstmt.setString(2, player_UUID) // player_setting은 기본값으로 UUID 사용
+                    pstmt.setInt(3, 0)
+                    pstmt.setInt(4, 0)
+                    pstmt.setInt(5, 0)
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: SQLException) {
             e.printStackTrace()

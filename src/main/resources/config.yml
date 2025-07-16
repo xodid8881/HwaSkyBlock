@@ -2,7 +2,7 @@ hwaskyblock-system:
   prefix: "&a&l[섬]&7 "
 
 database:
-  type: yml # yml, mysql 소문자 유지
+  type: yml # yml, mysql, sqlite 소문자 유지
   mysql:
     host: localhost
     port: 3306

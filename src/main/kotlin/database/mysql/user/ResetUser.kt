@@ -33,8 +33,15 @@ class ResetUser {
                 )
                 statement = connection!!.createStatement()
 
-                val createStr =
-                    "CREATE TABLE IF NOT EXISTS hwaskyblock_user(player_uuid varchar(50) not null, player_setting varchar(50) not null, player_possession_count varchar(50) not null, player_pos varchar(50) not null, player_page varchar(50) not null)"
+                val createStr = """
+                    CREATE TABLE IF NOT EXISTS hwaskyblock_user (
+                        player_uuid VARCHAR(50) NOT NULL PRIMARY KEY,
+                        player_setting VARCHAR(50) NOT NULL,
+                        player_possession_count INT NOT NULL,
+                        player_pos INT NOT NULL,
+                        player_page INT NOT NULL
+                    )
+                """.trimIndent()
 
                 statement!!.executeUpdate(createStr)
             }
@@ -47,11 +54,11 @@ class ResetUser {
 
     fun UserReset() {
         try {
-            this.openConnection().use { conn ->
-                val sql = "UPDATE hwaskyblock_user SET player_point=0"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.executeUpdate()
-                pstmt.close()
+            openConnection()?.use { conn ->
+                val sql = "UPDATE hwaskyblock_user SET player_possession_count = 0"
+                conn.prepareStatement(sql).use { pstmt ->
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -2,6 +2,7 @@ package org.hwabeag.hwaskyblock.database.mysql.user
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import org.hwabeag.hwaskyblock.events.click.*
@@ -37,8 +38,15 @@ class SelectUser {
                 )
                 statement = connection!!.createStatement()
 
-                val createStr =
-                    "CREATE TABLE IF NOT EXISTS hwaskyblock_user(player_uuid varchar(50) not null, player_setting varchar(50) not null, player_possession_count varchar(50) not null, player_pos varchar(50) not null, player_page varchar(50) not null)"
+                val createStr = """
+                    CREATE TABLE IF NOT EXISTS hwaskyblock_user (
+                        player_uuid VARCHAR(50) NOT NULL PRIMARY KEY,
+                        player_setting VARCHAR(50) NOT NULL,
+                        player_possession_count INT NOT NULL,
+                        player_pos INT NOT NULL,
+                        player_page INT NOT NULL
+                    )
+                """.trimIndent()
 
                 statement!!.executeUpdate(createStr)
             }
@@ -50,30 +58,39 @@ class SelectUser {
     }
 
     fun UserSelect(player: Player): Int {
-        val player_UUID = player.uniqueId
-        val user: hwaskyblock_user = hwaskyblock_user()
+        val playerUUID = player.uniqueId.toString()
+        val user = hwaskyblock_user()
         var conn: Connection? = null
+
         try {
-            conn = this.openConnection()
-            val sql = "SELECT player_uuid, player_setting, player_possession_count, player_pos, player_page " +
-                    "FROM hwaskyblock_user " +
-                    "WHERE player_uuid=?"
+            conn = openConnection()
+            val sql = """
+                SELECT player_uuid, player_setting, player_possession_count, player_pos, player_page
+                FROM hwaskyblock_user
+                WHERE player_uuid = ?
+            """.trimIndent()
+
             val pstmt = conn!!.prepareStatement(sql)
-            pstmt.setString(1, player_UUID.toString())
+            pstmt.setString(1, playerUUID)
             val rs = pstmt.executeQuery()
+
             if (rs.next()) {
                 user.setPlayerUuid(rs.getString("player_uuid"))
                 user.setPlayerSetting(rs.getString("player_setting"))
                 user.setPlayerPossessionCount(rs.getInt("player_possession_count"))
                 user.setPlayerPos(rs.getInt("player_pos"))
                 user.setPlayerPage(rs.getInt("player_page"))
-                InvBuyClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvGlobalFragClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvGlobalUseClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvMenuClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvSettingClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvSharerClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
-                InvSharerUseClickEvent.Select_User_List.put(rs.getString("player_uuid"), user)
+
+                // 전역 Map 등록
+                DatabaseManager.Select_User_List[playerUUID] = user
+                InvBuyClickEvent.Select_User_List[playerUUID] = user
+                InvGlobalFragClickEvent.Select_User_List[playerUUID] = user
+                InvGlobalUseClickEvent.Select_User_List[playerUUID] = user
+                InvMenuClickEvent.Select_User_List[playerUUID] = user
+                InvSettingClickEvent.Select_User_List[playerUUID] = user
+                InvSharerClickEvent.Select_User_List[playerUUID] = user
+                InvSharerUseClickEvent.Select_User_List[playerUUID] = user
+
                 rs.close()
                 pstmt.close()
                 return 0
@@ -82,15 +99,17 @@ class SelectUser {
                 pstmt.close()
                 return 1
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             try {
-                conn!!.close()
+                conn?.close()
             } catch (e: SQLException) {
                 e.printStackTrace()
             }
         }
+
         return 2
     }
 }

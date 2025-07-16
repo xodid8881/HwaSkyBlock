@@ -34,8 +34,15 @@ class UpdateUser {
                 )
                 statement = connection!!.createStatement()
 
-                val createStr =
-                    "CREATE TABLE IF NOT EXISTS hwaskyblock_user(player_uuid varchar(50) not null, player_setting varchar(50) not null, player_possession_count varchar(50) not null, player_pos varchar(50) not null, player_page varchar(50) not null)"
+                val createStr = """
+                    CREATE TABLE IF NOT EXISTS hwaskyblock_user (
+                        player_uuid VARCHAR(50) NOT NULL PRIMARY KEY,
+                        player_setting VARCHAR(50) NOT NULL,
+                        player_possession_count INT NOT NULL,
+                        player_pos INT NOT NULL,
+                        player_page INT NOT NULL
+                    )
+                """.trimIndent()
 
                 statement!!.executeUpdate(createStr)
             }
@@ -47,59 +54,63 @@ class UpdateUser {
     }
 
     fun UserUpdate_Setting(player: Player, setting: String) {
-        val player_UUID = player.uniqueId
+        val playerUUID = player.uniqueId.toString()
         try {
             this.openConnection().use { conn ->
-                val sql =
-                    "UPDATE hwaskyblock_user SET player_setting=$setting WHERE player_uuid='$player_UUID'"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.executeUpdate()
-                pstmt.close()
+                val sql = "UPDATE hwaskyblock_user SET player_setting = ? WHERE player_uuid = ?"
+                conn!!.prepareStatement(sql).use { pstmt ->
+                    pstmt.setString(1, setting)
+                    pstmt.setString(2, playerUUID)
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun UserUpdate_Possession_Count(player: Player, player_possession_count: Int) {
-        val player_UUID = player.uniqueId
+    fun UserUpdate_Possession_Count(player: Player, count: Int) {
+        val playerUUID = player.uniqueId.toString()
         try {
             this.openConnection().use { conn ->
-                val sql =
-                    "UPDATE hwaskyblock_user SET player_possession_count=$player_possession_count WHERE player_uuid='$player_UUID'"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.executeUpdate()
-                pstmt.close()
+                val sql = "UPDATE hwaskyblock_user SET player_possession_count = ? WHERE player_uuid = ?"
+                conn!!.prepareStatement(sql).use { pstmt ->
+                    pstmt.setInt(1, count)
+                    pstmt.setString(2, playerUUID)
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun UserUpdate_Pos(player: Player, player_pos: Int) {
-        val player_UUID = player.uniqueId
+    fun UserUpdate_Pos(player: Player, pos: Int) {
+        val playerUUID = player.uniqueId.toString()
         try {
             this.openConnection().use { conn ->
-                val sql =
-                    "UPDATE hwaskyblock_user SET player_pos=$player_pos WHERE player_uuid='$player_UUID'"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.executeUpdate()
-                pstmt.close()
+                val sql = "UPDATE hwaskyblock_user SET player_pos = ? WHERE player_uuid = ?"
+                conn!!.prepareStatement(sql).use { pstmt ->
+                    pstmt.setInt(1, pos)
+                    pstmt.setString(2, playerUUID)
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun UserUpdate_Page(player: Player, player_page: Int) {
-        val player_UUID = player.uniqueId
+    fun UserUpdate_Page(player: Player, page: Int) {
+        val playerUUID = player.uniqueId.toString()
         try {
             this.openConnection().use { conn ->
-                val sql =
-                    "UPDATE hwaskyblock_user SET player_page=$player_page WHERE player_uuid='$player_UUID'"
-                val pstmt = conn!!.prepareStatement(sql)
-                pstmt.executeUpdate()
-                pstmt.close()
+                val sql = "UPDATE hwaskyblock_user SET player_page = ? WHERE player_uuid = ?"
+                conn!!.prepareStatement(sql).use { pstmt ->
+                    pstmt.setInt(1, page)
+                    pstmt.setString(2, playerUUID)
+                    pstmt.executeUpdate()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

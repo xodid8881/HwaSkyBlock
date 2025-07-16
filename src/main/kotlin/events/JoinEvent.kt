@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class JoinEvent : Listener {
     var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!

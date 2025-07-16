@@ -76,7 +76,7 @@ class InsertSkyblock {
         return connection
     }
 
-    fun insertSkyblock(skyblock_id: String) {
+    fun insertSkyblock(skyblockId: String, skyblockName: String, skyblockLeader: String) {
 
         try {
             val conn = openConnection() ?: return
@@ -101,12 +101,12 @@ class InsertSkyblock {
 
             val defaultBoolean = "true"
             val defaultNumber = "0"
-            val welcomeMessage = "Welcome to $skyblock_id Skyblock!"
+            val welcomeMessage = "Welcome to $skyblockId Skyblock!"
 
             var idx = 1
-            pstmt.setString(idx++, skyblock_id)
-            pstmt.setString(idx++, skyblock_id)
-            pstmt.setString(idx++, skyblock_id)
+            pstmt.setString(idx++, skyblockId)
+            pstmt.setString(idx++, skyblockName)
+            pstmt.setString(idx++, skyblockLeader)
 
             pstmt.setString(idx++, "true")
             pstmt.setString(idx++, "false")

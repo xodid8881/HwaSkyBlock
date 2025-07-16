@@ -6,7 +6,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntitySpawnEvent
-import org.hwabeag.hwaskyblock.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class SpawnEvent : Listener {
     var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
