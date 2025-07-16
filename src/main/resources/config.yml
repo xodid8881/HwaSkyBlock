@@ -1,6 +1,15 @@
 hwaskyblock-system:
   prefix: "&a&l[섬]&7 "
 
+database:
+  type: yml # yml, mysql 소문자 유지
+  mysql:
+    host: localhost
+    port: 3306
+    user: root
+    password: password
+    database: minecraft
+
 sky-block-max: 1 # 유저가 보유할 수 있는 최대 섬
 sky-block-number: 0 # 서버 섬 갯수
 main-spawn-world: "world" # 메인 스폰월드 이름입니다.

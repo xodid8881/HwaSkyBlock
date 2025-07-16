@@ -21,7 +21,7 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 
     override fun upgradeIsland(player: Player, island_number: Int, plus_size: Int) {
         val size = SkyBlockConfig.getInt("$island_number.size")
-        SkyBlockConfig.set("$island_number.size", size+plus_size)
+        SkyBlockConfig.set("$island_number.size", size + plus_size)
         ConfigManager.saveConfigs()
     }
 }
