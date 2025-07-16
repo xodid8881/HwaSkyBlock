@@ -40,11 +40,20 @@ dependencies {
 ```kotlin
 override fun onEnable() {
     val api = HwaSkyBlock.api
+    // 초기화 시 API를 불러와 사용할 준비를 합니다.
+}
+
+// 예: 명령어 실행 시 사용
+fun handleIslandCommand(player: Player) {
+    val api = HwaSkyBlock.api
 
     if (api.hasIsland(player)) {
         player.sendMessage("당신은 이미 섬을 보유하고 있습니다.")
+    } else {
+        player.sendMessage("섬이 없습니다. 생성해주세요!")
     }
 }
+
 ```
 
 ---
