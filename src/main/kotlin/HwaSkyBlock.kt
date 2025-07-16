@@ -12,6 +12,9 @@ import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPIImpl
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockCommand
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockSettingCommand
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblock
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblockShare
+import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
 import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
 import org.hwabeag.hwaskyblock.events.block.BreakEvent
 import org.hwabeag.hwaskyblock.events.block.PhysicsEvent
@@ -26,6 +29,7 @@ import org.hwabeag.hwaskyblock.schedules.UnloadBorderTask
 import org.hwabeag.hwaskyblock.schedules.UnloadWorldTask
 import java.io.*
 import java.util.*
+
 
 class HwaSkyBlock : JavaPlugin() {
     private fun registerEvents() {
@@ -60,36 +64,47 @@ class HwaSkyBlock : JavaPlugin() {
     override fun onEnable() {
         Bukkit.getLogger().info("[HwaSkyBlock] Enable")
 
-        SQLiteManager.init(this)
-
-        saveResource("message.yml", false)
         saveDefaultConfig()
-        configManager
+        saveResource("message.yml", false)
+        ConfigManager.setupConfigs(this)
+
+        val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
+        if (dbType == "mysql") {
+            UpdateUser().openConnection()
+            UpdateSkyblock().openConnection()
+            UpdateSkyblockShare().openConnection()
+        } else if (dbType == "sqlite") {
+            SQLiteManager.init(this)
+        }
+
         registerCommands()
         registerEvents()
 
         if (!setupEconomy()) {
             logger.severe(String.format("[%s] - Vault 종속성이 발견되지 않아 비활성화됨!", description.name))
             server.pluginManager.disablePlugin(this)
+            return
         }
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), (20 * 2).toLong(), (20 * 2).toLong())
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), 20L * 2, 20L * 2)
         Bukkit.getScheduler().runTaskTimer(this, UnloadWorldTask(), 0L, 400L)
         Bukkit.getScheduler().runTaskTimer(this, UnloadBorderTask(), 0L, 400L)
 
         api = HwaSkyBlockAPIImpl()
     }
 
-
     private fun setupEconomy(): Boolean {
-        if (server.pluginManager.getPlugin("Vault") == null) {
+        val vaultPlugin = server.pluginManager.getPlugin("Vault")
+        if (vaultPlugin == null || !vaultPlugin.isEnabled) {
             return false
         }
-        val rsp = server.servicesManager.getRegistration<Economy?>(Economy::class.java)
-        if (rsp == null) {
+
+        val rsp = server.servicesManager.getRegistration(Economy::class.java)
+        if (rsp?.provider == null) {
             return false
         }
-        economy = rsp.getProvider()
+
+        economy = rsp.provider
         return true
     }
 
@@ -101,8 +116,6 @@ class HwaSkyBlock : JavaPlugin() {
     companion object {
         lateinit var api: HwaSkyBlockAPI
             private set
-
-        val configManager: ConfigManager by lazy { ConfigManager() }
 
         var economy: Economy? = null
             private set

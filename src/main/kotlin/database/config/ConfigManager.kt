@@ -1,41 +1,36 @@
 package org.hwabeag.hwaskyblock.database.config
 
 import org.bukkit.configuration.file.FileConfiguration
-import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.bukkit.plugin.java.JavaPlugin
 
 class ConfigManager {
-    init {
-        val path = plugin!!.dataFolder.absolutePath
-        configSet.put("setting", ConfigMaker(path, "config.yml"))
-        configSet.put("message", ConfigMaker(path, "message.yml"))
-        configSet.put("skyblock", ConfigMaker(path, "skyblock.yml"))
-        configSet.put("player", ConfigMaker(path, "player.yml"))
-        loadSettings()
-        saveConfigs()
-    }
-
     companion object {
-        private val plugin: HwaSkyBlock? = HwaSkyBlock.plugin
+        private var plugin: JavaPlugin? = null
+        private val configSet = HashMap<String, ConfigMaker>()
 
-        private val configSet = HashMap<String?, ConfigMaker?>()
+        fun setupConfigs(p: JavaPlugin) {
+            plugin = p
+            val path = plugin!!.dataFolder.absolutePath
+            configSet["setting"] = ConfigMaker(path, "config.yml")
+            configSet["message"] = ConfigMaker(path, "message.yml")
+            configSet["skyblock"] = ConfigMaker(path, "skyblock.yml")
+            configSet["player"] = ConfigMaker(path, "player.yml")
+            saveConfigs()
+        }
+
+        fun getConfig(fileName: String): FileConfiguration? = configSet[fileName]?.config
 
         fun reloadConfigs() {
-            for (key in configSet.keys) {
-                plugin!!.logger.info(key)
-                configSet.get(key)!!.reloadConfig()
+            for ((key, config) in configSet) {
+                plugin?.logger?.info("Reloading $key")
+                config?.reloadConfig()
             }
         }
 
         fun saveConfigs() {
-            for (key in configSet.keys) configSet.get(key)!!.saveConfig()
-        }
-
-        fun getConfig(fileName: String?): FileConfiguration? {
-            return configSet.get(fileName)!!.config
-        }
-
-        fun loadSettings() {
-            saveConfigs()
+            for ((_, config) in configSet) {
+                config?.saveConfig()
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ class UpdateSkyblockShare {
     private var connection: Connection? = null
     private val config: FileConfiguration = ConfigManager.getConfig("setting")!!
 
-    private fun openConnection(): Connection? {
+    fun openConnection(): Connection? {
         try {
             if (connection != null && !connection!!.isClosed) return connection
             synchronized(this) {
