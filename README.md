@@ -30,7 +30,8 @@ dependencies {
     compileOnly("com.github.xodid8881:HwaSkyBlock:main-SNAPSHOT")
 }
 
----
+</div> ```
+
 
 | 함수                                                                  | 설명                           |
 | ------------------------------------------------------------------- | ---------------------------- |
@@ -46,5 +47,3 @@ dependencies {
 <div align="center">
 🧊 Thank you for using HwaSkyBlock! 🧊
 🌙 Made with passion by xodid8881
-
-</div> ```
