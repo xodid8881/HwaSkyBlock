@@ -14,7 +14,6 @@ import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 
 class DatabaseManager {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
-    var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
     var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
     var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!
 
@@ -25,10 +24,6 @@ class DatabaseManager {
 
     var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     var Select_Skyblock_List: HashMap<String?, hwaskyblock_skyblock?> = HashMap<String?, hwaskyblock_skyblock?>()
-
-    fun isBedrockPlayer(player: Player): Boolean {
-        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
 
     fun getSkyBlockData(skyblockId: String, type: String?): Any? {
         return when (Config.get("database.type")) {
