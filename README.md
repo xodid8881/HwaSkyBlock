@@ -3,21 +3,23 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=HwaSkyBlock&fontSize=40&fontAlignY=40"/>
 
 <h3>📦 Kotlin 기반의 커스텀 스카이블럭 플러그인</h3>
-<p>PaperMC 전용 | 모듈형 API 제공 | 커스터마이징 자유도 극대화</p>
+<p><b>PaperMC 전용</b> • <b>모듈형 API 제공</b> • <b>커스터마이징 자유도 극대화</b></p>
 
 </div>
 
 ---
 
-## 🚀 개요
+## 🌟 프로젝트 소개
 
-`HwaSkyBlock`은 Kotlin으로 제작된 강력한 SkyBlock 플러그인입니다.  
-PaperMC 서버에 최적화되어 있으며, 외부 프로젝트에서도 활용할 수 있는 API를 제공합니다.  
-유저별 섬 관리, 업그레이드 기능, GUI 구성 등 다양한 확장성을 고려해 개발되었습니다.
+> 당신만의 스카이블럭 서버를 더욱 강력하게!
+
+**HwaSkyBlock**은 Kotlin으로 개발된 PaperMC 기반 스카이블럭 플러그인입니다.  
+GUI 기반 인터페이스와 다양한 API 제공으로 개발자와 운영자 모두에게 강력한 유연성을 제공합니다.  
+최적화된 성능과 깔끔한 구조로 대규모 서버에도 무리 없이 사용할 수 있습니다.
 
 ---
 
-## 🔧 설치 방법
+## ⚙️ 설치 방법
 
 ### `build.gradle.kts` 설정
 
@@ -33,26 +35,45 @@ dependencies {
 
 ---
 
-## 📘 API 목록
+## 🧩 API 예시
 
-| 함수                                                                  | 설명                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `hasIsland(player: Player): Boolean`                                | 해당 플레이어가 섬을 보유하고 있는지 확인합니다              |
-| `hasOwner(player: Player, island_number: Int): Boolean`             | 특정 섬 번호에 대해 플레이어가 주인인지 확인합니다           |
-| `upgradeIsland(player: Player, island_number: Int, plus_size: Int)` | 해당 섬의 사이즈를 지정한 수치만큼 업그레이드합니다          |
+```kotlin
+override fun onEnable() {
+    val api = HwaSkyBlock.api
+
+    if (api.hasIsland(player)) {
+        player.sendMessage("당신은 이미 섬을 보유하고 있습니다.")
+    }
+}
+```
 
 ---
 
-## 💬 문의 및 기여
+## 📘 제공 API 목록
 
-이 프로젝트는 오픈소스입니다. PR 및 이슈 환영합니다!  
-질문 및 협업 제안은 [Issues](https://github.com/xodid8881/HwaSkyBlock/issues)를 통해 남겨주세요.
+| 함수 | 설명 |
+|------|------|
+| `hasIsland(player: Player): Boolean` | 플레이어가 섬을 보유하고 있는지 확인 |
+| `hasOwner(player: Player, island_number: Int): Boolean` | 플레이어가 특정 섬의 주인인지 확인 |
+| `upgradeIsland(player: Player, island_number: Int, plus_size: Int)` | 섬 사이즈 업그레이드 수행 |
+
+---
+
+## 🤝 기여 & 소통
+
+이 프로젝트는 **오픈소스**입니다.  
+Pull Request 및 Issue 등록은 언제든 환영합니다!  
+기여 가이드 및 API 문서는 [Wiki](https://github.com/xodid8881/HwaSkyBlock/wiki)에서 확인하실 수 있습니다.
+
+- 👉 [이슈 등록하러 가기](https://github.com/xodid8881/HwaSkyBlock/issues)
+- 👉 [PR 보내기](https://github.com/xodid8881/HwaSkyBlock/pulls)
 
 ---
 
 <div align="center">
 
-🧊 **Thank you for using HwaSkyBlock!** 🧊  
-🌙 _Made with passion by [xodid8881](https://github.com/xodid8881)_
+✨ 당신의 SkyBlock 서버에 날개를 달아보세요!  
+🧊 <b>Thanks for using HwaSkyBlock</b> 🧊  
+🌙 Made with love by <a href="https://github.com/xodid8881">xodid8881</a>
 
 </div>
