@@ -30,6 +30,8 @@ dependencies {
     compileOnly("com.github.xodid8881:HwaSkyBlock:main-SNAPSHOT")
 }
 
+---
+
 | 함수                                                                  | 설명                           |
 | ------------------------------------------------------------------- | ---------------------------- |
 | `hasIsland(player: Player): Boolean`                                | 해당 플레이어가 섬을 보유하고 있는지 확인합니다   |
