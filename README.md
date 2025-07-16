@@ -29,21 +29,30 @@ repositories {
 dependencies {
     compileOnly("com.github.xodid8881:HwaSkyBlock:main-SNAPSHOT")
 }
+```
 
-</div> ```
+---
 
+## 📘 API 목록
 
-| 함수                                                                  | 설명                           |
-| ------------------------------------------------------------------- | ---------------------------- |
-| `hasIsland(player: Player): Boolean`                                | 해당 플레이어가 섬을 보유하고 있는지 확인합니다   |
-| `hasOwner(player: Player, island_number: Int): Boolean`             | 특정 섬 번호에 대해 플레이어가 주인인지 확인합니다 |
-| `upgradeIsland(player: Player, island_number: Int, plus_size: Int)` | 섬의 사이즈를 업그레이드합니다             |
+| 함수                                                                  | 설명                                                         |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `hasIsland(player: Player): Boolean`                                | 해당 플레이어가 섬을 보유하고 있는지 확인합니다              |
+| `hasOwner(player: Player, island_number: Int): Boolean`             | 특정 섬 번호에 대해 플레이어가 주인인지 확인합니다           |
+| `upgradeIsland(player: Player, island_number: Int, plus_size: Int)` | 해당 섬의 사이즈를 지정한 수치만큼 업그레이드합니다          |
 
-💬 문의 및 기여
-이 프로젝트는 오픈소스입니다. PR 및 이슈 환영합니다!
+---
 
-질문 및 협업 제안은 Issues를 통해 남겨주세요.
+## 💬 문의 및 기여
+
+이 프로젝트는 오픈소스입니다. PR 및 이슈 환영합니다!  
+질문 및 협업 제안은 [Issues](https://github.com/xodid8881/HwaSkyBlock/issues)를 통해 남겨주세요.
+
+---
 
 <div align="center">
-🧊 Thank you for using HwaSkyBlock! 🧊
-🌙 Made with passion by xodid8881
+
+🧊 **Thank you for using HwaSkyBlock!** 🧊  
+🌙 _Made with passion by [xodid8881](https://github.com/xodid8881)_
+
+</div>
