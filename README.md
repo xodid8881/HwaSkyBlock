@@ -3,7 +3,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=HwaSkyBlock&fontSize=40&fontAlignY=40"/>
 
 <h3>📦 Kotlin 기반의 커스텀 스카이블럭 플러그인</h3>
-<p><b>PaperMC 전용</b> • <b>모듈형 API 제공</b> • <b>커스터마이징 자유도 극대화</b></p>
+<p><b>Bukkit 전용</b> • <b>모듈형 API 제공</b> • <b>커스터마이징 자유도 극대화</b></p>
 
 </div>
 
