@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
@@ -15,7 +16,6 @@ class HwaSkyBlockGlobalFragGUI(key: String?) : Listener {
     private val inv: Inventory
 
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
 
     init {
         inv = Bukkit.createInventory(
@@ -27,10 +27,10 @@ class HwaSkyBlockGlobalFragGUI(key: String?) : Listener {
     }
 
     private fun initItemSetting(id: String?) {
-        val player_join = SkyBlockConfig.getBoolean("$id.join")
-        val block_break = SkyBlockConfig.getBoolean("$id.break")
-        val block_place = SkyBlockConfig.getBoolean("$id.place")
-        val pvp_place = SkyBlockConfig.getBoolean("$id.pvp")
+        val player_join = DatabaseManager.getSkyBlockData("$id", "$id.join", "getSkyblockJoin") as? Boolean ?: false
+        val block_break = DatabaseManager.getSkyBlockData("$id", "$id.break", "getSkyblockBreak") as? Boolean ?: false
+        val block_place = DatabaseManager.getSkyBlockData("$id", "$id.place", "getSkyblockPlace") as? Boolean ?: false
+        val pvp_place = DatabaseManager.getSkyBlockData("$id", "$id.pvp", "getSkyblockPvp") as? Boolean ?: false
 
         var item = ItemStack(Material.SPYGLASS, 1)
         var itemMeta = item.itemMeta

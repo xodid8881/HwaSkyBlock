@@ -10,14 +10,13 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -73,7 +72,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (SkyBlockConfig.get("$id.leader") == null) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -82,7 +81,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                if (SkyBlockConfig.getString("$id.leader") == args[1]) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -91,18 +90,41 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                val skyblock_master = SkyBlockConfig.getString("$id.leader")
-                PlayerConfig.set(
+                val skyblock_master =
+                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+
+                val masterCount = DatabaseManager.getUserData(
                     "$skyblock_master.skyblock.possession_count",
-                    PlayerConfig.getInt("$skyblock_master.skyblock.possession_count") - 1
+                    sender,
+                    "getPlayerPossessionCount"
+                ) as? Int ?: 1
+                DatabaseManager.setUserData(
+                    "$skyblock_master.skyblock.possession_count",
+                    sender,
+                    masterCount - 1,
+                    "setPlayerPossessionCount"
                 )
-                PlayerConfig.set("$skyblock_master.skyblock.possession.$id", null)
-                SkyBlockConfig.set("$id.leader", args[1])
-                PlayerConfig.set(
-                    args[1] + ".skyblock.possession_count",
-                    PlayerConfig.getInt("$skyblock_master.skyblock.possession_count") + 1
+
+                DatabaseManager.setUserData(
+                    "$skyblock_master.skyblock.possession.$id",
+                    sender,
+                    null,
+                    "setPlayerSetting"
                 )
-                PlayerConfig.set(args[1] + ".skyblock.possession." + id, name)
+                DatabaseManager.setSkyBlockData(id.toString(), "$id.leader", args[1]!!, "setSkyBlockLeader")
+                val newOwnerCount = DatabaseManager.getUserData(
+                    "${args[1]}.skyblock.possession_count",
+                    sender,
+                    "getPlayerPossessionCount"
+                ) as? Int ?: 0
+                DatabaseManager.setUserData(
+                    "${args[1]}.skyblock.possession_count",
+                    sender,
+                    newOwnerCount + 1,
+                    "setPlayerPossessionCount"
+                )
+                DatabaseManager.setUserData("${args[1]}.skyblock.possession.$id", sender, name, "setPlayerSetting")
+
                 ConfigManager.saveConfigs()
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(
@@ -119,15 +141,37 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                val skyblock_master = SkyBlockConfig.getString("$id.leader")
+                val skyblock_master =
+                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
                 val econ: Economy? = HwaSkyBlock.economy
                 econ!!.depositPlayer(skyblock_master, Config.getInt("chunk-buy").toDouble())
-                PlayerConfig.set(
+
+                val currentCount = DatabaseManager.getUserData(
                     "$skyblock_master.skyblock.possession_count",
-                    PlayerConfig.getInt("$skyblock_master.skyblock.possession_count") - 1
+                    sender,
+                    "getPlayerPossessionCount"
+                ) as? Int ?: 1
+
+                DatabaseManager.setUserData(
+                    "$skyblock_master.skyblock.possession_count",
+                    sender,
+                    currentCount - 1,
+                    "setPlayerPossessionCount"
                 )
-                PlayerConfig.set("$skyblock_master.skyblock.possession.$id", null)
-                SkyBlockConfig.set(id.toString(), null)
+
+                DatabaseManager.setUserData(
+                    "$skyblock_master.skyblock.possession.$id",
+                    sender,
+                    null,
+                    "setPlayerSetting"
+                )
+
+                DatabaseManager.setSkyBlockData(
+                    id.toString(),
+                    id.toString(),
+                    null,
+                    "setSkyBlockName"
+                )
                 HwaSkyBlock.setRemoveIsland(id)
                 val PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull<String?>(skyblock_master))
                 PlayerExact?.sendMessage(

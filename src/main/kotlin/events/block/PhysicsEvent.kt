@@ -1,15 +1,12 @@
 package org.hwabeag.hwaskyblock.events.block
 
 import org.bukkit.Material
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 
 class PhysicsEvent : Listener {
-    var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!
-
     @EventHandler
     fun onBlockPhysics(event: BlockPhysicsEvent) {
         val world = event.getBlock().world
@@ -17,8 +14,16 @@ class PhysicsEvent : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val block_to_id = number[1]
-            val water_physics = SkyBlockConfig.getBoolean("$block_to_id.setting.water_physics")
-            val lava_physics = SkyBlockConfig.getBoolean("$block_to_id.setting.lava_physics")
+            val water_physics = DatabaseManager.getSkyBlockData(
+                block_to_id.toString(),
+                "$block_to_id.setting.water_physics",
+                "isSkyBlockWaterPhysics"
+            ) as? Boolean ?: true
+            val lava_physics = DatabaseManager.getSkyBlockData(
+                block_to_id.toString(),
+                "$block_to_id.setting.lava_physics",
+                "isSkyBlockLavaPhysics"
+            ) as? Boolean ?: true
             if (!water_physics) {
                 if (event.getBlock().type == Material.WATER) {
                     event.isCancelled = true

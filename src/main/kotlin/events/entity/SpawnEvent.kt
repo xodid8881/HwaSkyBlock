@@ -1,15 +1,13 @@
 package org.hwabeag.hwaskyblock.events.entity
 
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntitySpawnEvent
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 
 class SpawnEvent : Listener {
-    var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!
 
     @EventHandler
     fun onEntitySpawn(event: EntitySpawnEvent) {
@@ -20,8 +18,18 @@ class SpawnEvent : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val block_to_id = number[1]
-            val monster_spawn = SkyBlockConfig.getBoolean("$block_to_id.setting.monster_spawn")
-            val animal_spawn = SkyBlockConfig.getBoolean("$block_to_id.setting.animal_spawn")
+            val monster_spawn = DatabaseManager.getSkyBlockData(
+                block_to_id.toString(),
+                "$block_to_id.setting.monster_spawn",
+                "isSkyBlockMonsterSpawn"
+            ) as? Boolean ?: true
+
+            val animal_spawn = DatabaseManager.getSkyBlockData(
+                block_to_id.toString(),
+                "$block_to_id.setting.animal_spawn",
+                "isSkyBlockAnimalSpawn"
+            ) as? Boolean ?: true
+
             if (!monster_spawn) {
                 if (isMonster(entityType)) {
                     event.isCancelled = true

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
@@ -15,7 +16,6 @@ class HwaSkyBlockSettingGUI(key: String?) : Listener {
     private val inv: Inventory
 
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
 
     init {
         inv = Bukkit.createInventory(
@@ -27,12 +27,21 @@ class HwaSkyBlockSettingGUI(key: String?) : Listener {
     }
 
     private fun initItemSetting(id: String?) {
-        val monster_spawn = SkyBlockConfig.getBoolean("$id.setting.monster_spawn")
-        val animal_spawn = SkyBlockConfig.getBoolean("$id.setting.animal_spawn")
-        val weather = SkyBlockConfig.getString("$id.setting.weather")
-        val time = SkyBlockConfig.getString("$id.setting.time")
-        val water_physics = SkyBlockConfig.getBoolean("$id.setting.water_physics")
-        val lava_physics = SkyBlockConfig.getBoolean("$id.setting.lava_physics")
+        val monster_spawn =
+            DatabaseManager.getSkyBlockData("$id", "$id.setting.monster_spawn", "getSkyblockMonsterSpawn") as? Boolean
+                ?: false
+        val animal_spawn =
+            DatabaseManager.getSkyBlockData("$id", "$id.setting.animal_spawn", "getSkyblockAnimalSpawn") as? Boolean
+                ?: false
+        val weather =
+            DatabaseManager.getSkyBlockData("$id", "$id.setting.weather", "getSkyblockWeather") as? String ?: "clear"
+        val time = DatabaseManager.getSkyBlockData("$id", "$id.setting.time", "getSkyblockTime") as? String ?: "morn"
+        val water_physics =
+            DatabaseManager.getSkyBlockData("$id", "$id.setting.water_physics", "getSkyblockWaterPhysics") as? Boolean
+                ?: false
+        val lava_physics =
+            DatabaseManager.getSkyBlockData("$id", "$id.setting.lava_physics", "getSkyblockLavaPhysics") as? Boolean
+                ?: false
 
         var item = ItemStack(Material.ZOMBIE_HEAD, 1)
         var itemMeta = item.itemMeta

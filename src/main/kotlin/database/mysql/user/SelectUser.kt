@@ -5,7 +5,6 @@ import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
-import org.hwabeag.hwaskyblock.events.click.*
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -83,13 +82,6 @@ class SelectUser {
 
                 // 전역 Map 등록
                 DatabaseManager.Select_User_List[playerUUID] = user
-                InvBuyClickEvent.Select_User_List[playerUUID] = user
-                InvGlobalFragClickEvent.Select_User_List[playerUUID] = user
-                InvGlobalUseClickEvent.Select_User_List[playerUUID] = user
-                InvMenuClickEvent.Select_User_List[playerUUID] = user
-                InvSettingClickEvent.Select_User_List[playerUUID] = user
-                InvSharerClickEvent.Select_User_List[playerUUID] = user
-                InvSharerUseClickEvent.Select_User_List[playerUUID] = user
 
                 rs.close()
                 pstmt.close()

@@ -8,11 +8,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
-import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSettingGUI
 import java.util.*
 
@@ -20,23 +17,13 @@ class InvSettingClickEvent : Listener {
 
     var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.Companion.getConfig("player")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
 
-    var User_Select: SelectUser = SelectUser()
-    var Update_User: UpdateUser = UpdateUser()
-
     fun isBedrockPlayer(player: Player): Boolean {
         return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
-
-    companion object {
-        var Select_Skyblock_List: HashMap<String?, hwaskyblock_skyblock?> = HashMap<String?, hwaskyblock_skyblock?>()
-        var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     }
 
     @EventHandler
@@ -62,13 +49,18 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.monster_spawn"))
                     )
                     if (clickitem == item_name) {
-                        val monster_spawn = SkyBlockConfig.getBoolean("$id.setting.monster_spawn")
-                        if (monster_spawn) {
-                            SkyBlockConfig.set("$id.setting.monster_spawn", false)
-                        } else {
-                            SkyBlockConfig.set("$id.setting.monster_spawn", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val monsterSpawn = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.monster_spawn",
+                            "getSkyblockMonsterSpawn"
+                        ) as? Boolean ?: false
+
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.monster_spawn",
+                            !monsterSpawn,
+                            "setSkyblockMonsterSpawn"
+                        )
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)
                         inv.open(player)
@@ -79,13 +71,18 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.animal_spawn"))
                     )
                     if (clickitem == item_name) {
-                        val animal_spawn = SkyBlockConfig.getBoolean("$id.setting.animal_spawn")
-                        if (animal_spawn) {
-                            SkyBlockConfig.set("$id.setting.animal_spawn", false)
-                        } else {
-                            SkyBlockConfig.set("$id.setting.animal_spawn", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val animalSpawn = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.animal_spawn",
+                            "getSkyblockAnimalSpawn"
+                        ) as? Boolean ?: false
+
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.animal_spawn",
+                            !animalSpawn,
+                            "setSkyblockAnimalSpawn"
+                        )
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)
                         inv.open(player)
@@ -96,17 +93,25 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.weather"))
                     )
                     if (clickitem == item_name) {
-                        val weather = SkyBlockConfig.getString("$id.setting.weather")
-                        if (weather == "clear") {
-                            SkyBlockConfig.set("$id.setting.weather", "rainy")
-                        } else if (weather == "rainy") {
-                            SkyBlockConfig.set("$id.setting.weather", "thunder")
-                        } else if (weather == "thunder") {
-                            SkyBlockConfig.set("$id.setting.weather", "basic")
-                        } else if (weather == "basic") {
-                            SkyBlockConfig.set("$id.setting.weather", "clear")
+                        val weather = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.weather",
+                            "getSkyblockWeather"
+                        ) as? String ?: "clear"
+
+                        val nextWeather = when (weather) {
+                            "clear" -> "rainy"
+                            "rainy" -> "thunder"
+                            "thunder" -> "basic"
+                            "basic" -> "clear"
+                            else -> "clear"
                         }
-                        ConfigManager.Companion.saveConfigs()
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.weather",
+                            nextWeather,
+                            "setSkyblockWeather"
+                        )
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)
                         inv.open(player)
@@ -117,17 +122,24 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.time"))
                     )
                     if (clickitem == item_name) {
-                        val time = SkyBlockConfig.getString("$id.setting.time")
-                        if (time == "morn") {
-                            SkyBlockConfig.set("$id.setting.time", "noon")
-                        } else if (time == "noon") {
-                            SkyBlockConfig.set("$id.setting.time", "evening")
-                        } else if (time == "evening") {
-                            SkyBlockConfig.set("$id.setting.time", "basic")
-                        } else if (time == "basic") {
-                            SkyBlockConfig.set("$id.setting.time", "morn")
+                        val time = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.time",
+                            "getSkyblockTime"
+                        ) as? String ?: "morn"
+                        val nextTime = when (time) {
+                            "morn" -> "noon"
+                            "noon" -> "evening"
+                            "evening" -> "basic"
+                            "basic" -> "morn"
+                            else -> "morn"
                         }
-                        ConfigManager.Companion.saveConfigs()
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.time",
+                            nextTime,
+                            "setSkyblockTime"
+                        )
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)
                         inv.open(player)
@@ -138,13 +150,17 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.water_physics"))
                     )
                     if (clickitem == item_name) {
-                        val water_physics = SkyBlockConfig.getBoolean("$id.setting.water_physics")
-                        if (water_physics) {
-                            SkyBlockConfig.set("$id.setting.water_physics", false)
-                        } else {
-                            SkyBlockConfig.set("$id.setting.water_physics", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val waterPhysics = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.water_physics",
+                            "getSkyblockWaterPhysics"
+                        ) as? Boolean ?: false
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.water_physics",
+                            !waterPhysics,
+                            "setSkyblockWaterPhysics"
+                        )
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)
                         inv.open(player)
@@ -155,12 +171,17 @@ class InvSettingClickEvent : Listener {
                         Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.world_setting.lava_physics"))
                     )
                     if (clickitem == item_name) {
-                        val lava_physics = SkyBlockConfig.getBoolean("$id.setting.lava_physics")
-                        if (lava_physics) {
-                            SkyBlockConfig.set("$id.setting.lava_physics", false)
-                        } else {
-                            SkyBlockConfig.set("$id.setting.lava_physics", true)
-                        }
+                        val lavaPhysics = DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.setting.lava_physics",
+                            "getSkyblockLavaPhysics"
+                        ) as? Boolean ?: false
+                        DatabaseManager.setSkyBlockData(
+                            id.toString(),
+                            "$id.setting.lava_physics",
+                            !lavaPhysics,
+                            "setSkyblockLavaPhysics"
+                        )
                         ConfigManager.Companion.saveConfigs()
                         var inv: HwaSkyBlockSettingGUI? = null
                         inv = HwaSkyBlockSettingGUI(id)

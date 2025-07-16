@@ -3,13 +3,13 @@ package org.hwabeag.hwaskyblock.inventorys
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
@@ -17,8 +17,6 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
     private val inv: Inventory
 
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!
 
     init {
         inv = Bukkit.createInventory(
@@ -35,9 +33,15 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val id = number[1]
 
-        val player_join = SkyBlockConfig.getBoolean("$id.sharer.$name.join")
-        val block_break = SkyBlockConfig.getBoolean("$id.sharer.$name.break")
-        val block_place = SkyBlockConfig.getBoolean("$id.sharer.$name.place")
+        val player_join =
+            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.join", "getSkyblockSharerJoin") as? Boolean
+                ?: false
+        val block_break =
+            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.break", "getSkyblockSharerBreak") as? Boolean
+                ?: false
+        val block_place =
+            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.place", "getSkyblockSharerPlace") as? Boolean
+                ?: false
 
         val item = ItemStack(Material.PLAYER_HEAD, 1, 3.toShort())
         val skull = item.itemMeta as SkullMeta
@@ -149,12 +153,13 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val name = player.name
         var N = 0
         var Page = 1
-        if (SkyBlockConfig.getConfigurationSection("$id.sharer") != null) {
-            for (key in Objects.requireNonNull<ConfigurationSection?>(SkyBlockConfig.getConfigurationSection("$id.sharer"))
-                .getKeys(false)) {
-                val PlayerPage = PlayerConfig.getInt("$name.skyblock.page")
+        val sharerData = DatabaseManager.getSkyBlockData("$id", "$id.sharer", "getSkyblockSharerList") as? Map<*, *>
+        if (sharerData != null) {
+            for (key in sharerData.keys) {
+                val PlayerPage =
+                    DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
                 if (Page == PlayerPage) {
-                    val item = getHead(player, key)
+                    val item = getHead(player, key.toString())
                     inv.setItem(N, item)
                 }
                 N = N + 1

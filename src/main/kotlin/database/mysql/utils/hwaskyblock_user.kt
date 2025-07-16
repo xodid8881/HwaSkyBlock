@@ -18,17 +18,27 @@ class hwaskyblock_user() {
     }
 
     fun getPlayerUuid(): String? = playerUuid
-    fun setPlayerUuid(value: String?) { this.playerUuid = value }
+    fun setPlayerUuid(value: String?) {
+        this.playerUuid = value
+    }
 
     fun getPlayerSetting(): String? = playerSetting
-    fun setPlayerSetting(value: String?) { this.playerSetting = value }
+    fun setPlayerSetting(value: String?) {
+        this.playerSetting = value
+    }
 
     fun getPlayerPossessionCount(): Int = playerPossessionCount
-    fun setPlayerPossessionCount(value: Int) { this.playerPossessionCount = value }
+    fun setPlayerPossessionCount(value: Int) {
+        this.playerPossessionCount = value
+    }
 
     fun getPlayerPos(): Int = playerPos
-    fun setPlayerPos(value: Int) { this.playerPos = value }
+    fun setPlayerPos(value: Int) {
+        this.playerPos = value
+    }
 
     fun getPlayerPage(): Int = playerPage
-    fun setPlayerPage(value: Int) { this.playerPage = value }
+    fun setPlayerPage(value: Int) {
+        this.playerPage = value
+    }
 }

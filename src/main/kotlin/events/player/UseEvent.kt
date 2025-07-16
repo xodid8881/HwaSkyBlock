@@ -19,13 +19,13 @@ import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.vehicle.VehicleDamageEvent
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class UseEvent : Listener {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -53,13 +53,15 @@ class UseEvent : Listener {
 
         if (number[0] == "HwaSkyBlock") {
             val id = number[1]
-            val leader = SkyBlockConfig.getString("$id.leader")
+            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") as? String
             if (leader != null && leader != name) {
                 val permissionKey = "$id.sharer.$name"
-                val useBreakPermission = if (SkyBlockConfig.getString(permissionKey) == null) {
-                    SkyBlockConfig.getBoolean("$id.break")
+                val isSharer = DatabaseManager.getSkyBlockData(id, permissionKey, "getSkyBlockShare") != null
+                val useBreakPermission = if (!isSharer) {
+                    DatabaseManager.getSkyBlockData(id, "$id.break", "getSkyBlockBreak") as? Boolean ?: false
                 } else {
-                    SkyBlockConfig.getBoolean("$permissionKey.use.break")
+                    DatabaseManager.getSkyBlockData(id, "$permissionKey.use.break", "getSkyBlockShareBreak") as? Boolean
+                        ?: false
                 }
 
                 if (useBreakPermission != true) {
@@ -87,16 +89,16 @@ class UseEvent : Listener {
 
         val id = parts[1]
 
-        if (SkyBlockConfig.getString("$id.leader") == null) return
+        if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") == null) return
 
-        // 리더가 아니라면
-        if (SkyBlockConfig.getString("$id.leader") != name) {
-            val isSharer = SkyBlockConfig.getString("$id.sharer.$name") != null
+        if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") != name) {
+            val isSharer = DatabaseManager.getSkyBlockData(id, "$id.sharer.$name", "getSkyBlockShare") != null
 
             val hasBreakPermission = if (isSharer)
-                SkyBlockConfig.getBoolean("$id.sharer.$name.use.break")
+                DatabaseManager.getSkyBlockData(id, "$id.sharer.$name.use.break", "getSkyBlockShareBreak") as? Boolean
+                    ?: false
             else
-                SkyBlockConfig.getBoolean("$id.use.break")
+                DatabaseManager.getSkyBlockData(id, "$id.use.break", "getSkyBlockBreak") as? Boolean ?: false
 
             if (!hasBreakPermission) {
                 sendNoPermissionActionBar(damager)
@@ -116,16 +118,31 @@ class UseEvent : Listener {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (SkyBlockConfig.getString("$id.leader") != null) {
-                    if (SkyBlockConfig.getString("$id.leader") != name) {
-                        if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-                            if (!SkyBlockConfig.getBoolean("$id.use.minecart")) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
+                        if (DatabaseManager.getSkyBlockData(
+                                id.toString(),
+                                "$id.sharer.$name",
+                                "getSkyBlockShare"
+                            ) == null
+                        ) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.use.minecart",
+                                    "getSkyBlockMinecart"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                                 return
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.minecart")) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.sharer.$name.use.minecart",
+                                    "getSkyBlockShareMinecart"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                                 return
@@ -133,6 +150,7 @@ class UseEvent : Listener {
                         }
                     }
                 }
+
             }
         }
         if (entity is Player && vehicle is Boat) {
@@ -142,15 +160,30 @@ class UseEvent : Listener {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (SkyBlockConfig.getString("$id.leader") != null) {
-                    if (SkyBlockConfig.getString("$id.leader") != name) {
-                        if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-                            if (!SkyBlockConfig.getBoolean("$id.use.boat")) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
+                        if (DatabaseManager.getSkyBlockData(
+                                id.toString(),
+                                "$id.sharer.$name",
+                                "getSkyBlockShare"
+                            ) == null
+                        ) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.use.boat",
+                                    "getSkyBlockBoat"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.boat")) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.sharer.$name.use.boat",
+                                    "getSkyBlockShareBoat"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                             }
@@ -172,16 +205,31 @@ class UseEvent : Listener {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (SkyBlockConfig.getString("$id.leader") != null) {
-                    if (SkyBlockConfig.getString("$id.leader") != name) {
-                        if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-                            if (!SkyBlockConfig.getBoolean("$id.use.minecart")) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
+                        if (DatabaseManager.getSkyBlockData(
+                                id.toString(),
+                                "$id.sharer.$name",
+                                "getSkyBlockShare"
+                            ) == null
+                        ) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.use.minecart",
+                                    "getSkyBlockMinecart"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                                 return
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.minecart")) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.sharer.$name.use.minecart",
+                                    "getSkyBlockShareMinecart"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                                 return
@@ -198,15 +246,30 @@ class UseEvent : Listener {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (SkyBlockConfig.getString("$id.leader") != null) {
-                    if (SkyBlockConfig.getString("$id.leader") != name) {
-                        if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-                            if (!SkyBlockConfig.getBoolean("$id.use.boat")) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
+                        if (DatabaseManager.getSkyBlockData(
+                                id.toString(),
+                                "$id.sharer.$name",
+                                "getSkyBlockShare"
+                            ) == null
+                        ) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.use.boat",
+                                    "getSkyBlockBoat"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                             }
                         } else {
-                            if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.boat")) {
+                            if (DatabaseManager.getSkyBlockData(
+                                    id.toString(),
+                                    "$id.sharer.$name.use.boat",
+                                    "getSkyBlockShareBoat"
+                                ) as? Boolean != true
+                            ) {
                                 sendNoPermissionActionBar(entity)
                                 event.isCancelled = true
                             }
@@ -229,7 +292,8 @@ class UseEvent : Listener {
 
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                val leader = SkyBlockConfig.getString("$id.leader")
+                val leader =
+                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
                 if (leader != null && leader != name) {
                     val customBlock = CustomBlock.byAlreadyPlaced(block)
                     if (customBlock != null) {
@@ -253,14 +317,21 @@ class UseEvent : Listener {
         val customCropDisplayName = customCrop.itemMeta!!.displayName
         for (type in Config.getConfigurationSection("Custom-Crop-Interact")?.getKeys(false) ?: emptySet()) {
             if (customCropDisplayName.contains(type)) {
-                if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-                    if (!SkyBlockConfig.getBoolean("$id.use.farm")) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.sharer.$name", "getSkyBlockShare") == null) {
+                    if (!(DatabaseManager.getSkyBlockData(id.toString(), "$id.use.farm", "getSkyBlockFarm") as? Boolean
+                            ?: false)
+                    ) {
                         sendNoPermissionActionBar(player)
                         event.isCancelled = true
                         return
                     }
                 } else {
-                    if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.farm")) {
+                    if (!(DatabaseManager.getSkyBlockData(
+                            id.toString(),
+                            "$id.sharer.$name.use.farm",
+                            "getSkyBlockFarm"
+                        ) as? Boolean ?: false)
+                    ) {
                         sendNoPermissionActionBar(player)
                         event.isCancelled = true
                         return
@@ -294,7 +365,7 @@ class UseEvent : Listener {
 
         for ((blockName, permission) in blockPermissions) {
             if (blockType.contains(blockName)) {
-                checkPermissionAndCancel(player, block, id, name, permission, event)
+                checkPermissionAndCancel(player, id, name, permission, event)
                 return
             }
         }
@@ -302,19 +373,25 @@ class UseEvent : Listener {
 
     fun checkPermissionAndCancel(
         player: Player,
-        block: Block,
         id: String,
         name: String,
         permission: String,
         event: PlayerInteractEvent
     ) {
-        if (SkyBlockConfig.getString("$id.sharer.$name") == null) {
-            if (!SkyBlockConfig.getBoolean("$id.use.$permission")) {
+        if (DatabaseManager.getSkyBlockData(id, "$id.sharer.$name", "getSkyBlockShare") == null) {
+            if (!(DatabaseManager.getSkyBlockData(id, "$id.use.$permission", "getSkyBlockPermission") as? Boolean
+                    ?: false)
+            ) {
                 sendNoPermissionActionBar(player)
                 event.isCancelled = true
             }
         } else {
-            if (!SkyBlockConfig.getBoolean("$id.sharer.$name.use.$permission")) {
+            if (!(DatabaseManager.getSkyBlockData(
+                    id,
+                    "$id.sharer.$name.use.$permission",
+                    "getSkyBlockPermission"
+                ) as? Boolean ?: false)
+            ) {
                 sendNoPermissionActionBar(player)
                 event.isCancelled = true
             }
@@ -332,8 +409,8 @@ class UseEvent : Listener {
 
         if (parts.size >= 2 && parts[0] == "HwaSkyBlock") {
             val id = parts[1]
-            if (SkyBlockConfig.getString("$id.leader") != null) {
-                if (!SkyBlockConfig.getBoolean("$id.pvp")) {
+            if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") != null) {
+                if (!(DatabaseManager.getSkyBlockData(id, "$id.pvp", "getSkyBlockPvP") as? Boolean ?: false)) {
                     event.isCancelled = true
                 }
             }

@@ -2,14 +2,14 @@ package org.hwabeag.hwaskyblock.database
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
-import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.SelectSkyblock
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblock
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.*
 import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
 import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
+import org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_share_sqlite
+import org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_skyblock_sqlite
 
 
 class DatabaseManager {
@@ -25,10 +25,9 @@ class DatabaseManager {
     var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     var Select_Skyblock_List: HashMap<String?, hwaskyblock_skyblock?> = HashMap<String?, hwaskyblock_skyblock?>()
 
-    fun getSkyBlockData(skyblockId: String, type: String?): Any? {
+    fun getSkyBlockDataStatic(skyblockId: String, data: String, type: String?): Any? {
         return when (Config.get("database.type")) {
-            "yml" -> SkyBlockConfig.get(skyblockId)
-
+            "yml" -> SkyBlockConfig.get(data)
             "mysql", "sqlite" -> {
                 if (Skyblock_Select.SelectSkyBlock(skyblockId) != 0) return null
                 val skyblock = Select_Skyblock_List[skyblockId] ?: return null
@@ -70,55 +69,65 @@ class DatabaseManager {
         }
     }
 
-    fun setSkyBlockData(skyblockId: String, value: String, type: String?) {
+    fun setSkyBlockDataStatic(skyblockId: String, data: String, value: Any?, type: String?) {
         when (Config.get("database.type")) {
             "yml" -> {
-                SkyBlockConfig.set(skyblockId, value)
+                SkyBlockConfig.set(data, value)
             }
 
             "mysql", "sqlite" -> {
                 if (Skyblock_Select.SelectSkyBlock(skyblockId) == 0) {
+                    val stringValue = when (value) {
+                        is Boolean -> value.toString()
+                        is Int -> value.toString()
+                        is String -> value
+                        else -> value.toString()
+                    }
+
                     when (type) {
-                        "setSkyBlockName" -> Update_Skyblock.updateSkyblockName(skyblockId, value)
-                        "setSkyBlockLeader" -> Update_Skyblock.updateSkyblockLeader(skyblockId, value)
-                        "setSkyBlockJoin" -> Update_Skyblock.updateSkyblockJoin(skyblockId, value)
-                        "setSkyBlockBreak" -> Update_Skyblock.updateSkyblockBreak(skyblockId, value)
-                        "setSkyBlockPlace" -> Update_Skyblock.updateSkyblockPlace(skyblockId, value)
-                        "setSkyBlockDoor" -> Update_Skyblock.updateSkyblockDoor(skyblockId, value)
-                        "setSkyBlockChest" -> Update_Skyblock.updateSkyblockChest(skyblockId, value)
-                        "setSkyBlockBarrel" -> Update_Skyblock.updateSkyblockBarrel(skyblockId, value)
-                        "setSkyBlockHopper" -> Update_Skyblock.updateSkyblockHopper(skyblockId, value)
-                        "setSkyBlockFurnace" -> Update_Skyblock.updateSkyblockFurnace(skyblockId, value)
-                        "setSkyBlockBlastFurnace" -> Update_Skyblock.updateSkyblockBlastFurnace(skyblockId, value)
-                        "setSkyBlockShulkerBox" -> Update_Skyblock.updateSkyblockShulkerBox(skyblockId, value)
-                        "setSkyBlockTrapdoor" -> Update_Skyblock.updateSkyblockTrapdoor(skyblockId, value)
-                        "setSkyBlockButton" -> Update_Skyblock.updateSkyblockButton(skyblockId, value)
-                        "setSkyBlockAnvil" -> Update_Skyblock.updateSkyblockAnvil(skyblockId, value)
-                        "setSkyBlockFarm" -> Update_Skyblock.updateSkyblockFarm(skyblockId, value)
-                        "setSkyBlockBeacon" -> Update_Skyblock.updateSkyblockBeacon(skyblockId, value)
-                        "setSkyBlockMinecart" -> Update_Skyblock.updateSkyblockMinecart(skyblockId, value)
-                        "setSkyBlockBoat" -> Update_Skyblock.updateSkyblockBoat(skyblockId, value)
-                        "setSkyBlockPvp" -> Update_Skyblock.updateSkyblockPvp(skyblockId, value)
-                        "setSkyBlockWelcomeMessage" -> Update_Skyblock.updateSkyblockWelcomeMessage(skyblockId, value)
-                        "setSkyBlockHome" -> Update_Skyblock.updateSkyblockHome(skyblockId, value)
-                        "setSkyBlockSize" -> Update_Skyblock.updateSkyblockSize(skyblockId, value)
-                        "setSkyBlockMonsterSpawn" -> Update_Skyblock.updateSkyblockMonsterSpawn(skyblockId, value)
-                        "setSkyBlockAnimalSpawn" -> Update_Skyblock.updateSkyblockAnimalSpawn(skyblockId, value)
-                        "setSkyBlockWeather" -> Update_Skyblock.updateSkyblockWeather(skyblockId, value)
-                        "setSkyBlockTime" -> Update_Skyblock.updateSkyblockTime(skyblockId, value)
-                        "setSkyBlockWaterPhysics" -> Update_Skyblock.updateSkyblockWaterPhysics(skyblockId, value)
-                        "setSkyBlockLavaPhysics" -> Update_Skyblock.updateSkyblockLavaPhysics(skyblockId, value)
+                        "setSkyBlockName" -> Update_Skyblock.updateSkyblockName(skyblockId, stringValue)
+                        "setSkyBlockLeader" -> Update_Skyblock.updateSkyblockLeader(skyblockId, stringValue)
+                        "setSkyBlockJoin" -> Update_Skyblock.updateSkyblockJoin(skyblockId, stringValue)
+                        "setSkyBlockBreak" -> Update_Skyblock.updateSkyblockBreak(skyblockId, stringValue)
+                        "setSkyBlockPlace" -> Update_Skyblock.updateSkyblockPlace(skyblockId, stringValue)
+                        "setSkyBlockDoor" -> Update_Skyblock.updateSkyblockDoor(skyblockId, stringValue)
+                        "setSkyBlockChest" -> Update_Skyblock.updateSkyblockChest(skyblockId, stringValue)
+                        "setSkyBlockBarrel" -> Update_Skyblock.updateSkyblockBarrel(skyblockId, stringValue)
+                        "setSkyBlockHopper" -> Update_Skyblock.updateSkyblockHopper(skyblockId, stringValue)
+                        "setSkyBlockFurnace" -> Update_Skyblock.updateSkyblockFurnace(skyblockId, stringValue)
+                        "setSkyBlockBlastFurnace" -> Update_Skyblock.updateSkyblockBlastFurnace(skyblockId, stringValue)
+                        "setSkyBlockShulkerBox" -> Update_Skyblock.updateSkyblockShulkerBox(skyblockId, stringValue)
+                        "setSkyBlockTrapdoor" -> Update_Skyblock.updateSkyblockTrapdoor(skyblockId, stringValue)
+                        "setSkyBlockButton" -> Update_Skyblock.updateSkyblockButton(skyblockId, stringValue)
+                        "setSkyBlockAnvil" -> Update_Skyblock.updateSkyblockAnvil(skyblockId, stringValue)
+                        "setSkyBlockFarm" -> Update_Skyblock.updateSkyblockFarm(skyblockId, stringValue)
+                        "setSkyBlockBeacon" -> Update_Skyblock.updateSkyblockBeacon(skyblockId, stringValue)
+                        "setSkyBlockMinecart" -> Update_Skyblock.updateSkyblockMinecart(skyblockId, stringValue)
+                        "setSkyBlockBoat" -> Update_Skyblock.updateSkyblockBoat(skyblockId, stringValue)
+                        "setSkyBlockPvp" -> Update_Skyblock.updateSkyblockPvp(skyblockId, stringValue)
+                        "setSkyBlockWelcomeMessage" -> Update_Skyblock.updateSkyblockWelcomeMessage(
+                            skyblockId,
+                            stringValue
+                        )
+
+                        "setSkyBlockHome" -> Update_Skyblock.updateSkyblockHome(skyblockId, stringValue)
+                        "setSkyBlockSize" -> Update_Skyblock.updateSkyblockSize(skyblockId, stringValue)
+                        "setSkyBlockMonsterSpawn" -> Update_Skyblock.updateSkyblockMonsterSpawn(skyblockId, stringValue)
+                        "setSkyBlockAnimalSpawn" -> Update_Skyblock.updateSkyblockAnimalSpawn(skyblockId, stringValue)
+                        "setSkyBlockWeather" -> Update_Skyblock.updateSkyblockWeather(skyblockId, stringValue)
+                        "setSkyBlockTime" -> Update_Skyblock.updateSkyblockTime(skyblockId, stringValue)
+                        "setSkyBlockWaterPhysics" -> Update_Skyblock.updateSkyblockWaterPhysics(skyblockId, stringValue)
+                        "setSkyBlockLavaPhysics" -> Update_Skyblock.updateSkyblockLavaPhysics(skyblockId, stringValue)
                     }
                 }
             }
         }
     }
 
-    fun getUserData(player: Player, type: String?): Any? {
+    fun getUserDataStatic(data: String, player: Player, type: String?): Any? {
         val uuid = player.uniqueId.toString()
         return when (Config.get("database.type")) {
-            "yml" -> PlayerConfig.get(uuid)
-
+            "yml" -> PlayerConfig.get(data)
             "mysql", "sqlite" -> {
                 if (User_Select.UserSelect(player) != 0) return null
                 val user = Select_User_List[uuid] ?: return null
@@ -135,30 +144,217 @@ class DatabaseManager {
         }
     }
 
-    fun setUserData(player: Player, value: String, type: String?) {
+    fun setUserDataStatic(data: String, player: Player, value: Any?, type: String?) {
         val uuid = player.uniqueId.toString()
         when (Config.get("database.type")) {
             "yml" -> {
-                PlayerConfig.set(uuid, value)
+                PlayerConfig.set(data, value)
             }
 
             "mysql", "sqlite" -> {
                 if (User_Select.UserSelect(player) == 0) {
                     when (type) {
-                        "setPlayerSetting" -> Update_User.UserUpdate_Setting(player, value)
-                        "setPlayerPossessionCount" -> Update_User.UserUpdate_Possession_Count(player, value.toIntOrNull() ?: 0)
-                        "setPlayerPos" -> Update_User.UserUpdate_Pos(player, value.toIntOrNull() ?: 0)
-                        "setPlayerPage" -> Update_User.UserUpdate_Page(player, value.toIntOrNull() ?: 0)
+                        "setPlayerSetting" -> Update_User.UserUpdate_Setting(player, value.toString())
+                        "setPlayerPossessionCount" -> {
+                            val intValue = (value as? Int) ?: value.toString().toIntOrNull() ?: 0
+                            Update_User.UserUpdate_Possession_Count(player, intValue)
+                        }
+
+                        "setPlayerPos" -> {
+                            val intValue = (value as? Int) ?: value.toString().toIntOrNull() ?: 0
+                            Update_User.UserUpdate_Pos(player, intValue)
+                        }
+
+                        "setPlayerPage" -> {
+                            val intValue = (value as? Int) ?: value.toString().toIntOrNull() ?: 0
+                            Update_User.UserUpdate_Page(player, intValue)
+                        }
                     }
                 }
             }
         }
     }
 
+    fun getSkyBlockShareListStatic(skyblockId: String): List<String> {
+        return when (Config.get("database.type")) {
+            "yml" -> {
+                SkyBlockConfig.getConfigurationSection("$skyblockId.sharer")?.getKeys(false)?.toList() ?: emptyList()
+            }
+
+            "mysql" -> {
+                val shareDAO = org.hwabeag.hwaskyblock.database.mysql.skyblock.SelectSkyblockShare()
+                shareDAO.getShareList(skyblockId)
+            }
+
+            "sqlite" -> {
+                val shareDAO = org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_share_sqlite()
+                shareDAO.getShareList(skyblockId)
+            }
+
+            else -> emptyList()
+        }
+    }
+
+    fun addSkyBlockShareStatic(skyblockId: String, playerName: String) {
+        when (Config.get("database.type")) {
+            "yml" -> SkyBlockConfig.set("$skyblockId.sharer.$playerName", true)
+            "mysql" -> {
+                val dao = org.hwabeag.hwaskyblock.database.mysql.skyblock.InsertSkyblockShare()
+                dao.insertShare(skyblockId, playerName)
+            }
+
+            "sqlite" -> {
+                val dao = org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_share_sqlite()
+                dao.insertShare(skyblockId, playerName)
+            }
+        }
+    }
+
+    fun removeSkyBlockShareStatic(skyblockId: String, playerName: String) {
+        when (Config.get("database.type")) {
+            "yml" -> SkyBlockConfig.set("$skyblockId.sharer.$playerName", null)
+            "mysql" -> {
+                val dao = org.hwabeag.hwaskyblock.database.mysql.skyblock.DeleteSkyblockShare()
+                dao.deleteShare(skyblockId, playerName)
+            }
+
+            "sqlite" -> {
+                val dao = org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_share_sqlite()
+                dao.deleteShare(skyblockId, playerName)
+            }
+        }
+    }
+
+    fun getSkyBlockSharePermissionStatic(skyblockId: String, playerName: String, permission: String): Boolean? {
+        return when (Config.get("database.type")) {
+            "yml" -> SkyBlockConfig.getBoolean("$skyblockId.sharer.$playerName.$permission", true)
+            "mysql" -> {
+                val dao = SelectSkyblockShare()
+                dao.getPermission(skyblockId, playerName, permission)
+            }
+
+            "sqlite" -> {
+                val dao = hwaskyblock_share_sqlite()
+                dao.getPermission(skyblockId, playerName, permission)
+            }
+
+            else -> null
+        }
+    }
+
+    fun setSkyBlockSharePermissionStatic(skyblockId: String, playerName: String, permission: String, value: Boolean) {
+        when (Config.get("database.type")) {
+            "yml" -> SkyBlockConfig.set("$skyblockId.sharer.$playerName.$permission", value)
+            "mysql" -> {
+                val dao = UpdateSkyblockShare()
+                dao.updatePermission(skyblockId, playerName, permission, value)
+            }
+
+            "sqlite" -> {
+                val dao = hwaskyblock_share_sqlite()
+                dao.updatePermission(skyblockId, playerName, permission, value)
+            }
+        }
+    }
+
+    fun removeSkyBlockSharePermissionStatic(skyblockId: String, playerName: String) {
+        when (Config.get("database.type")) {
+            "yml" -> {
+                SkyBlockConfig.set("$skyblockId.sharer.$playerName", null)
+            }
+
+            "mysql" -> {
+                val dao = DeleteSkyblockShare()
+                dao.deleteShare(skyblockId, playerName)
+            }
+
+            "sqlite" -> {
+                val dao = hwaskyblock_share_sqlite()
+                dao.deleteShare(skyblockId, playerName)
+            }
+        }
+    }
+
+    fun DeleteSkyBlockStatic(skyblockId: String) {
+        when (Config.get("database.type")) {
+            "yml" -> {
+                SkyBlockConfig.set(skyblockId, null)
+            }
+
+            "mysql" -> {
+                val dao = DeleteSkyblock()
+                dao.deleteSkyblock(skyblockId)
+            }
+
+            "sqlite" -> {
+                val dao = hwaskyblock_skyblock_sqlite()
+                dao.deleteSkyblock(skyblockId)
+            }
+        }
+        Select_Skyblock_List.remove(skyblockId)
+    }
+
+
     companion object {
         var Select_Skyblock_List: HashMap<String?, hwaskyblock_skyblock?> =
             HashMap<String?, hwaskyblock_skyblock?>()
         var Select_User_List: HashMap<String?, hwaskyblock_user?> =
             HashMap<String?, hwaskyblock_user?>()
+        var Select_Share_List: HashMap<String?, Map<String, Boolean>> = HashMap()
+
+        @JvmStatic
+        fun getSkyBlockData(skyblockId: String, data: String, type: String?): Any? {
+            return DatabaseManager().getSkyBlockDataStatic(skyblockId, data, type)
+        }
+
+        @JvmStatic
+        fun setSkyBlockData(skyblockId: String, data: String, value: Any?, type: String?) {
+            DatabaseManager().setSkyBlockDataStatic(skyblockId, data, value, type)
+        }
+
+        @JvmStatic
+        fun getUserData(data: String, player: Player, type: String?): Any? {
+            return DatabaseManager().getUserDataStatic(data, player, type)
+        }
+
+        @JvmStatic
+        fun setUserData(data: String, player: Player, value: Any?, type: String?) {
+            DatabaseManager().setUserDataStatic(data, player, value, type)
+        }
+
+        @JvmStatic
+        fun getSkyBlockShareList(skyblockId: String): List<String> {
+            return DatabaseManager().getSkyBlockShareListStatic(skyblockId)
+        }
+
+        @JvmStatic
+        fun addSkyBlockShare(skyblockId: String, playerName: String) {
+            DatabaseManager().addSkyBlockShareStatic(skyblockId, playerName)
+        }
+
+        @JvmStatic
+        fun removeSkyBlockShare(skyblockId: String, playerName: String) {
+            DatabaseManager().removeSkyBlockShareStatic(skyblockId, playerName)
+        }
+
+        @JvmStatic
+        fun getSkyBlockSharePermission(skyblockId: String, playerName: String, permission: String): Boolean? {
+            return DatabaseManager().getSkyBlockSharePermissionStatic(skyblockId, playerName, permission)
+        }
+
+        @JvmStatic
+        fun setSkyBlockSharePermission(skyblockId: String, playerName: String, permission: String, value: Boolean) {
+            DatabaseManager().setSkyBlockSharePermissionStatic(skyblockId, playerName, permission, value)
+        }
+
+        @JvmStatic
+        fun removeSkyBlockSharePermission(skyblockId: String, playerName: String) {
+            DatabaseManager().removeSkyBlockSharePermissionStatic(skyblockId, playerName)
+        }
+
+        @JvmStatic
+        fun DeleteSkyBlock(skyblockId: String) {
+            DatabaseManager().DeleteSkyBlockStatic(skyblockId)
+        }
     }
 }

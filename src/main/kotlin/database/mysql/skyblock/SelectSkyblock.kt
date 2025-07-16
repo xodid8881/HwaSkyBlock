@@ -4,7 +4,6 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
-import org.hwabeag.hwaskyblock.events.click.*
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -82,7 +81,7 @@ class SelectSkyblock {
         return connection
     }
 
-    fun SelectSkyBlock(skyblock_id: String): Int {
+    fun SelectSkyBlock(skyblockId: String): Int {
         val skyblock: hwaskyblock_skyblock = hwaskyblock_skyblock()
         var conn: Connection? = null
         try {
@@ -104,7 +103,7 @@ class SelectSkyblock {
             """.trimIndent()
 
             val pstmt = conn?.prepareStatement(sql)
-            pstmt?.setString(1, skyblock_id)
+            pstmt?.setString(1, skyblockId)
             val rs = pstmt?.executeQuery()
 
             if (rs != null) {
@@ -140,13 +139,6 @@ class SelectSkyblock {
                     skyblock.setSkyBlockWaterPhysics(rs.getString("skyblock_water_physics")?.toBoolean() == true)
                     skyblock.setSkyBlockLavaPhysics(rs.getString("skyblock_lava_physics")?.toBoolean() == true)
                     DatabaseManager.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvBuyClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvGlobalFragClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvGlobalUseClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvMenuClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvSettingClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvSharerClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
-                    InvSharerUseClickEvent.Select_Skyblock_List.put(rs.getString("skyblock_id"), skyblock)
                     rs.close()
                     pstmt.close()
                     return 0

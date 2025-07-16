@@ -8,11 +8,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
-import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalUseGUI
 import java.util.*
@@ -20,24 +17,13 @@ import java.util.*
 class InvGlobalFragClickEvent : Listener {
     var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.Companion.getConfig("player")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
 
-    var User_Select: SelectUser = SelectUser()
-    var Update_User: UpdateUser = UpdateUser()
-
     fun isBedrockPlayer(player: Player): Boolean {
         return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
-
-    companion object {
-        var Select_Skyblock_List: java.util.HashMap<String?, hwaskyblock_skyblock?> =
-            HashMap<String?, hwaskyblock_skyblock?>()
-        var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     }
 
     @EventHandler
@@ -63,13 +49,10 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.join"))
                         )
                     ) {
-                        val player_join = SkyBlockConfig.getBoolean("$id.join")
-                        if (player_join) {
-                            SkyBlockConfig.set("$id.join", false)
-                        } else {
-                            SkyBlockConfig.set("$id.join", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val currentJoin =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean
+                                ?: true
+                        DatabaseManager.setSkyBlockData(id.toString(), "$id.join", !currentJoin, "setSkyBlockJoin")
                         var inv: HwaSkyBlockGlobalFragGUI? = null
                         inv = HwaSkyBlockGlobalFragGUI(id)
                         inv.open(player)
@@ -80,13 +63,10 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.break"))
                         )
                     ) {
-                        val block_break = SkyBlockConfig.getBoolean("$id.break")
-                        if (block_break) {
-                            SkyBlockConfig.set("$id.break", false)
-                        } else {
-                            SkyBlockConfig.set("$id.break", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val currentBreak =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
+                                ?: false
+                        DatabaseManager.setSkyBlockData(id.toString(), "$id.break", !currentBreak, "setSkyBlockBreak")
                         var inv: HwaSkyBlockGlobalFragGUI? = null
                         inv = HwaSkyBlockGlobalFragGUI(id)
                         inv.open(player)
@@ -97,13 +77,10 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.place"))
                         )
                     ) {
-                        val block_place = SkyBlockConfig.getBoolean("$id.place")
-                        if (block_place) {
-                            SkyBlockConfig.set("$id.place", false)
-                        } else {
-                            SkyBlockConfig.set("$id.place", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val currentPlace =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean
+                                ?: false
+                        DatabaseManager.setSkyBlockData(id.toString(), "$id.place", !currentPlace, "setSkyBlockPlace")
                         var inv: HwaSkyBlockGlobalFragGUI? = null
                         inv = HwaSkyBlockGlobalFragGUI(id)
                         inv.open(player)
@@ -124,13 +101,10 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.pvp"))
                         )
                     ) {
-                        val pvp = SkyBlockConfig.getBoolean("$id.pvp")
-                        if (pvp) {
-                            SkyBlockConfig.set("$id.pvp", false)
-                        } else {
-                            SkyBlockConfig.set("$id.pvp", true)
-                        }
-                        ConfigManager.Companion.saveConfigs()
+                        val currentPvp =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean
+                                ?: false
+                        DatabaseManager.setSkyBlockData(id.toString(), "$id.pvp", !currentPvp, "setSkyBlockPvp")
                         var inv: HwaSkyBlockGlobalFragGUI? = null
                         inv = HwaSkyBlockGlobalFragGUI(id)
                         inv.open(player)

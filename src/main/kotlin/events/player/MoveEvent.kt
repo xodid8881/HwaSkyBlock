@@ -7,13 +7,13 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class MoveEvent : Listener {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -32,33 +32,33 @@ class MoveEvent : Listener {
         val number: Array<String?> = world_name?.split("\\.".toRegex())?.dropLastWhile { it.isEmpty() }!!.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val block_to_id = number[1]
-            if (SkyBlockConfig.getString("$block_to_id.leader") != null) {
-                if (SkyBlockConfig.getString("$block_to_id.leader") != name) {
-                    if (SkyBlockConfig.getString("$block_to_id.sharer.$name") == null) {
-                        if (!SkyBlockConfig.getBoolean("$block_to_id.join")) {
-                            if (blockFrom != null) {
-                                player.teleport(blockFrom.location.add(0.0, 1.0, 0.0))
-                            }
-                            val message = ChatColor.translateAlternateColorCodes(
-                                '&',
-                                Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.no_permission"))
-                            )
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
-                            event.setCancelled(true)
-                        }
-                    } else {
-                        if (!SkyBlockConfig.getBoolean("$block_to_id.sharer.$name.join")) {
-                            if (blockFrom != null) {
-                                player.teleport(blockFrom.location.add(0.0, 1.0, 0.0))
-                            }
-                            val message = ChatColor.translateAlternateColorCodes(
-                                '&',
-                                Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.no_permission"))
-                            )
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
-                            event.setCancelled(true)
-                        }
+            val leader = DatabaseManager.getSkyBlockData(
+                block_to_id.toString(),
+                "$block_to_id.leader",
+                "getSkyBlockLeader"
+            ) as? String
+            if (leader != null && leader != name) {
+                val isSharer = DatabaseManager.getSkyBlockShareList(block_to_id.toString()).contains(name)
+                val hasJoinPermission = if (isSharer) {
+                    DatabaseManager.getSkyBlockSharePermission(block_to_id.toString(), name, "join") ?: true
+                } else {
+                    DatabaseManager.getSkyBlockData(
+                        block_to_id.toString(),
+                        "$block_to_id.join",
+                        "isSkyBlockJoin"
+                    ) as? Boolean ?: true
+                }
+
+                if (!hasJoinPermission) {
+                    blockFrom?.let {
+                        player.teleport(it.location.add(0.0, 1.0, 0.0))
                     }
+                    val message = ChatColor.translateAlternateColorCodes(
+                        '&',
+                        Prefix + Objects.requireNonNull(MessageConfig.getString("message-event.no_permission"))
+                    )
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
+                    event.isCancelled = true
                 }
             }
         }

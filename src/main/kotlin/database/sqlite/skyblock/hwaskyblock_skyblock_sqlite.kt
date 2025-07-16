@@ -129,4 +129,12 @@ class hwaskyblock_skyblock_sqlite {
         DatabaseManager.Select_Skyblock_List[id] = hwaskyblock_skyblock(data)
         return 0
     }
+
+    fun deleteSkyblock(skyblockId: String) {
+        val sql = "DELETE FROM hwaskyblock_skyblock WHERE skyblock_id = ?"
+        conn.prepareStatement(sql).use { stmt ->
+            stmt.setString(1, skyblockId)
+            stmt.executeUpdate()
+        }
+    }
 }

@@ -12,35 +12,21 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.user.SelectUser
-import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import java.io.File
 import java.util.*
 
 class InvBuyClickEvent : Listener {
     var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
     var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.Companion.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.Companion.getConfig("player")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
 
-    var User_Select: SelectUser = SelectUser()
-    var Update_User: UpdateUser = UpdateUser()
-
     fun isBedrockPlayer(player: Player): Boolean {
         return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
-
-    companion object {
-        var Select_Skyblock_List: java.util.HashMap<String?, hwaskyblock_skyblock?> =
-            HashMap<String?, hwaskyblock_skyblock?>()
-        var Select_User_List: HashMap<String?, hwaskyblock_user?> = HashMap<String?, hwaskyblock_user?>()
     }
 
     @EventHandler
@@ -79,7 +65,13 @@ class InvBuyClickEvent : Listener {
                         val id = count + 1
                         val econ: Economy? = HwaSkyBlock.Companion.economy
                         if (econ!!.has(player, buy.toDouble())) {
-                            if (PlayerConfig.getInt("$name.skyblock.possession_count") >= Config.getInt("sky-block-max")) {
+                            val possessionCount = DatabaseManager.getUserData(
+                                "$name.skyblock.possession_count",
+                                player,
+                                "getPlayerPossessionCount"
+                            ) as? Int ?: 0
+                            val maxCount = Config.getInt("sky-block-max")
+                            if (possessionCount >= maxCount) {
                                 player.sendMessage(
                                     Prefix + ChatColor.translateAlternateColorCodes(
                                         '&',
@@ -89,42 +81,111 @@ class InvBuyClickEvent : Listener {
                                 return
                             }
                             econ.withdrawPlayer(player, buy.toDouble())
-                            SkyBlockConfig.set("$id.name", name)
-                            SkyBlockConfig.set("$id.leader", name)
-                            SkyBlockConfig.set("$id.join", true)
-                            SkyBlockConfig.set("$id.break", false)
-                            SkyBlockConfig.set("$id.place", false)
-                            SkyBlockConfig.set("$id.use.door", false)
-                            SkyBlockConfig.set("$id.use.chest", false)
-                            SkyBlockConfig.set("$id.use.barrel", false)
-                            SkyBlockConfig.set("$id.use.hopper", false)
-                            SkyBlockConfig.set("$id.use.furnace", false)
-                            SkyBlockConfig.set("$id.use.blast_furnace", false)
-                            SkyBlockConfig.set("$id.use.shulker_box", false)
-                            SkyBlockConfig.set("$id.use.trapdoor", false)
-                            SkyBlockConfig.set("$id.use.button", false)
-                            SkyBlockConfig.set("$id.use.anvil", false)
-                            SkyBlockConfig.set("$id.use.farm", false)
-                            SkyBlockConfig.set("$id.use.beacon", false)
-                            SkyBlockConfig.set("$id.use.minecart", false)
-                            SkyBlockConfig.set("$id.use.boat", false)
-                            SkyBlockConfig.set("$id.pvp", false)
-                            SkyBlockConfig.set("$id.welcome_message", "Welcome $name Farm")
-                            SkyBlockConfig.set("$id.home", 0)
-                            SkyBlockConfig.set("$id.size", size)
-
-                            SkyBlockConfig.set("$id.setting.monster_spawn", true)
-                            SkyBlockConfig.set("$id.setting.animal_spawn", true)
-                            SkyBlockConfig.set("$id.setting.weather", "basic")
-                            SkyBlockConfig.set("$id.setting.time", "basic")
-                            SkyBlockConfig.set("$id.setting.water_physics", true)
-                            SkyBlockConfig.set("$id.setting.lava_physics", true)
-
-                            PlayerConfig.set(
-                                "$name.skyblock.possession_count",
-                                PlayerConfig.getInt("$name.skyblock.possession_count") + 1
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.name", name, "setSkyBlockName")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.leader", name, "setSkyBlockLeader")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.join", true, "setSkyBlockJoin")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.break", false, "setSkyBlockBreak")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.place", false, "setSkyBlockPlace")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.door", false, "setSkyBlockDoor")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.chest", false, "setSkyBlockChest")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.barrel", false, "setSkyBlockBarrel")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.hopper", false, "setSkyBlockHopper")
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.use.furnace",
+                                false,
+                                "setSkyBlockFurnace"
                             )
-                            PlayerConfig.set("$name.skyblock.possession.$id", name)
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.use.blast_furnace",
+                                false,
+                                "setSkyBlockBlastFurnace"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.use.shulker_box",
+                                false,
+                                "setSkyBlockShulkerBox"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.use.trapdoor",
+                                false,
+                                "setSkyBlockTrapdoor"
+                            )
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.button", false, "setSkyBlockButton")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.anvil", false, "setSkyBlockAnvil")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.farm", false, "setSkyBlockFarm")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.beacon", false, "setSkyBlockBeacon")
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.use.minecart",
+                                false,
+                                "setSkyBlockMinecart"
+                            )
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.boat", false, "setSkyBlockBoat")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.pvp", false, "setSkyBlockPvp")
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.welcome_message",
+                                "Welcome $name Farm",
+                                "setSkyBlockWelcomeMessage"
+                            )
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.home", 0, "setSkyBlockHome")
+                            DatabaseManager.setSkyBlockData(id.toString(), "$id.size", size, "setSkyBlockSize")
+
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.monster_spawn",
+                                true,
+                                "setSkyBlockMonsterSpawn"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.animal_spawn",
+                                true,
+                                "setSkyBlockAnimalSpawn"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.weather",
+                                "basic",
+                                "setSkyBlockWeather"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.time",
+                                "basic",
+                                "setSkyBlockTime"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.water_physics",
+                                true,
+                                "setSkyBlockWaterPhysics"
+                            )
+                            DatabaseManager.setSkyBlockData(
+                                id.toString(),
+                                "$id.setting.lava_physics",
+                                true,
+                                "setSkyBlockLavaPhysics"
+                            )
+
+                            val player = Bukkit.getPlayerExact(name) ?: return
+                            val currentCount = DatabaseManager.getUserData(
+                                "$name.skyblock.possession_count",
+                                player,
+                                "getPlayerPossessionCount"
+                            ) as? Int ?: 0
+                            DatabaseManager.setUserData(
+                                "$name.skyblock.possession_count",
+                                player,
+                                currentCount + 1,
+                                "setPlayerPossessionCount"
+                            )
+                            DatabaseManager.setUserData("$name.skyblock.possession.$id", player, name, null)
+
                             Config.set("sky-block-number", id)
                             ConfigManager.Companion.saveConfigs()
                             filepath?.let { HwaSkyBlock.Companion.addIsland(player, id, it) }

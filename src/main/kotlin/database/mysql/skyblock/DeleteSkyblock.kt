@@ -79,30 +79,20 @@ class DeleteSkyblock {
         return connection
     }
 
-    fun DeleteSkyBlock(skyblock_id: String): Int {
+    fun deleteSkyblock(skyblockId: String): Int {
         var conn: Connection? = null
         try {
-            conn = this.openConnection()
+            conn = openConnection()
 
-            val sql = """
-                DELETE FROM hwaskyblock_skyblock
-                WHERE skyblock_id = ?
-            """.trimIndent()
-
-            val pstmt = conn?.prepareStatement(sql)
-            pstmt?.setString(1, skyblock_id)
-
-            val rowsDeleted = pstmt?.executeUpdate()
-
-            if (rowsDeleted != null && rowsDeleted > 0) {
-                pstmt.close()
-                return 0
-            } else {
-                pstmt?.close()
-                return 1
+            val sql = "DELETE FROM hwaskyblock_skyblock WHERE skyblock_id = ?"
+            conn?.prepareStatement(sql).use { pstmt ->
+                pstmt?.setString(1, skyblockId)
+                val rowsDeleted = pstmt?.executeUpdate()
+                return if (rowsDeleted != null && rowsDeleted > 0) 0 else 1
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            return 2
         } finally {
             try {
                 conn?.close()
@@ -110,6 +100,5 @@ class DeleteSkyblock {
                 e.printStackTrace()
             }
         }
-        return 2
     }
 }
