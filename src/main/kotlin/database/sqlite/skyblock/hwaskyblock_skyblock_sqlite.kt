@@ -111,7 +111,6 @@ class hwaskyblock_skyblock_sqlite {
             stmt.executeUpdate()
         }
 
-        // 캐시에도 즉시 반영 (Map 기반 재초기화로 통일성 유지)
         val old = getSkyblock(id)
         if (old != null) {
             DatabaseManager.Select_Skyblock_List[id] = hwaskyblock_skyblock(old)

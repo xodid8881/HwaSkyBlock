@@ -49,6 +49,7 @@ message-event:
   transfer_completed: "당신의 섬 구역을 정상적으로 양도했습니다."
   received_transfer: "당신은 섬를 양도 받았습니다."
   join_refusal: "섬 방문이 금지되어 있습니다."
+  reload: "정상적으로 리로드 했습니다."
 
 gui-name:
   buy: "섬 구매" # 섬 구매 GUI 이름

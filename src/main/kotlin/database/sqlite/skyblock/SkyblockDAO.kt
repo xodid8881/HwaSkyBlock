@@ -45,7 +45,7 @@ class SkyblockDAO {
     }
 
     fun insertSkyblock(data: Map<String, String>) {
-        val keys = data.keys.joinToString(", ")
+        val keys = data.keys.joinToString(", ") { "\"$it\"" } // ← 컬럼명 감싸기
         val placeholders = data.keys.joinToString(", ") { "?" }
         val sql = "INSERT INTO hwaskyblock_skyblock ($keys) VALUES ($placeholders)"
 
@@ -75,7 +75,7 @@ class SkyblockDAO {
     }
 
     fun updateSkyblock(id: String, values: Map<String, String>) {
-        val setClause = values.keys.joinToString(", ") { "$it = ?" }
+        val setClause = values.keys.joinToString(", ") { "\"$it\" = ?" } // ← 컬럼명 감싸기
         val sql = "UPDATE hwaskyblock_skyblock SET $setClause WHERE skyblock_id = ?"
 
         conn.prepareStatement(sql).use { stmt ->
@@ -95,29 +95,3 @@ class SkyblockDAO {
         }
     }
 }
-
-/*
-UserDAO.insertUser(
-mapOf(
-"player_uuid" to player.uniqueId.toString(),
-"player_setting" to "{\"fly\":true,\"pvp\":false}",
-"player_possession_count" to 3,
-"player_pos" to "world,100.0,64.0,100.0",
-"player_page" to 1
-)
-)
-
-// 조회
-val userData = UserDAO.getUser(player.uniqueId.toString())
-val page = userData?.get("player_page") as? Int ?: 0
-player.sendMessage("현재 페이지: $page")
-
-// 수정
-UserDAO.updateUser(
-uuid = player.uniqueId.toString(),
-values = mapOf(
-"player_page" to 2,
-"player_setting" to "{\"fly\":false}"
-)
-)
- */

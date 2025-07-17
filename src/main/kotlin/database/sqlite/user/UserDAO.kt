@@ -1,6 +1,8 @@
 package org.hwabeag.hwaskyblock.database.sqlite.user
 
 import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
+import org.json.simple.parser.JSONParser
+import org.json.simple.JSONObject
 import java.sql.Connection
 
 class UserDAO {
@@ -39,6 +41,7 @@ class UserDAO {
 
     fun getUser(uuid: String): Map<String, Any>? {
         val sql = "SELECT * FROM hwaskyblock_user WHERE player_uuid = ?"
+        val parser = JSONParser()
 
         conn.prepareStatement(sql).use { stmt ->
             stmt.setString(1, uuid)
@@ -46,17 +49,45 @@ class UserDAO {
 
             if (rs.next()) {
                 val meta = rs.metaData
-                val map = mutableMapOf<String, Any>()
+                val resultMap = mutableMapOf<String, Any>()
+
                 for (i in 1..meta.columnCount) {
                     val colName = meta.getColumnName(i)
                     val value = rs.getObject(i)
-                    map[colName] = value
+
+                    when {
+                        colName == "player_setting" && value is String -> {
+                            try {
+                                val jsonObject = parser.parse(value) as JSONObject
+                                val parsedMap = jsonObject.mapKeys { it.key.toString() }.mapValues { it.value }
+                                resultMap[colName] = parsedMap
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                resultMap[colName] = emptyMap<String, Any>()
+                            }
+                        }
+
+                        colName == "player_pos" && value is String -> {
+                            try {
+                                val jsonObject = parser.parse(value) as JSONObject
+                                val parsedMap = jsonObject.mapKeys { it.key.toString() }.mapValues { it.value }
+                                resultMap[colName] = parsedMap
+                            } catch (e: Exception) {
+                                resultMap[colName] = emptyMap<String, Any>()
+                            }
+                        }
+
+                        else -> {
+                            resultMap[colName] = value ?: ""
+                        }
+                    }
                 }
-                return map
+                return resultMap
             }
         }
         return null
     }
+
 
     fun updateUser(uuid: String, values: Map<String, Any>) {
         val setClause = values.keys.joinToString(", ") { "$it = ?" }

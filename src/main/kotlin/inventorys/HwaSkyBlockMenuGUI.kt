@@ -30,13 +30,17 @@ class HwaSkyBlockMenuGUI(player: Player) : Listener {
         val name = player.name
         var N = 0
         var Page = 1
-        val possessionData =
-            DatabaseManager.getUserData("$name.skyblock.possession", player, "getSkyblockPossession") as? Map<*, *>
-        if (possessionData != null) {
-            for (key in possessionData.keys) {
-                val PlayerPage =
-                    DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
-                if (Page == PlayerPage) {
+        val rawPossession = DatabaseManager.getUserData("$name.skyblock.possession", player, "getSkyblockPossession")
+        val possessionData = (rawPossession as? Map<*, *>)?.mapNotNull {
+            val key = it.key?.toString()
+            val value = it.value as? Boolean
+            if (key != null && value == true) key to value else null
+        }?.toMap()
+
+        if (!possessionData.isNullOrEmpty()) {
+            for ((key, _) in possessionData) {
+                val PlayerPage = DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 1
+                //if (Page == PlayerPage) {
                     val item = ItemStack(Material.GRASS_BLOCK, 1)
                     val itemMeta = item.itemMeta
                     var display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
@@ -60,10 +64,10 @@ class HwaSkyBlockMenuGUI(player: Player) : Listener {
                     itemMeta?.lore = loreList
                     item.itemMeta = itemMeta
                     inv.setItem(N, item)
-                }
-                N = N + 1
+                //}
+                N++
                 if (N >= 44) {
-                    Page = Page + 1
+                    Page++
                     N = 0
                 }
             }
@@ -78,7 +82,7 @@ class HwaSkyBlockMenuGUI(player: Player) : Listener {
                     val itemMeta = item.itemMeta
                     var display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.sharer")
                     display_name = Objects.requireNonNull<String?>(display_name).replace("{number}", key.toString())
-                    itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name.toString()))
+                    itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name))
                     val loreList = ArrayList<String?>()
                     for (lore in MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
                         loreList.add(ChatColor.translateAlternateColorCodes('&', lore))

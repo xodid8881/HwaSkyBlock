@@ -2,26 +2,26 @@ package org.hwabeag.hwaskyblock.api
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 
-    var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
-
-    override fun hasIsland(player: Player): Boolean { // 섬 보유 확인
+    override fun hasIsland(player: Player): Boolean {
         val name = player.name
-        return PlayerConfig.getInt("$name.skyblock.possession_count") != 0
+        val count = DatabaseManager.getUserData("$name.skyblock.possession_count", player, "getPlayerPossessionCount") as? Int ?: 0
+        return count != 0
     }
 
-    override fun hasOwner(player: Player, island_number: Int): Boolean { // 섬 리더 확인
+    override fun hasOwner(player: Player, island_number: Int): Boolean {
         val name = player.name
-        return SkyBlockConfig.getString("$island_number.leader") != name
+        val leader = DatabaseManager.getSkyBlockData(island_number.toString(), "$island_number.leader", "getSkyBlockLeader") as? String
+        return leader == name
     }
 
     override fun upgradeIsland(player: Player, island_number: Int, plus_size: Int) {
-        val size = SkyBlockConfig.getInt("$island_number.size")
-        SkyBlockConfig.set("$island_number.size", size + plus_size)
-        ConfigManager.saveConfigs()
+        val id = island_number.toString()
+        val current = DatabaseManager.getSkyBlockData(id, "$id.size", "getSkyBlockSize") as? Int ?: 0
+        DatabaseManager.setSkyBlockData(id, "$id.size", current + plus_size, "setSkyBlockSize")
     }
 }

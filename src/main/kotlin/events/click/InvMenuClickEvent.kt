@@ -45,10 +45,17 @@ class InvMenuClickEvent : Listener {
             ) {
                 e.isCancelled = true
                 val clickitem = e.currentItem?.getItemMeta()?.getDisplayName()
-                val possessionData = DatabaseManager.getUserData(name, player, "getSkyblockPossession")
+                val possessionData = DatabaseManager.getUserData(
+                    "$name.skyblock.possession",
+                    player,
+                    "getSkyblockPossession"
+                )
                 if (possessionData != null) {
-                    val possessionData =
-                        DatabaseManager.getUserData(name, player, "getSkyblockPossession") as? Map<*, *>
+                    val possessionData = DatabaseManager.getUserData(
+                        "$name.skyblock.possession",
+                        player,
+                        "getSkyblockPossession"
+                    ) as? Map<*, *>
                     if (possessionData != null) {
                         for (key in possessionData.keys) {
                             val islandId = key.toString()

@@ -81,6 +81,7 @@ class InvBuyClickEvent : Listener {
                                 return
                             }
                             econ.withdrawPlayer(player, buy.toDouble())
+                            DatabaseManager.insertSkyBlock(id.toString(), name)
                             DatabaseManager.setSkyBlockData(id.toString(), "$id.name", name, "setSkyBlockName")
                             DatabaseManager.setSkyBlockData(id.toString(), "$id.leader", name, "setSkyBlockLeader")
                             DatabaseManager.setSkyBlockData(id.toString(), "$id.join", true, "setSkyBlockJoin")

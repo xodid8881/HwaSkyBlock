@@ -5,29 +5,28 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
 class ConfigMaker(path: String?, fileName: String?) {
-    private val file: File? = File("$path/$fileName")
-    var config: FileConfiguration?
+    private val file: File = File("$path/$fileName")
+    var config: FileConfiguration = YamlConfiguration.loadConfiguration(file)
         private set
 
-    init {
-        this.config = this.file?.let { YamlConfiguration.loadConfiguration(it) }
-    }
-
     fun saveConfig() {
-        if (config == null) return
         try {
-            this.file?.let { this.config!!.save(it) }
+            config.save(file)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     fun exists(): Boolean {
-        return file != null && file.exists()
+        return file.exists()
     }
 
     fun reloadConfig() {
         if (!exists()) return
-        config = file?.let { YamlConfiguration.loadConfiguration(it) }
+        config = YamlConfiguration.loadConfiguration(file)
+    }
+
+    fun getFile(): File {
+        return file
     }
 }

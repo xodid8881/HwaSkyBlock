@@ -12,15 +12,12 @@ class JoinEvent : Listener {
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val player = event.getPlayer()
+        val player = event.player
         val name = player.name
         val hasSkyblockData = DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerSetting") != null
         if (!hasSkyblockData) {
-            DatabaseManager.setUserData("$name.skyblock.possession_count", player, 0, "setPlayerPossessionCount")
-            DatabaseManager.setUserData("$name.skyblock.pos", player, 0, "setPlayerPos")
-            DatabaseManager.setUserData("$name.skyblock.page", player, 1, "setPlayerPage")
-            DatabaseManager.setUserData("$name.skyblock.setting", player, "", "setPlayerSetting")
-            if (Config.getString("database.type") == "yml") {
+            DatabaseManager.insertUser(player)
+            if (ConfigManager.getConfig("setting")?.getString("database.type") == "yml") {
                 ConfigManager.saveConfigs()
             }
         }

@@ -5,13 +5,12 @@ import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.scheduler.BukkitRunnable
 import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockTask : Runnable {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
-    var PlayerConfig: FileConfiguration = ConfigManager.getConfig("player")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -21,15 +20,16 @@ class HwaSkyBlockTask : Runnable {
     override fun run() {
         for (player in Bukkit.getOnlinePlayers()) {
             val name = player.name
-            if (PlayerConfig.get("$name.skyblock") != null) {
+            val skyblockId = DatabaseManager.getUserData("$name.skyblock", player, null)
+            if (skyblockId != null) {
                 val world = player.world
                 val world_name = world.worldFolder.getName()
                 val number: Array<String?> =
                     world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (number[0] == "HwaSkyBlock") {
                     val block_to_id = number[1]
-                    val weather = SkyBlockConfig.getString("$block_to_id.setting.weather")
-                    val time = SkyBlockConfig.getString("$block_to_id.setting.time")
+                    val weather = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.setting.weather", "getSkyBlockWeather") as? String
+                    val time = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.setting.time", "getSkyBlockTime") as? String
                     object : BukkitRunnable() {
                         override fun run() {
                             if (weather == "clear") {
@@ -67,30 +67,28 @@ class HwaSkyBlockTask : Runnable {
                             }
                         }
                     }.runTask(HwaSkyBlock.plugin)
-                    val player_chunk = PlayerConfig.getString("$name.skyblock.pos")
+                    val player_chunk = DatabaseManager.getUserData("$name.skyblock.pos", player, "getPlayerPos") as? String
                     if (player_chunk != block_to_id) {
-                        if (SkyBlockConfig.get("$block_to_id.leader") != null) {
-                            val welcome_message = SkyBlockConfig.getString("$block_to_id.welcome_message")
+                        if (DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.leader", "getSkyBlockLeader") != null) {
+                            val welcome_message = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.welcome_message", "getSkyBlockWelcomeMessage") as? String
                             player.sendMessage(
                                 "$Prefix " + ChatColor.translateAlternateColorCodes(
                                     '&',
                                     Objects.requireNonNull<String?>(welcome_message)
                                 )
                             )
-                            val chunk_master = SkyBlockConfig.getString("$block_to_id.leader")
+                            val chunk_master = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.leader", "getSkyBlockLeader") as? String
+
                             player.sendTitle(
                                 Prefix,
                                 ChatColor.translateAlternateColorCodes('&', "&r주인장 &f: &e$chunk_master")
                             )
-                            PlayerConfig.set("$name.skyblock.pos", block_to_id)
-                            ConfigManager.saveConfigs()
+                            DatabaseManager.setUserData("$name.skyblock.pos", player, block_to_id.toString(), "setPlayerPos")
                         }
                     }
-                    PlayerConfig.set("$name.skyblock.pos", block_to_id)
-                    ConfigManager.saveConfigs()
+                    DatabaseManager.setUserData("$name.skyblock.pos", player, block_to_id.toString(), "setPlayerPos")
                 } else {
-                    PlayerConfig.set("$name.skyblock.pos", world_name)
-                    ConfigManager.saveConfigs()
+                    DatabaseManager.setUserData("$name.skyblock.pos", player, world_name, "setPlayerPos")
                 }
             }
         }

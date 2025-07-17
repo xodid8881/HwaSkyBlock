@@ -2,10 +2,10 @@ package org.hwabeag.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
+import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class UnloadBorderTask : Runnable {
-    var SkyBlockConfig: FileConfiguration = ConfigManager.getConfig("skyblock")!!
 
     override fun run() {
         for (player in Bukkit.getOnlinePlayers()) {
@@ -14,7 +14,10 @@ class UnloadBorderTask : Runnable {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                setWorldBorder(world.name, SkyBlockConfig.getInt("$id.size"))
+                val size = DatabaseManager
+                    .getSkyBlockData(id.toString(), "$id.size", "getSkyBlockSize")
+                    ?.toString()?.toIntOrNull() ?: 0
+                setWorldBorder(world.name, size)
             }
         }
     }

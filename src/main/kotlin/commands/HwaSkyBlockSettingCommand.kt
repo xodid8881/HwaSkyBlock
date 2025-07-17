@@ -10,8 +10,13 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.hwabeag.hwaskyblock.HwaSkyBlock.Companion.plugin
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblock
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblockShare
+import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
+import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
 import java.util.*
 
 class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
@@ -32,6 +37,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             val list: MutableList<String?> = ArrayList<String?>()
             list.add("주인변경")
             list.add("강제분해")
+            list.add("리로드")
             return list
         }
         if (args.size == 2) {
@@ -188,6 +194,24 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                 )
                 return true
             }
+        }
+        if (args[0].equals("리로드", ignoreCase = true)) {
+            ConfigManager.reloadConfigs()
+            val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
+            if (dbType == "mysql") {
+                UpdateUser().openConnection()
+                UpdateSkyblock().openConnection()
+                UpdateSkyblockShare().openConnection()
+            } else if (dbType == "sqlite") {
+                SQLiteManager.init(plugin)
+            }
+            sender.sendMessage(
+                Prefix + ChatColor.translateAlternateColorCodes(
+                    '&',
+                    Objects.requireNonNull<String?>(MessageConfig.getString("message-event.reload"))
+                )
+            )
+            return true
         }
         for (key in MessageConfig.getStringList("setting-command-help-message")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', key))
