@@ -1,9 +1,7 @@
 package org.hwabeag.hwaskyblock.api
 
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
 
 class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 

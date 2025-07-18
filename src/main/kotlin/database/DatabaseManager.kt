@@ -286,8 +286,8 @@ class DatabaseManager {
         }
     }
 
-    fun getUserDataStatic(data: String, player: Player, type: String?): Any? {
-        val uuid = player.uniqueId.toString()
+    fun getUserDataStatic(data: String, player: Player?, type: String?): Any? {
+        val uuid = player?.uniqueId.toString()
 
         return when (Config.get("database.type")) {
             "sqlite" -> {
@@ -661,7 +661,7 @@ class DatabaseManager {
             DatabaseManager().insertUserStatic(player)
 
         @JvmStatic
-        fun getUserData(data: String, player: Player, type: String?) =
+        fun getUserData(data: String, player: Player?, type: String?) =
             DatabaseManager().getUserDataStatic(data, player, type)
 
         @JvmStatic

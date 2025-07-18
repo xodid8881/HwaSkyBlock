@@ -168,9 +168,9 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 }
 
                 if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
-                    if (DatabaseManager.getSkyBlockData(
+                    if (DatabaseManager.getUserData(
                             id.toString(),
-                            "$id.sharer.${args[1]}",
+                            Bukkit.getServer().getPlayer(args[1].toString()),
                             "getSkyBlockName"
                         ) != null
                     ) {
