@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events.click
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -8,6 +9,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
@@ -49,13 +51,13 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.join"))
                         )
                     ) {
-                        val currentJoin =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean
-                                ?: true
+                        val currentJoin = DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.join", !currentJoin, "setSkyBlockJoin")
-                        var inv: HwaSkyBlockGlobalFragGUI? = null
-                        inv = HwaSkyBlockGlobalFragGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalFragGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -63,13 +65,13 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.break"))
                         )
                     ) {
-                        val currentBreak =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
-                                ?: false
+                        val currentBreak = DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.break", !currentBreak, "setSkyBlockBreak")
-                        var inv: HwaSkyBlockGlobalFragGUI? = null
-                        inv = HwaSkyBlockGlobalFragGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalFragGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -77,14 +79,13 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.place"))
                         )
                     ) {
-                        val currentPlace =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean
-                                ?: false
+                        val currentPlace = DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.place", !currentPlace, "setSkyBlockPlace")
-                        var inv: HwaSkyBlockGlobalFragGUI? = null
-                        inv = HwaSkyBlockGlobalFragGUI(id)
-                        inv.open(player)
-                        return
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalFragGUI(id)
+                            inv.open(player)
+                        }, 2L)
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
                             '&',
@@ -101,13 +102,13 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.pvp"))
                         )
                     ) {
-                        val currentPvp =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean
-                                ?: false
+                        val currentPvp = DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.pvp", !currentPvp, "setSkyBlockPvp")
-                        var inv: HwaSkyBlockGlobalFragGUI? = null
-                        inv = HwaSkyBlockGlobalFragGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalFragGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                 }

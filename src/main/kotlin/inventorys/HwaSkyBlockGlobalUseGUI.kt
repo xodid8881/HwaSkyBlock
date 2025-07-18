@@ -33,36 +33,36 @@ class HwaSkyBlockGlobalUseGUI(player: Player) : Listener {
         val id = number[1]
 
         val player_door =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.door", "getSkyblockUseDoor") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.door", "isSkyBlockDoor") as? Boolean ?: false
         val player_chest =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.chest", "getSkyblockUseChest") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.chest", "isSkyBlockChest") as? Boolean ?: false
         val player_barrel =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.barrel", "getSkyblockUseBarrel") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.barrel", "isSkyBlockBarrel") as? Boolean ?: false
         val player_hopper =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.hopper", "getSkyblockUseHopper") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.hopper", "isSkyBlockHopper") as? Boolean ?: false
         val player_furnace =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.furnace", "getSkyblockUseFurnace") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.furnace", "isSkyBlockFurnace") as? Boolean ?: false
         val player_blast_furnace =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.blast_furnace", "getSkyblockUseBlastFurnace") as? Boolean
+            DatabaseManager.getSkyBlockData("$id", "$id.use.blast_furnace", "isSkyBlockBlastFurnace") as? Boolean
                 ?: false
         val player_shulker_box =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.shulker_box", "getSkyblockUseShulkerBox") as? Boolean
+            DatabaseManager.getSkyBlockData("$id", "$id.use.shulker_box", "isSkyBlockShulkerBox") as? Boolean
                 ?: false
 
         val player_trapdoor =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.trapdoor", "getSkyblockUseTrapdoor") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.trapdoor", "isSkyBlockTrapdoor") as? Boolean ?: false
         val player_button =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.button", "getSkyblockUseButton") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.button", "isSkyBlockButton") as? Boolean ?: false
         val player_anvil =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.anvil", "getSkyblockUseAnvil") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.anvil", "isSkyBlockAnvil") as? Boolean ?: false
         val player_farm =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.farm", "getSkyblockUseFarm") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.farm", "isSkyBlockFarm") as? Boolean ?: false
         val player_beacon =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.beacon", "getSkyblockUseBeacon") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.beacon", "isSkyBlockBeacon") as? Boolean ?: false
         val player_minecart =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.minecart", "getSkyblockUseMinecart") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.minecart", "isSkyBlockMinecart") as? Boolean ?: false
         val player_boat =
-            DatabaseManager.getSkyBlockData("$id", "$id.use.boat", "getSkyblockUseBoat") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData("$id", "$id.use.boat", "isSkyBlockBoat") as? Boolean ?: false
 
 
         var item = ItemStack(Material.OAK_DOOR, 1)

@@ -62,55 +62,59 @@ class InvMenuClickEvent : Listener {
                             var displayName = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
                             displayName = displayName?.replace("{number}", islandId) ?: continue
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
-                                if (e.click == ClickType.SHIFT_LEFT) {
-                                    val leader = DatabaseManager.getSkyBlockData(
-                                        islandId,
-                                        "$islandId.leader",
-                                        "getSkyBlockLeader"
-                                    ) as? String
-                                    if (leader == name) {
-                                        var inv: HwaSkyBlockGlobalFragGUI? = null
-                                        inv = HwaSkyBlockGlobalFragGUI(islandId)
-                                        inv.open(player)
-                                    } else {
-                                        e.inventory.clear()
-                                        player.closeInventory()
-                                        val message = ChatColor.translateAlternateColorCodes(
-                                            '&',
-                                            Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.not_the_owner"))
-                                        )
-                                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
-                                    }
-                                    return
-                                }
-                                if (e.click == ClickType.SHIFT_RIGHT) {
-                                    val leader = DatabaseManager.getSkyBlockData(
-                                        islandId,
-                                        "$islandId.leader",
-                                        "getSkyBlockLeader"
-                                    ) as? String
-
-                                    if (leader == name) {
-                                        DatabaseManager.setUserData(
-                                            name,
-                                            player,
+                                if (number.size > 1 && number[1] != null && number[1] == islandId) {
+                                    if (e.click == ClickType.SHIFT_LEFT) {
+                                        val leader = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "setSkyblockSetting"
-                                        )
-                                        ConfigManager.Companion.saveConfigs()
-                                        var inv: HwaSkyBlockSharerGUI? = null
-                                        inv = HwaSkyBlockSharerGUI(player, islandId)
-                                        inv.open(player)
-                                    } else {
-                                        e.inventory.clear()
-                                        player.closeInventory()
-                                        val message = ChatColor.translateAlternateColorCodes(
-                                            '&',
-                                            Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.not_the_owner"))
-                                        )
-                                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
+                                            "$islandId.leader",
+                                            "getSkyBlockLeader"
+                                        ) as? String
+                                        if (leader == name) {
+                                            var inv: HwaSkyBlockGlobalFragGUI? = null
+                                            inv = HwaSkyBlockGlobalFragGUI(islandId)
+                                            inv.open(player)
+                                        } else {
+                                            e.inventory.clear()
+                                            player.closeInventory()
+                                            val message = ChatColor.translateAlternateColorCodes(
+                                                '&',
+                                                Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.not_the_owner"))
+                                            )
+                                            player.spigot()
+                                                .sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
+                                        }
+                                        return
                                     }
-                                    return
+                                    if (e.click == ClickType.SHIFT_RIGHT) {
+                                        val leader = DatabaseManager.getSkyBlockData(
+                                            islandId,
+                                            "$islandId.leader",
+                                            "getSkyBlockLeader"
+                                        ) as? String
+
+                                        if (leader == name) {
+                                            DatabaseManager.setUserData(
+                                                name,
+                                                player,
+                                                islandId,
+                                                "setSkyblockSetting"
+                                            )
+                                            ConfigManager.Companion.saveConfigs()
+                                            var inv: HwaSkyBlockSharerGUI? = null
+                                            inv = HwaSkyBlockSharerGUI(player, islandId)
+                                            inv.open(player)
+                                        } else {
+                                            e.inventory.clear()
+                                            player.closeInventory()
+                                            val message = ChatColor.translateAlternateColorCodes(
+                                                '&',
+                                                Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.not_the_owner"))
+                                            )
+                                            player.spigot()
+                                                .sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
+                                        }
+                                        return
+                                    }
                                 }
                                 if (e.click == ClickType.LEFT) {
                                     e.inventory.clear()

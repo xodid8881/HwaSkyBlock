@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events.click
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -8,8 +9,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalUseGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSettingGUI
 import java.util.*
 
@@ -52,18 +55,20 @@ class InvSettingClickEvent : Listener {
                         val monsterSpawn = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.monster_spawn",
-                            "getSkyblockMonsterSpawn"
+                            "isSkyBlockMonsterSpawn"
                         ) as? Boolean ?: false
 
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
                             "$id.setting.monster_spawn",
                             !monsterSpawn,
-                            "setSkyblockMonsterSpawn"
+                            "setSkyBlockMonsterSpawn"
                         )
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     item_name = ChatColor.translateAlternateColorCodes(
@@ -74,18 +79,20 @@ class InvSettingClickEvent : Listener {
                         val animalSpawn = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.animal_spawn",
-                            "getSkyblockAnimalSpawn"
+                            "isSkyBlockAnimalSpawn"
                         ) as? Boolean ?: false
 
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
                             "$id.setting.animal_spawn",
                             !animalSpawn,
-                            "setSkyblockAnimalSpawn"
+                            "setSkyBlockAnimalSpawn"
                         )
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     item_name = ChatColor.translateAlternateColorCodes(
@@ -96,7 +103,7 @@ class InvSettingClickEvent : Listener {
                         val weather = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.weather",
-                            "getSkyblockWeather"
+                            "isSkyBlockWeather"
                         ) as? String ?: "clear"
 
                         val nextWeather = when (weather) {
@@ -110,11 +117,13 @@ class InvSettingClickEvent : Listener {
                             id.toString(),
                             "$id.setting.weather",
                             nextWeather,
-                            "setSkyblockWeather"
+                            "setSkyBlockWeather"
                         )
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     item_name = ChatColor.translateAlternateColorCodes(
@@ -125,7 +134,7 @@ class InvSettingClickEvent : Listener {
                         val time = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.time",
-                            "getSkyblockTime"
+                            "isSkyBlockTime"
                         ) as? String ?: "morn"
                         val nextTime = when (time) {
                             "morn" -> "noon"
@@ -138,11 +147,13 @@ class InvSettingClickEvent : Listener {
                             id.toString(),
                             "$id.setting.time",
                             nextTime,
-                            "setSkyblockTime"
+                            "setSkyBlockTime"
                         )
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     item_name = ChatColor.translateAlternateColorCodes(
@@ -153,17 +164,19 @@ class InvSettingClickEvent : Listener {
                         val waterPhysics = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.water_physics",
-                            "getSkyblockWaterPhysics"
+                            "isSkyBlockWaterPhysics"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
                             "$id.setting.water_physics",
                             !waterPhysics,
-                            "setSkyblockWaterPhysics"
+                            "setSkyBlockWaterPhysics"
                         )
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     item_name = ChatColor.translateAlternateColorCodes(
@@ -174,18 +187,19 @@ class InvSettingClickEvent : Listener {
                         val lavaPhysics = DatabaseManager.getSkyBlockData(
                             id.toString(),
                             "$id.setting.lava_physics",
-                            "getSkyblockLavaPhysics"
+                            "isSkyBlockLavaPhysics"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
                             "$id.setting.lava_physics",
                             !lavaPhysics,
-                            "setSkyblockLavaPhysics"
+                            "setSkyBlockLavaPhysics"
                         )
-                        ConfigManager.Companion.saveConfigs()
-                        var inv: HwaSkyBlockSettingGUI? = null
-                        inv = HwaSkyBlockSettingGUI(id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSettingGUI(id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                 }

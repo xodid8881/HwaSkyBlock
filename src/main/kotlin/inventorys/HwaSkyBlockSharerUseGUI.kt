@@ -32,71 +32,20 @@ class HwaSkyBlockSharerUseGUI(player: Player, key: String?) : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val id = number[1]
 
-        val player_door =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.use.door", "getSkyblockSharerUseDoor") as? Boolean
-                ?: false
-        val player_chest = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.chest",
-            "getSkyblockSharerUseChest"
-        ) as? Boolean ?: false
-        val player_barrel = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.barrel",
-            "getSkyblockSharerUseBarrel"
-        ) as? Boolean ?: false
-        val player_hopper = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.hopper",
-            "getSkyblockSharerUseHopper"
-        ) as? Boolean ?: false
-        val player_furnace = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.furnace",
-            "getSkyblockSharerUseFurnace"
-        ) as? Boolean ?: false
-        val player_blast_furnace = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.blast_furnace",
-            "getSkyblockSharerUseBlastFurnace"
-        ) as? Boolean ?: false
-        val player_shulker_box = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.shulker_box",
-            "getSkyblockSharerUseShulkerBox"
-        ) as? Boolean ?: false
-
-        val player_trapdoor = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.trapdoor",
-            "getSkyblockSharerUseTrapdoor"
-        ) as? Boolean ?: false
-        val player_button = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.button",
-            "getSkyblockSharerUseButton"
-        ) as? Boolean ?: false
-        val player_anvil = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.anvil",
-            "getSkyblockSharerUseAnvil"
-        ) as? Boolean ?: false
-        val player_farm =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.use.farm", "getSkyblockSharerUseFarm") as? Boolean
-                ?: false
-        val player_beacon = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.beacon",
-            "getSkyblockSharerUseBeacon"
-        ) as? Boolean ?: false
-        val player_minecart = DatabaseManager.getSkyBlockData(
-            "$id",
-            "$id.sharer.$name.use.minecart",
-            "getSkyblockSharerUseMinecart"
-        ) as? Boolean ?: false
-        val player_boat =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.use.boat", "getSkyblockSharerUseBoat") as? Boolean
-                ?: false
+        val player_door = DatabaseManager.getShareData("$id", name!!, "use_door", null) as? Boolean ?: false
+        val player_chest = DatabaseManager.getShareData("$id", name, "use_chest", null) as? Boolean ?: false
+        val player_barrel = DatabaseManager.getShareData("$id", name, "use_barrel", null) as? Boolean ?: false
+        val player_hopper = DatabaseManager.getShareData("$id", name, "use_hopper", null) as? Boolean ?: false
+        val player_furnace = DatabaseManager.getShareData("$id", name, "use_furnace", null) as? Boolean ?: false
+        val player_blast_furnace = DatabaseManager.getShareData("$id", name, "use_blast_furnace", null) as? Boolean ?: false
+        val player_shulker_box = DatabaseManager.getShareData("$id", name, "use_shulker_box", null) as? Boolean ?: false
+        val player_trapdoor = DatabaseManager.getShareData("$id", name, "use_trapdoor", null) as? Boolean ?: false
+        val player_button = DatabaseManager.getShareData("$id", name, "use_button", null) as? Boolean ?: false
+        val player_anvil = DatabaseManager.getShareData("$id", name, "use_anvil", null) as? Boolean ?: false
+        val player_farm = DatabaseManager.getShareData("$id", name, "use_farm", null) as? Boolean ?: false
+        val player_beacon = DatabaseManager.getShareData("$id", name, "use_beacon", null) as? Boolean ?: false
+        val player_minecart = DatabaseManager.getShareData("$id", name, "use_minecart", null) as? Boolean ?: false
+        val player_boat = DatabaseManager.getShareData("$id", name, "use_boat", null) as? Boolean ?: false
 
         var item = ItemStack(Material.OAK_DOOR, 1)
         var itemMeta = item.itemMeta

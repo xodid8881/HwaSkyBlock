@@ -34,14 +34,11 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val id = number[1]
 
         val player_join =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.join", "getSkyblockSharerJoin") as? Boolean
-                ?: false
+            DatabaseManager.getShareData("$id", name, "can_join", null) as? Boolean ?: false
         val block_break =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.break", "getSkyblockSharerBreak") as? Boolean
-                ?: false
+            DatabaseManager.getShareData("$id", name, "can_break", null) as? Boolean ?: false
         val block_place =
-            DatabaseManager.getSkyBlockData("$id", "$id.sharer.$name.place", "getSkyblockSharerPlace") as? Boolean
-                ?: false
+            DatabaseManager.getShareData("$id", name, "can_place", null) as? Boolean ?: false
 
         val item = ItemStack(Material.PLAYER_HEAD, 1, 3.toShort())
         val skull = item.itemMeta as SkullMeta
@@ -153,7 +150,7 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val name = player.name
         var N = 0
         var Page = 1
-        val sharerData = DatabaseManager.getSkyBlockData("$id", "$id.sharer", "getSkyblockSharerList") as? Map<*, *>
+        val sharerData = DatabaseManager.getSharePermissionsMap("$id") as? Map<*, *>
         if (sharerData != null) {
             for (key in sharerData.keys) {
                 val PlayerPage =
@@ -185,7 +182,6 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         itemMeta?.setLore(loreList)
         item.itemMeta = itemMeta
         inv.setItem(45, item)
-
 
         item = ItemStack(Material.PAPER, 1)
         itemMeta = item.itemMeta

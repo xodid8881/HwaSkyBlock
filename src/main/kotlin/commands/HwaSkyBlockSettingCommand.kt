@@ -13,9 +13,7 @@ import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.HwaSkyBlock.Companion.plugin
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblock
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblockShare
-import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
+import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
 import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
 import java.util.*
 
@@ -199,9 +197,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             ConfigManager.reloadConfigs()
             val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
             if (dbType == "mysql") {
-                UpdateUser().openConnection()
-                UpdateSkyblock().openConnection()
-                UpdateSkyblockShare().openConnection()
+                MySQLManager.init(plugin)
             } else if (dbType == "sqlite") {
                 SQLiteManager.init(plugin)
             }

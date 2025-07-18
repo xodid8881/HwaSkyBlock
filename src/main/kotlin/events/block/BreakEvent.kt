@@ -34,13 +34,13 @@ class BreakEvent : Listener {
                 val leader =
                     DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
                 if (leader != name) {
-                    val isSharer = DatabaseManager.getSkyBlockShareList(id.toString()).contains(name)
+                    val isSharer = DatabaseManager.getShareDataList(id.toString()).contains(name)
 
                     val hasBreakPermission = if (!isSharer) {
                         DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
                             ?: false
                     } else {
-                        DatabaseManager.getSkyBlockSharePermission(id.toString(), name, "break") ?: false
+                        DatabaseManager.getShareData(id.toString(), name, "can_break", "isUseBreak") as? Boolean ?: false
                     }
 
                     if (!hasBreakPermission) {
@@ -60,7 +60,6 @@ class BreakEvent : Listener {
             }
         }
     }
-
 
     private fun isInRegion(block: Block, id: String?): Boolean {
         val x = block.x

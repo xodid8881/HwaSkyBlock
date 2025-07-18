@@ -45,31 +45,34 @@ class InvSharerUseClickEvent : Listener {
                     val id = number[1]
                     val clickitem = e.currentItem?.itemMeta?.displayName
                     val user_name =
-                        DatabaseManager.getUserData("$name.skyblock.setting", player, "getSkyblockSetting") as? String
+                        DatabaseManager.getUserData("$name.skyblock.setting", player, "getSkyblockSetting").toString()
 
                     if (clickitem == ChatColor.translateAlternateColorCodes(
                             '&',
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_DOOR"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.door",
-                                "getSkyblockSharerUseDoor"
+                                user_name,
+                                "use.door",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.door",
+                                user_name,
+                                "use.door",
                                 false,
-                                "setSkyblockSharerUseDoor"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.door",
+                                user_name,
+                                "use.door",
                                 true,
-                                "setSkyblockSharerUseDoor"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -82,24 +85,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.CHEST"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.chest",
-                                "getSkyblockSharerUseChest"
+                                user_name,
+                                "use.chest",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.chest",
+                                user_name,
+                                "use.chest",
                                 false,
-                                "setSkyblockSharerUseChest"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.chest",
+                                user_name,
+                                "use.chest",
                                 true,
-                                "setSkyblockSharerUseChest"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -112,24 +118,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BARREL"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.barrel",
-                                "getSkyblockSharerUseBarrel"
+                                user_name,
+                                "use.barrel",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.barrel",
+                                user_name,
+                                "use.barrel",
                                 false,
-                                "setSkyblockSharerUseBarrel"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.barrel",
+                                user_name,
+                                "use.barrel",
                                 true,
-                                "setSkyblockSharerUseBarrel"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -142,24 +151,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.HOPPER"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.hopper",
-                                "getSkyblockSharerUseHopper"
+                                user_name,
+                                "use.hopper",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.hopper",
+                                user_name,
+                                "use.hopper",
                                 false,
-                                "setSkyblockSharerUseHopper"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.hopper",
+                                user_name,
+                                "use.hopper",
                                 true,
-                                "setSkyblockSharerUseHopper"
+                                null
                             )
                         }
 
@@ -173,24 +185,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.FURNACE"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.furnace",
-                                "getSkyblockSharerUseFurnace"
+                                user_name,
+                                "use.furnace",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.furnace",
+                                user_name,
+                                "use.furnace",
                                 false,
-                                "setSkyblockSharerUseFurnace"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.furnace",
+                                user_name,
+                                "use.furnace",
                                 true,
-                                "setSkyblockSharerUseFurnace"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -203,24 +218,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BLAST_FURNACE"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.blast_furnace",
-                                "getSkyblockSharerUseBlastFurnace"
+                                user_name,
+                                "use.blast_furnace",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.blast_furnace",
+                                user_name,
+                                "use.blast_furnace",
                                 false,
-                                "setSkyblockSharerUseBlastFurnace"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.blast_furnace",
+                                user_name,
+                                "use.blast_furnace",
                                 true,
-                                "setSkyblockSharerUseBlastFurnace"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -233,24 +251,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.SHULKER_BOX"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.shulker_box",
-                                "getSkyblockSharerUseShulkerBox"
+                                user_name,
+                                "use.shulker_box",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.shulker_box",
+                                user_name,
+                                "use.shulker_box",
                                 false,
-                                "setSkyblockSharerUseShulkerBox"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.shulker_box",
+                                user_name,
+                                "use.shulker_box",
                                 true,
-                                "setSkyblockSharerUseShulkerBox"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -263,24 +284,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_TRAPDOOR"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.trapdoor",
-                                "getSkyblockSharerUseTrapdoor"
+                                user_name,
+                                "use.trapdoor",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.trapdoor",
+                                user_name,
+                                "use.trapdoor",
                                 false,
-                                "setSkyblockSharerUseTrapdoor"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.trapdoor",
+                                user_name,
+                                "use.trapdoor",
                                 true,
-                                "setSkyblockSharerUseTrapdoor"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -293,24 +317,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_BUTTON"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.button",
-                                "getSkyblockSharerUseButton"
+                                user_name,
+                                "use.button",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.button",
+                                user_name,
+                                "use.button",
                                 false,
-                                "setSkyblockSharerUseButton"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.button",
+                                user_name,
+                                "use.button",
                                 true,
-                                "setSkyblockSharerUseButton"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -323,24 +350,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.ANVIL"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.anvil",
-                                "getSkyblockSharerUseAnvil"
+                                user_name,
+                                "use.anvil",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.anvil",
+                                user_name,
+                                "use.anvil",
                                 false,
-                                "setSkyblockSharerUseAnvil"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.anvil",
+                                user_name,
+                                "use.anvil",
                                 true,
-                                "setSkyblockSharerUseAnvil"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -353,24 +383,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.SWEET_BERRIES"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.farm",
-                                "getSkyblockSharerUseFarm"
+                                user_name,
+                                "use.farm",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.farm",
+                                user_name,
+                                "use.farm",
                                 false,
-                                "setSkyblockSharerUseFarm"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.farm",
+                                user_name,
+                                "use.farm",
                                 true,
-                                "setSkyblockSharerUseFarm"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -383,24 +416,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BEACON"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.beacon",
-                                "getSkyblockSharerUseBeacon"
+                                user_name,
+                                "use.beacon",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.beacon",
+                                user_name,
+                                "use.beacon",
                                 false,
-                                "setSkyblockSharerUseBeacon"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.beacon",
+                                user_name,
+                                "use.beacon",
                                 true,
-                                "setSkyblockSharerUseBeacon"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -413,24 +449,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.MINECART"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.minecart",
-                                "getSkyblockSharerUseMinecart"
+                                user_name,
+                                "use.minecart",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.minecart",
+                                user_name,
+                                "use.minecart",
                                 false,
-                                "setSkyblockSharerUseMinecart"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.minecart",
+                                user_name,
+                                "use.minecart",
                                 true,
-                                "setSkyblockSharerUseMinecart"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null
@@ -443,24 +482,27 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_BOAT"))
                         )
                     ) {
-                        if (DatabaseManager.getSkyBlockData(
+                        if (DatabaseManager.getShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.boat",
-                                "getSkyblockSharerUseBoat"
+                                user_name,
+                                "use.boat",
+                                null
                             ) as? Boolean ?: false
                         ) {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.boat",
+                                user_name,
+                                "use.boat",
                                 false,
-                                "setSkyblockSharerUseBoat"
+                                null
                             )
                         } else {
-                            DatabaseManager.setSkyBlockData(
+                            DatabaseManager.setShareData(
                                 "$id",
-                                "$id.sharer.$user_name.use.boat",
+                                user_name,
+                                "use.boat",
                                 true,
-                                "setSkyblockSharerUseBoat"
+                                null
                             )
                         }
                         var inv: HwaSkyBlockSharerUseGUI? = null

@@ -12,9 +12,7 @@ import org.hwabeag.hwaskyblock.api.HwaSkyBlockAPIImpl
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockCommand
 import org.hwabeag.hwaskyblock.commands.HwaSkyBlockSettingCommand
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblock
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.UpdateSkyblockShare
-import org.hwabeag.hwaskyblock.database.mysql.user.UpdateUser
+import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
 import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
 import org.hwabeag.hwaskyblock.events.block.BreakEvent
 import org.hwabeag.hwaskyblock.events.block.PhysicsEvent
@@ -69,13 +67,12 @@ class HwaSkyBlock : JavaPlugin() {
         ConfigManager.setupConfigs(this)
 
         val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
-        if (dbType == "mysql") {
-            UpdateUser().openConnection()
-            UpdateSkyblock().openConnection()
-            UpdateSkyblockShare().openConnection()
-        } else if (dbType == "sqlite") {
-            SQLiteManager.init(this)
+        when (dbType) {
+            "mysql" -> MySQLManager.init(this)
+            "sqlite" -> SQLiteManager.init(this)
+            else -> error("지원하지 않는 데이터베이스 타입입니다: $dbType")
         }
+
 
         registerCommands()
         registerEvents()

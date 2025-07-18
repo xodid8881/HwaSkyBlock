@@ -46,93 +46,52 @@ class InvSharerClickEvent : Listener {
                 if (number[0] == "HwaSkyBlock") {
                     val id = number[1]
                     val clickitem = e.currentItem?.itemMeta?.displayName
-                    val sharerData =
-                        DatabaseManager.getSkyBlockData("$id", "$id.sharer", "getSkyblockSharerList") as? Map<*, *>
+                    val sharerData = DatabaseManager.getSharePermissionsMap(id.toString()) as? Map<*, *>
                     if (sharerData != null) {
                         for (key in sharerData.keys) {
                             var display_name = MessageConfig.getString("gui-slot-item-name.sharer_setting.sharer")
-                            display_name =
-                                Objects.requireNonNull<String?>(display_name).replace("{name}", key.toString())
+                            display_name = Objects.requireNonNull(display_name)?.replace("{name}", key.toString())
 
-                            if (clickitem == ChatColor.translateAlternateColorCodes('&', display_name)) {
+                            if (clickitem == ChatColor.translateAlternateColorCodes('&', display_name.toString())) {
 
                                 if (e.click == ClickType.SHIFT_LEFT) {
-                                    val player_join = DatabaseManager.getSkyBlockData(
+                                    val player_join = (sharerData[key] as? Map<*, *>)?.get("join") as? Boolean ?: false
+                                    DatabaseManager.setShareData(
                                         "$id",
-                                        "$id.sharer.$key.join",
-                                        "getSkyblockSharerJoin"
-                                    ) as? Boolean ?: false
-                                    if (player_join) {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.join",
-                                            false,
-                                            "setSkyblockSharerJoin"
-                                        )
-                                    } else {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.join",
-                                            true,
-                                            "setSkyblockSharerJoin"
-                                        )
-                                    }
-                                    var inv: HwaSkyBlockSharerGUI? = null
-                                    inv = HwaSkyBlockSharerGUI(player, id)
+                                        key.toString(),
+                                        "join",
+                                        !player_join,
+                                        "setSkyblockSharerJoin"
+                                    )
+                                    val inv = HwaSkyBlockSharerGUI(player, id)
                                     inv.open(player)
                                     return
                                 }
 
                                 if (e.click == ClickType.SHIFT_RIGHT) {
-                                    val block_break = DatabaseManager.getSkyBlockData(
+                                    val block_break = (sharerData[key] as? Map<*, *>)?.get("break") as? Boolean ?: false
+                                    DatabaseManager.setShareData(
                                         "$id",
-                                        "$id.sharer.$key.break",
-                                        "getSkyblockSharerBreak"
-                                    ) as? Boolean ?: false
-                                    if (block_break) {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.break",
-                                            false,
-                                            "setSkyblockSharerBreak"
-                                        )
-                                    } else {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.break",
-                                            true,
-                                            "setSkyblockSharerBreak"
-                                        )
-                                    }
-                                    var inv: HwaSkyBlockSharerGUI? = null
-                                    inv = HwaSkyBlockSharerGUI(player, id)
+                                        key.toString(),
+                                        "break",
+                                        !block_break,
+                                        "setSkyblockSharerBreak"
+                                    )
+                                    val inv = HwaSkyBlockSharerGUI(player, id)
                                     inv.open(player)
                                     return
                                 }
 
                                 if (e.click == ClickType.LEFT) {
-                                    val block_place = DatabaseManager.getSkyBlockData(
+                                    val block_place = (sharerData[key] as? Map<*, *>)?.get("place") as? Boolean ?: false
+                                    DatabaseManager.setShareData(
                                         "$id",
-                                        "$id.sharer.$key.place",
-                                        "getSkyblockSharerPlace"
-                                    ) as? Boolean ?: false
-                                    if (block_place) {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.place",
-                                            false,
-                                            "setSkyblockSharerPlace"
-                                        )
-                                    } else {
-                                        DatabaseManager.setSkyBlockData(
-                                            "$id",
-                                            "$id.sharer.$key.place",
-                                            true,
-                                            "setSkyblockSharerPlace"
-                                        )
-                                    }
-                                    var inv: HwaSkyBlockSharerGUI? = null
-                                    inv = HwaSkyBlockSharerGUI(player, id)
+                                        key.toString(),
+                                        "place",
+                                        !block_place,
+                                        "setSkyblockSharerPlace"
+                                    )
+                                    val inv = HwaSkyBlockSharerGUI(player, id)
                                     inv.open(player)
                                     return
                                 }
@@ -144,14 +103,14 @@ class InvSharerClickEvent : Listener {
                                         key.toString(),
                                         "setSkyblockSetting"
                                     )
-                                    var inv: HwaSkyBlockSharerUseGUI? = null
-                                    inv = HwaSkyBlockSharerUseGUI(player, key.toString())
+                                    val inv = HwaSkyBlockSharerUseGUI(player, key.toString())
                                     inv.open(player)
                                     return
                                 }
                             }
                         }
                     }
+
                     if (clickitem == ChatColor.translateAlternateColorCodes(
                             '&',
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.previous_page"))

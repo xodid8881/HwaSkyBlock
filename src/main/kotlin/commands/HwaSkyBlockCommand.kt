@@ -56,10 +56,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     val chunkX = chunk.x.toLong()
                     val id = chunkZ xor (chunkX shl 32)
                     val list: MutableList<String?> = ArrayList<String?>()
-                    val shareList = DatabaseManager.getSkyBlockShareList(id.toString())
+                    val shareList = DatabaseManager.getShareList(id.toString())
                     if (shareList.isNotEmpty()) {
                         list.addAll(shareList)
                     }
+
                     return list
 
                 }
@@ -181,23 +182,30 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    DatabaseManager.addSkyBlockShare(id.toString(), args[1]!!)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "can_break", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "can_place", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_door", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_chest", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_barrel", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_hopper", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_furnace", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_blast_furnace", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_shulker_box", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_trapdoor", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_button", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_anvil", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_farm", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_beacon", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_minecart", true)
-                    DatabaseManager.setSkyBlockSharePermission(id.toString(), args[1]!!, "use_boat", true)
+                    DatabaseManager.insertShare(id.toString(), args[1]!!)
+
+                    val permissions = listOf(
+                        "setUseBreak" to "can_break",
+                        "setUsePlace" to "can_place",
+                        "setUseDoor" to "use_door",
+                        "setUseChest" to "use_chest",
+                        "setUseBarrel" to "use_barrel",
+                        "setUseHopper" to "use_hopper",
+                        "setUseFurnace" to "use_furnace",
+                        "setUseBlastFurnace" to "use_blast_furnace",
+                        "setUseShulkerBox" to "use_shulker_box",
+                        "setUseTrapdoor" to "use_trapdoor",
+                        "setUseButton" to "use_button",
+                        "setUseAnvil" to "use_anvil",
+                        "setUseFarm" to "use_farm",
+                        "setUseBeacon" to "use_beacon",
+                        "setUseMinecart" to "use_minecart",
+                        "setUseBoat" to "use_boat"
+                    )
+
+                    for ((type, data) in permissions) {
+                        DatabaseManager.setShareData(id.toString(), args[1]!!, data, true, type)
+                    }
 
 
                     DatabaseManager.setUserData("${args[1]}.skyblock.sharer.$id", sender, args[1]!!, "setPlayerSetting")
@@ -244,7 +252,8 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     return true
                 }
                 if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
-                    if (!DatabaseManager.getSkyBlockShareList(id.toString()).contains(args[1])) {
+                    val sharedPlayers = DatabaseManager.getShareDataList(id.toString())
+                    if (!sharedPlayers.contains(args[1])) {
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
                                 '&',
@@ -253,8 +262,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    DatabaseManager.removeSkyBlockShare(id.toString(), args[1].toString())
-                    DatabaseManager.removeSkyBlockSharePermission(id.toString(), args[1].toString())
+                    DatabaseManager.deleteShare(id.toString(), args[1].toString())
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -549,9 +557,9 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
     fun SkyBlock_Teleport(player: Player, number: String) {
         val name = player.name
-        if (DatabaseManager.getSkyBlockData(number.toString(), "$number.leader", "getSkyBlockLeader") != name) {
-            if (DatabaseManager.getSkyBlockShareList(number.toString()).contains(name)) {
-                if (DatabaseManager.getSkyBlockSharePermission(number.toString(), name, "can_join") == false) {
+        if (DatabaseManager.getSkyBlockData(number, "$number.leader", "getSkyBlockLeader") != name) {
+            if (DatabaseManager.getShareDataList(number).contains(name)) {
+                if (DatabaseManager.getShareData(number, name, "can_join", "isUseJoin") == false) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -561,7 +569,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     return
                 }
             } else {
-                if (DatabaseManager.getSkyBlockData(number.toString(), "$number.join", "isSkyBlockJoin") == false) {
+                if (DatabaseManager.getSkyBlockData(number, "$number.join", "isSkyBlockJoin") == false) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -572,7 +580,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 }
             }
         }
-        if (DatabaseManager.getSkyBlockData(number.toString(), "$number.home", "getSkyBlockHome") == 0) {
+        if (DatabaseManager.getSkyBlockData(number, "$number.home", "getSkyBlockHome") == 0) {
             val worldPath = "worlds/HwaSkyBlock.$number"
             var world = Bukkit.getServer().getWorld(worldPath)
             if (world == null) {

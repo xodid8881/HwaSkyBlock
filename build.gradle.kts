@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.hwabeag"
-version = "1.0-SNAPSHOT"
+version = "v1.0.1-beta"
 
 repositories {
     mavenCentral()

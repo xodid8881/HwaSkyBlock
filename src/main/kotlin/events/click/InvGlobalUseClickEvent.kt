@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events.click
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -8,8 +9,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalUseGUI
 import java.util.*
 
@@ -52,9 +55,11 @@ class InvGlobalUseClickEvent : Listener {
                             DatabaseManager.getSkyBlockData(id.toString(), "$id.use.door", "isSkyBlockDoor") as? Boolean
                                 ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.use.door", !current, "setSkyBlockDoor")
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -68,10 +73,11 @@ class InvGlobalUseClickEvent : Listener {
                             "isSkyBlockChest"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.use.chest", !current, "setSkyBlockChest")
-                        ConfigManager.Companion.saveConfigs()
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -85,9 +91,11 @@ class InvGlobalUseClickEvent : Listener {
                             "isSkyBlockBarrel"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.use.barrel", !current, "setSkyBlockBarrel")
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -101,9 +109,11 @@ class InvGlobalUseClickEvent : Listener {
                             "isSkyBlockHopper"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.use.hopper", !current, "setSkyBlockHopper")
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -122,9 +132,11 @@ class InvGlobalUseClickEvent : Listener {
                             !current,
                             "setSkyBlockFurnace"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -143,9 +155,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockBlastFurnace"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -164,9 +178,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockShulkerBox"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -185,9 +201,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockTrapdoor"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -206,9 +224,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockButton"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -227,9 +247,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockAnvil"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -248,9 +270,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockFarm"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -269,10 +293,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockBeacon"
                         )
-
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -291,9 +316,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockMinecart"
                         )
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -312,10 +339,11 @@ class InvGlobalUseClickEvent : Listener {
                             !currentValue,
                             "setSkyBlockBoat"
                         )
-
-                        var inv: HwaSkyBlockGlobalUseGUI? = null
-                        inv = HwaSkyBlockGlobalUseGUI(player)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockGlobalUseGUI(player)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                 }
