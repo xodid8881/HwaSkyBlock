@@ -61,6 +61,7 @@ class MySQLUserDAO {
                                 emptyMap<String, Any>()
                             }
                         }
+
                         col == "player_pos" && value is String -> {
                             result[col] = try {
                                 val obj = parser.parse(value) as JSONObject
@@ -69,6 +70,7 @@ class MySQLUserDAO {
                                 emptyMap<String, Any>()
                             }
                         }
+
                         else -> result[col] = value ?: ""
                     }
                 }

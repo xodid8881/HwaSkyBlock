@@ -4,7 +4,8 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.database.mysql.share.MySQLShareDAO
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.*
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.MySQLSkyblockDAO
+import org.hwabeag.hwaskyblock.database.mysql.skyblock.hwaskyblock_skyblock_mysql
 import org.hwabeag.hwaskyblock.database.mysql.user.MySQLUserDAO
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
 import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
@@ -13,7 +14,6 @@ import org.hwabeag.hwaskyblock.database.sqlite.skyblock.SkyblockDAO
 import org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_skyblock_sqlite
 import org.hwabeag.hwaskyblock.database.sqlite.user.UserDAO
 import org.json.simple.JSONObject
-import kotlin.toString
 
 
 class DatabaseManager {
@@ -233,6 +233,7 @@ class DatabaseManager {
                 val dao = SkyblockDAO()
                 dao.updateSkyblock(skyblockId, mutableMapOf(column to stringValue))
             }
+
             "mysql" -> {
                 val dao = MySQLSkyblockDAO()
                 dao.updateSkyblock(skyblockId, mutableMapOf(column to stringValue))
@@ -302,11 +303,13 @@ class DatabaseManager {
                             val rawPossession = playerSetting["possession"] as? Map<*, *> ?: return null
                             return rawPossession.filterValues { it == true }
                         }
+
                         "sharer" -> {
                             val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
                             val rawSharer = playerSetting["sharer"] as? Map<*, *> ?: return null
                             return rawSharer.filterValues { it == true }
                         }
+
                         "page" -> return result["player_page"]
                     }
                 }
@@ -325,16 +328,19 @@ class DatabaseManager {
                             val rawPossession = playerSetting["possession"] as? Map<*, *> ?: return null
                             return rawPossession.filterValues { it == true }
                         }
+
                         "sharer" -> {
                             val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
                             val rawSharer = playerSetting["sharer"] as? Map<*, *> ?: return null
                             return rawSharer.filterValues { it == true }
                         }
+
                         "page" -> return result["player_page"]
                     }
                 }
                 return result[data]
             }
+
             else -> null
         }
     }
@@ -555,10 +561,12 @@ class DatabaseManager {
                 val dao = ShareDAO()
                 dao.getShareList(skyblockId)
             }
+
             "mysql" -> {
                 val dao = MySQLShareDAO()
                 dao.getShareList(skyblockId)
             }
+
             else -> emptyList()
         }
     }
@@ -569,6 +577,7 @@ class DatabaseManager {
                 val dao = ShareDAO()
                 dao.deleteShare(skyblockId, playerName)
             }
+
             "mysql" -> {
                 val dao = MySQLShareDAO()
                 dao.deleteShare(skyblockId, playerName)
@@ -614,6 +623,7 @@ class DatabaseManager {
 
                 result
             }
+
             "mysql" -> {
                 val dao = MySQLShareDAO()
                 val shareList = dao.getShareList(skyblockId)

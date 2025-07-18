@@ -51,7 +51,9 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.join"))
                         )
                     ) {
-                        val currentJoin = DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean ?: false
+                        val currentJoin =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean
+                                ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.join", !currentJoin, "setSkyBlockJoin")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -65,7 +67,9 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.break"))
                         )
                     ) {
-                        val currentBreak = DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean ?: false
+                        val currentBreak =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
+                                ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.break", !currentBreak, "setSkyBlockBreak")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -79,7 +83,9 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.place"))
                         )
                     ) {
-                        val currentPlace = DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean ?: false
+                        val currentPlace =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean
+                                ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.place", !currentPlace, "setSkyBlockPlace")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -102,7 +108,9 @@ class InvGlobalFragClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.global_setting.pvp"))
                         )
                     ) {
-                        val currentPvp = DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean ?: false
+                        val currentPvp =
+                            DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean
+                                ?: false
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.pvp", !currentPvp, "setSkyBlockPvp")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {

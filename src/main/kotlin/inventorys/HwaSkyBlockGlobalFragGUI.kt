@@ -27,9 +27,12 @@ class HwaSkyBlockGlobalFragGUI(key: String?) : Listener {
     }
 
     private fun initItemSetting(id: String?) {
-        val player_join = DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean ?: false
-        val block_break = DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean ?: false
-        val block_place = DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean ?: false
+        val player_join =
+            DatabaseManager.getSkyBlockData(id.toString(), "$id.join", "isSkyBlockJoin") as? Boolean ?: false
+        val block_break =
+            DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean ?: false
+        val block_place =
+            DatabaseManager.getSkyBlockData(id.toString(), "$id.place", "isSkyBlockPlace") as? Boolean ?: false
         val pvp_place = DatabaseManager.getSkyBlockData(id.toString(), "$id.pvp", "isSkyBlockPvp") as? Boolean ?: false
 
         var item = ItemStack(Material.SPYGLASS, 1)

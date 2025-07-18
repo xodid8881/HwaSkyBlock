@@ -38,9 +38,15 @@ class MoveEvent : Listener {
                 "getSkyBlockLeader"
             ) as? String
             if (leader != null && leader != name) {
-                val isSharer = (DatabaseManager.getShareData(block_to_id.toString(), "", "getShareList", null) as? List<*>)?.contains(name) == true
+                val isSharer = (DatabaseManager.getShareData(
+                    block_to_id.toString(),
+                    "",
+                    "getShareList",
+                    null
+                ) as? List<*>)?.contains(name) == true
                 val hasJoinPermission = if (isSharer) {
-                    DatabaseManager.getShareData(block_to_id.toString(), name, "can_join", "isUseJoin") as? Boolean ?: true
+                    DatabaseManager.getShareData(block_to_id.toString(), name, "can_join", "isUseJoin") as? Boolean
+                        ?: true
                 } else {
                     DatabaseManager.getSkyBlockData(
                         block_to_id.toString(),

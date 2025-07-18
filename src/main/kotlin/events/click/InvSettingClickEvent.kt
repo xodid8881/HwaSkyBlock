@@ -12,7 +12,6 @@ import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalUseGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSettingGUI
 import java.util.*
 

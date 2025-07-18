@@ -27,12 +27,31 @@ class HwaSkyBlockSettingGUI(key: String?) : Listener {
     }
 
     private fun initItemSetting(id: String?) {
-        val monster_spawn = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.monster_spawn", "isSkyBlockMonsterSpawn") as? Boolean ?: false
-        val animal_spawn = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.animal_spawn", "isSkyBlockAnimalSpawn") as? Boolean ?: false
-        val weather = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.weather", "isSkyBlockWeather") as? String ?: "clear"
-        val time = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.time", "isSkyBlockTime") as? String ?: "morn"
-        val water_physics = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.water_physics", "isSkyBlockWaterPhysics") as? Boolean ?: false
-        val lava_physics = DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.lava_physics", "isSkyBlockLavaPhysics") as? Boolean ?: false
+        val monster_spawn = DatabaseManager.getSkyBlockData(
+            id.toString(),
+            "$id.setting.monster_spawn",
+            "isSkyBlockMonsterSpawn"
+        ) as? Boolean ?: false
+        val animal_spawn = DatabaseManager.getSkyBlockData(
+            id.toString(),
+            "$id.setting.animal_spawn",
+            "isSkyBlockAnimalSpawn"
+        ) as? Boolean ?: false
+        val weather =
+            DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.weather", "isSkyBlockWeather") as? String
+                ?: "clear"
+        val time =
+            DatabaseManager.getSkyBlockData(id.toString(), "$id.setting.time", "isSkyBlockTime") as? String ?: "morn"
+        val water_physics = DatabaseManager.getSkyBlockData(
+            id.toString(),
+            "$id.setting.water_physics",
+            "isSkyBlockWaterPhysics"
+        ) as? Boolean ?: false
+        val lava_physics = DatabaseManager.getSkyBlockData(
+            id.toString(),
+            "$id.setting.lava_physics",
+            "isSkyBlockLavaPhysics"
+        ) as? Boolean ?: false
 
         var item = ItemStack(Material.ZOMBIE_HEAD, 1)
         var itemMeta = item.itemMeta

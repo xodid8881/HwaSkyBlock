@@ -28,8 +28,16 @@ class HwaSkyBlockTask : Runnable {
                     world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (number[0] == "HwaSkyBlock") {
                     val block_to_id = number[1]
-                    val weather = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.setting.weather", "getSkyBlockWeather") as? String
-                    val time = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.setting.time", "getSkyBlockTime") as? String
+                    val weather = DatabaseManager.getSkyBlockData(
+                        block_to_id.toString(),
+                        "$block_to_id.setting.weather",
+                        "getSkyBlockWeather"
+                    ) as? String
+                    val time = DatabaseManager.getSkyBlockData(
+                        block_to_id.toString(),
+                        "$block_to_id.setting.time",
+                        "getSkyBlockTime"
+                    ) as? String
                     object : BukkitRunnable() {
                         override fun run() {
                             if (weather == "clear") {
@@ -67,23 +75,42 @@ class HwaSkyBlockTask : Runnable {
                             }
                         }
                     }.runTask(HwaSkyBlock.plugin)
-                    val player_chunk = DatabaseManager.getUserData("$name.skyblock.pos", player, "getPlayerPos") as? String
+                    val player_chunk =
+                        DatabaseManager.getUserData("$name.skyblock.pos", player, "getPlayerPos") as? String
                     if (player_chunk != block_to_id) {
-                        if (DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.leader", "getSkyBlockLeader") != null) {
-                            val welcome_message = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.welcome_message", "getSkyBlockWelcomeMessage") as? String
+                        if (DatabaseManager.getSkyBlockData(
+                                block_to_id.toString(),
+                                "$block_to_id.leader",
+                                "getSkyBlockLeader"
+                            ) != null
+                        ) {
+                            val welcome_message = DatabaseManager.getSkyBlockData(
+                                block_to_id.toString(),
+                                "$block_to_id.welcome_message",
+                                "getSkyBlockWelcomeMessage"
+                            ) as? String
                             player.sendMessage(
                                 "$Prefix " + ChatColor.translateAlternateColorCodes(
                                     '&',
                                     Objects.requireNonNull<String?>(welcome_message)
                                 )
                             )
-                            val chunk_master = DatabaseManager.getSkyBlockData(block_to_id.toString(), "$block_to_id.leader", "getSkyBlockLeader") as? String
+                            val chunk_master = DatabaseManager.getSkyBlockData(
+                                block_to_id.toString(),
+                                "$block_to_id.leader",
+                                "getSkyBlockLeader"
+                            ) as? String
 
                             player.sendTitle(
                                 Prefix,
                                 ChatColor.translateAlternateColorCodes('&', "&r주인장 &f: &e$chunk_master")
                             )
-                            DatabaseManager.setUserData("$name.skyblock.pos", player, block_to_id.toString(), "setPlayerPos")
+                            DatabaseManager.setUserData(
+                                "$name.skyblock.pos",
+                                player,
+                                block_to_id.toString(),
+                                "setPlayerPos"
+                            )
                         }
                     }
                     DatabaseManager.setUserData("$name.skyblock.pos", player, block_to_id.toString(), "setPlayerPos")

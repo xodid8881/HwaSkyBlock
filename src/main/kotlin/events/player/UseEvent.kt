@@ -91,194 +91,104 @@ class UseEvent : Listener {
 
         if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") == null) return
 
-        if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") != name) {
-            val isSharer = DatabaseManager.getSkyBlockData(id, "$id.sharer.$name", "getSkyBlockShare") != null
+        val isSharer = DatabaseManager.getShareList(id).contains(name)
 
-            val hasBreakPermission = if (isSharer)
-                DatabaseManager.getSkyBlockData(id, "$id.sharer.$name.use.break", "getSkyBlockShareBreak") as? Boolean
-                    ?: false
-            else
-                DatabaseManager.getSkyBlockData(id, "$id.use.break", "getSkyBlockBreak") as? Boolean ?: false
+        val hasBreakPermission = if (isSharer)
+            DatabaseManager.getShareData(id, name, "use_break", "isUseBreak") as? Boolean ?: false
+        else
+            DatabaseManager.getSkyBlockData(id, "$id.use.break", "getSkyBlockBreak") as? Boolean ?: false
 
-            if (!hasBreakPermission) {
-                sendNoPermissionActionBar(damager)
+        if (!hasBreakPermission) {
+            sendNoPermissionActionBar(damager)
+            event.isCancelled = true
+        }
+    }
+
+
+    @EventHandler
+    fun onEntityCollision(event: VehicleEntityCollisionEvent) {
+        val vehicle: Entity = event.vehicle
+        val entity = event.entity
+
+        if (entity is Player && (vehicle is Minecart || vehicle is Boat)) {
+            val name = entity.name
+            val world = entity.world
+            val worldName = world.worldFolder.name
+            val parts = worldName.split('.')
+            if (parts[0] != "HwaSkyBlock" || parts.size < 2) return
+
+            val id = parts[1]
+
+            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader")
+            if (leader == null || leader == name) return
+
+            val isSharer = DatabaseManager.getShareList(id).contains(name)
+
+            if (vehicle is Minecart) {
+                val hasPermission = if (isSharer)
+                    DatabaseManager.getShareData(id, name, "use_minecart", "isUseMinecart") as? Boolean ?: false
+                else
+                    DatabaseManager.getSkyBlockData(id, "$id.use.minecart", "getSkyBlockMinecart") as? Boolean ?: false
+
+                if (!hasPermission) {
+                    sendNoPermissionActionBar(entity)
+                    event.isCancelled = true
+                }
+            }
+            if (vehicle is Boat) {
+                val hasPermission = if (isSharer)
+                    DatabaseManager.getShareData(id, name, "use_boat", "isUseBoat") as? Boolean ?: false
+                else
+                    DatabaseManager.getSkyBlockData(id, "$id.use.boat", "getSkyBlockBoat") as? Boolean ?: false
+
+                if (!hasPermission) {
+                    sendNoPermissionActionBar(entity)
+                    event.isCancelled = true
+                }
+            }
+        }
+    }
+
+
+    @EventHandler
+    fun onEntityMount(event: EntityMountEvent) {
+        val entity = event.entity
+        val vehicle = event.mount
+
+        if (entity is Player && (vehicle is Minecart || vehicle is Boat)) {
+            val name = entity.name
+            val world = entity.world
+            val worldName = world.worldFolder.name
+            val parts = worldName.split('.')
+            if (parts.size < 2 || parts[0] != "HwaSkyBlock") return
+
+            val id = parts[1]
+            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader")
+            if (leader == null || leader == name) return
+
+            val isSharer = DatabaseManager.getShareList(id).contains(name)
+
+            val hasPermission = when {
+                vehicle is Minecart -> if (isSharer)
+                    DatabaseManager.getShareData(id, name, "use_minecart", "isUseMinecart") as? Boolean ?: false
+                else
+                    DatabaseManager.getSkyBlockData(id, "$id.use.minecart", "getSkyBlockMinecart") as? Boolean ?: false
+
+                vehicle is Boat -> if (isSharer)
+                    DatabaseManager.getShareData(id, name, "use_boat", "isUseBoat") as? Boolean ?: false
+                else
+                    DatabaseManager.getSkyBlockData(id, "$id.use.boat", "getSkyBlockBoat") as? Boolean ?: false
+
+                else -> true
+            }
+
+            if (!hasPermission) {
+                sendNoPermissionActionBar(entity)
                 event.isCancelled = true
             }
         }
     }
 
-    @EventHandler
-    fun onEntityCollision(event: VehicleEntityCollisionEvent) {
-        val vehicle: Entity = event.getVehicle()
-        val entity = event.entity
-        if (entity is Player && vehicle is Minecart) {
-            val name = entity.name
-            val world = entity.world
-            val world_name = world.worldFolder.getName()
-            val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (number[0] == "HwaSkyBlock") {
-                val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
-                        if (DatabaseManager.getSkyBlockData(
-                                id.toString(),
-                                "$id.sharer.$name",
-                                "getSkyBlockShare"
-                            ) == null
-                        ) {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.use.minecart",
-                                    "getSkyBlockMinecart"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                                return
-                            }
-                        } else {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.sharer.$name.use.minecart",
-                                    "getSkyBlockShareMinecart"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                                return
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-        if (entity is Player && vehicle is Boat) {
-            val name = entity.name
-            val world = entity.world
-            val world_name = world.worldFolder.getName()
-            val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (number[0] == "HwaSkyBlock") {
-                val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
-                        if (DatabaseManager.getSkyBlockData(
-                                id.toString(),
-                                "$id.sharer.$name",
-                                "getSkyBlockShare"
-                            ) == null
-                        ) {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.use.boat",
-                                    "getSkyBlockBoat"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                            }
-                        } else {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.sharer.$name.use.boat",
-                                    "getSkyBlockShareBoat"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    fun onEntityMount(event: EntityMountEvent) {
-        val entity = event.getEntity()
-        val vehicle = event.mount
-        if (entity is Player && vehicle is Minecart) {
-            val name = entity.name
-            val world = entity.world
-            val world_name = world.worldFolder.getName()
-            val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (number[0] == "HwaSkyBlock") {
-                val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
-                        if (DatabaseManager.getSkyBlockData(
-                                id.toString(),
-                                "$id.sharer.$name",
-                                "getSkyBlockShare"
-                            ) == null
-                        ) {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.use.minecart",
-                                    "getSkyBlockMinecart"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                                return
-                            }
-                        } else {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.sharer.$name.use.minecart",
-                                    "getSkyBlockShareMinecart"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                                return
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (entity is Player && vehicle is Boat) {
-            val name = entity.name
-            val world = entity.world
-            val world_name = world.worldFolder.getName()
-            val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (number[0] == "HwaSkyBlock") {
-                val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != name) {
-                        if (DatabaseManager.getSkyBlockData(
-                                id.toString(),
-                                "$id.sharer.$name",
-                                "getSkyBlockShare"
-                            ) == null
-                        ) {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.use.boat",
-                                    "getSkyBlockBoat"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                            }
-                        } else {
-                            if (DatabaseManager.getSkyBlockData(
-                                    id.toString(),
-                                    "$id.sharer.$name.use.boat",
-                                    "getSkyBlockShareBoat"
-                                ) as? Boolean != true
-                            ) {
-                                sendNoPermissionActionBar(entity)
-                                event.isCancelled = true
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
@@ -315,27 +225,19 @@ class UseEvent : Listener {
     ) {
         val customCrop = ItemsAdder.getCustomBlock(block)
         val customCropDisplayName = customCrop.itemMeta!!.displayName
+
         for (type in Config.getConfigurationSection("Custom-Crop-Interact")?.getKeys(false) ?: emptySet()) {
             if (customCropDisplayName.contains(type)) {
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.sharer.$name", "getSkyBlockShare") == null) {
-                    if (!(DatabaseManager.getSkyBlockData(id.toString(), "$id.use.farm", "getSkyBlockFarm") as? Boolean
-                            ?: false)
-                    ) {
-                        sendNoPermissionActionBar(player)
-                        event.isCancelled = true
-                        return
-                    }
-                } else {
-                    if (!(DatabaseManager.getSkyBlockData(
-                            id.toString(),
-                            "$id.sharer.$name.use.farm",
-                            "getSkyBlockFarm"
-                        ) as? Boolean ?: false)
-                    ) {
-                        sendNoPermissionActionBar(player)
-                        event.isCancelled = true
-                        return
-                    }
+                val isSharer = DatabaseManager.getShareList(id).contains(name)
+                val hasFarmPermission = if (isSharer)
+                    DatabaseManager.getShareData(id, name, "use_farm", "isUseFarm") as? Boolean ?: false
+                else
+                    DatabaseManager.getSkyBlockData(id, "$id.use.farm", "getSkyBlockFarm") as? Boolean ?: false
+
+                if (!hasFarmPermission) {
+                    sendNoPermissionActionBar(player)
+                    event.isCancelled = true
+                    return
                 }
             }
         }
@@ -378,7 +280,8 @@ class UseEvent : Listener {
         permission: String,
         event: PlayerInteractEvent
     ) {
-        if (DatabaseManager.getSkyBlockData(id, "$id.sharer.$name", "getSkyBlockShare") == null) {
+        val isSharer = DatabaseManager.getShareList(id).contains(name)
+        if (!isSharer) {
             if (!(DatabaseManager.getSkyBlockData(id, "$id.use.$permission", "getSkyBlockPermission") as? Boolean
                     ?: false)
             ) {
@@ -386,10 +289,11 @@ class UseEvent : Listener {
                 event.isCancelled = true
             }
         } else {
-            if (!(DatabaseManager.getSkyBlockData(
+            if (!(DatabaseManager.getShareData(
                     id,
-                    "$id.sharer.$name.use.$permission",
-                    "getSkyBlockPermission"
+                    name,
+                    "use_$permission",
+                    null
                 ) as? Boolean ?: false)
             ) {
                 sendNoPermissionActionBar(player)

@@ -7,13 +7,19 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 
     override fun hasIsland(player: Player): Boolean {
         val name = player.name
-        val count = DatabaseManager.getUserData("$name.skyblock.possession_count", player, "getPlayerPossessionCount") as? Int ?: 0
+        val count =
+            DatabaseManager.getUserData("$name.skyblock.possession_count", player, "getPlayerPossessionCount") as? Int
+                ?: 0
         return count != 0
     }
 
     override fun hasOwner(player: Player, island_number: Int): Boolean {
         val name = player.name
-        val leader = DatabaseManager.getSkyBlockData(island_number.toString(), "$island_number.leader", "getSkyBlockLeader") as? String
+        val leader = DatabaseManager.getSkyBlockData(
+            island_number.toString(),
+            "$island_number.leader",
+            "getSkyBlockLeader"
+        ) as? String
         return leader == name
     }
 

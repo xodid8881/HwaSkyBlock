@@ -60,6 +60,7 @@ class UserDAO {
                                 emptyMap<String, Any>()
                             }
                         }
+
                         col == "player_pos" && value is String -> {
                             result[col] = try {
                                 val obj = parser.parse(value) as JSONObject
@@ -68,6 +69,7 @@ class UserDAO {
                                 emptyMap<String, Any>()
                             }
                         }
+
                         else -> result[col] = value ?: ""
                     }
                 }

@@ -17,7 +17,8 @@ class MySQLManager(private val plugin: JavaPlugin) {
         val database = Config.getString("database.mysql.database") ?: "hwaskyblock"
         val username = Config.getString("database.mysql.user") ?: "root"
         val password = Config.getString("database.mysql.password") ?: ""
-        val url = "jdbc:mysql://$host:$port/$database?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Seoul"
+        val url =
+            "jdbc:mysql://$host:$port/$database?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Seoul"
 
         Class.forName("com.mysql.cj.jdbc.Driver")
         connection = DriverManager.getConnection(url, username, password)

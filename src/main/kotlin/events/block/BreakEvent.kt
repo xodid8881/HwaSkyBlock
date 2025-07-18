@@ -40,7 +40,8 @@ class BreakEvent : Listener {
                         DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
                             ?: false
                     } else {
-                        DatabaseManager.getShareData(id.toString(), name, "can_break", "isUseBreak") as? Boolean ?: false
+                        DatabaseManager.getShareData(id.toString(), name, "can_break", "isUseBreak") as? Boolean
+                            ?: false
                     }
 
                     if (!hasBreakPermission) {

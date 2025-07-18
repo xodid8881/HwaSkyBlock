@@ -37,7 +37,8 @@ class HwaSkyBlockSharerUseGUI(player: Player, key: String?) : Listener {
         val player_barrel = DatabaseManager.getShareData("$id", name, "use_barrel", null) as? Boolean ?: false
         val player_hopper = DatabaseManager.getShareData("$id", name, "use_hopper", null) as? Boolean ?: false
         val player_furnace = DatabaseManager.getShareData("$id", name, "use_furnace", null) as? Boolean ?: false
-        val player_blast_furnace = DatabaseManager.getShareData("$id", name, "use_blast_furnace", null) as? Boolean ?: false
+        val player_blast_furnace =
+            DatabaseManager.getShareData("$id", name, "use_blast_furnace", null) as? Boolean ?: false
         val player_shulker_box = DatabaseManager.getShareData("$id", name, "use_shulker_box", null) as? Boolean ?: false
         val player_trapdoor = DatabaseManager.getShareData("$id", name, "use_trapdoor", null) as? Boolean ?: false
         val player_button = DatabaseManager.getShareData("$id", name, "use_button", null) as? Boolean ?: false
