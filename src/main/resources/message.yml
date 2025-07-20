@@ -59,6 +59,7 @@ gui-name:
   sharer_use_list: "공유자 사용 금지 목록" # 공유자들의 블럭 사용금지 GUI 이름
   sky_block_menu_list: "섬 메뉴" # 플레이어 섬 메뉴 GUI 이름
   world_setting: "월드 환경 설정" # 섬 월드 환경을 설정합니다.
+  geyser_menu_list: "월드 메뉴 도우미" # 베드락 유저 호환성 상향
 
 gui-slot-item-name:
   previous_page: "&a이전 페이지"
@@ -67,7 +68,18 @@ gui-slot-item-name:
   next_page: "&a다음 페이지"
   next_page-lore:
     - "&a- &f클릭 시 다음 페이지로 이동합니다."
-    -
+
+  geyser_menu:
+    sky_world_move: "&a섬 이동"
+    sky_world_move-lore:
+      - "&a- &f클릭 시 섬으로 이동합니다."
+    sky_world_global: "&a글로벌 권한관리"
+    sky_world_global-lore:
+      - "&a- &f클릭 시 섬의 글로벌 권한을 관리합니다."
+    sky_world_sharer: "&a공유자 권한관리"
+    sky_world_sharer-lore:
+      - "&a- &f클릭 시 섬의 공유자 권한을 관리합니다."
+
   world_setting:
     monster_spawn: "&a- &7몬스터 스폰 관리"
     monster_spawn-lore:
@@ -246,6 +258,10 @@ gui-slot-item-name:
     my-lore:
       - "&a- &fSHIFT 좌클릭 &7시 해당 섬 글로벌 권한관리"
       - "&a- &fSHIFT 우클릭 &7시 해당 섬 공유자 권한관리"
+      - "&a- &f좌클릭 &7시 해당 섬로 텔레포트"
+    geyser_my: "&a- &7{number} &a- &7나의 섬"
+    geyser_my-lore:
+      - "&a- &f클릭 &7시 해당 섬을 관리합니다."
     sharer: "&a- &7{number} &a- &7공유 섬"
     sharer-lore:
       - "&a- &f좌클릭 &7시 해당 섬로 텔레포트"

@@ -9,12 +9,12 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockMenuGUI
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
+import org.hwabeag.hwaskyblock.inventorys.geyser.GeyserMenuGUI
 import java.util.*
 
 class InvMenuClickEvent : Listener {
@@ -24,10 +24,6 @@ class InvMenuClickEvent : Listener {
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
-
-    fun isBedrockPlayer(player: Player): Boolean {
-        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
 
     @EventHandler
     fun onClick(e: InventoryClickEvent) {
@@ -59,7 +55,18 @@ class InvMenuClickEvent : Listener {
                     if (possessionData != null) {
                         for (key in possessionData.keys) {
                             val islandId = key.toString()
-                            var displayName = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
+                            var displayName =
+                                MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.geyser_my")
+                            displayName = displayName?.replace("{number}", islandId) ?: continue
+                            if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
+                                if (number.size > 1 && number[1] != null && number[1] == islandId) {
+                                    var inv: GeyserMenuGUI? = null
+                                    inv = GeyserMenuGUI(islandId)
+                                    inv.open(player)
+                                    return
+                                }
+                            }
+                            displayName = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
                             displayName = displayName?.replace("{number}", islandId) ?: continue
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
                                 if (number.size > 1 && number[1] != null && number[1] == islandId) {
@@ -74,7 +81,6 @@ class InvMenuClickEvent : Listener {
                                             inv = HwaSkyBlockGlobalFragGUI(islandId)
                                             inv.open(player)
                                         } else {
-                                            e.inventory.clear()
                                             player.closeInventory()
                                             val message = ChatColor.translateAlternateColorCodes(
                                                 '&',
@@ -104,7 +110,6 @@ class InvMenuClickEvent : Listener {
                                             inv = HwaSkyBlockSharerGUI(player, islandId)
                                             inv.open(player)
                                         } else {
-                                            e.inventory.clear()
                                             player.closeInventory()
                                             val message = ChatColor.translateAlternateColorCodes(
                                                 '&',
@@ -117,7 +122,6 @@ class InvMenuClickEvent : Listener {
                                     }
                                 }
                                 if (e.click == ClickType.LEFT) {
-                                    e.inventory.clear()
                                     player.closeInventory()
                                     val homeValue = DatabaseManager.getSkyBlockData(
                                         islandId,
@@ -213,7 +217,6 @@ class InvMenuClickEvent : Listener {
 
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
                                 if (e.click == ClickType.LEFT) {
-                                    e.inventory.clear()
                                     player.closeInventory()
                                     val homeValue = DatabaseManager.getSkyBlockData(
                                         islandId,

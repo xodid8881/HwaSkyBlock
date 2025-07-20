@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events.click
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -7,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerUseGUI
@@ -21,10 +22,6 @@ class InvSharerUseClickEvent : Listener {
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
-
-    fun isBedrockPlayer(player: Player): Boolean {
-        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
 
     @EventHandler
     fun onClick(e: InventoryClickEvent) {
@@ -75,9 +72,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -108,9 +107,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -141,9 +142,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -174,10 +177,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -208,9 +212,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -241,9 +247,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -274,9 +282,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -307,9 +317,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -340,9 +352,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -373,9 +387,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -406,9 +422,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -439,9 +457,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -472,9 +492,11 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                     if (clickitem == ChatColor.translateAlternateColorCodes(
@@ -505,9 +527,12 @@ class InvSharerUseClickEvent : Listener {
                                 null
                             )
                         }
-                        var inv: HwaSkyBlockSharerUseGUI? = null
-                        inv = HwaSkyBlockSharerUseGUI(player, user_name)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerUseGUI(player, user_name)
+                            inv.open(player)
+                        }, 2L)
+                        return
                     }
                 }
             }

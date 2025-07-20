@@ -18,6 +18,7 @@ import org.hwabeag.hwaskyblock.events.block.BreakEvent
 import org.hwabeag.hwaskyblock.events.block.PhysicsEvent
 import org.hwabeag.hwaskyblock.events.block.PlaceEvent
 import org.hwabeag.hwaskyblock.events.click.*
+import org.hwabeag.hwaskyblock.events.click.geyser.GeyserMenuClickEvent
 import org.hwabeag.hwaskyblock.events.entity.SpawnEvent
 import org.hwabeag.hwaskyblock.events.player.JoinEvent
 import org.hwabeag.hwaskyblock.events.player.MoveEvent
@@ -33,6 +34,7 @@ class HwaSkyBlock : JavaPlugin() {
     private fun registerEvents() {
         server.pluginManager.registerEvents(BreakEvent(), this)
 
+        server.pluginManager.registerEvents(GeyserMenuClickEvent(), this)
         server.pluginManager.registerEvents(InvBuyClickEvent(), this)
         server.pluginManager.registerEvents(InvGlobalFragClickEvent(), this)
         server.pluginManager.registerEvents(InvGlobalUseClickEvent(), this)

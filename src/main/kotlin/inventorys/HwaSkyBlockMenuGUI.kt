@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import java.util.*
@@ -26,6 +27,10 @@ class HwaSkyBlockMenuGUI(player: Player) : Listener {
         initItemSetting(player)
     }
 
+    fun isBedrockPlayer(player: Player): Boolean {
+        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
+    }
+
     private fun initItemSetting(player: Player) {
         val name = player.name
         var N = 0
@@ -41,31 +46,39 @@ class HwaSkyBlockMenuGUI(player: Player) : Listener {
             for ((key, _) in possessionData) {
                 val PlayerPage =
                     DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 1
-                //if (Page == PlayerPage) {
-                val item = ItemStack(Material.GRASS_BLOCK, 1)
-                val itemMeta = item.itemMeta
-                var display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
-                display_name = Objects.requireNonNull<String?>(display_name).replace("{number}", key.toString())
-                itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name.toString()))
-                val loreList = ArrayList<String?>()
-                val world_name = player.world.worldFolder.getName()
-                val number: Array<String?> =
-                    world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (number[0] == "HwaSkyBlock") {
-                    val id = number[1]
-                    if (id == key) {
-                        for (lore in MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.my-lore")) {
-                            loreList.add(ChatColor.translateAlternateColorCodes('&', lore))
+                if (Page == PlayerPage) {
+                    val item = ItemStack(Material.GRASS_BLOCK, 1)
+                    val itemMeta = item.itemMeta
+                    var display_name: String? = null
+                    if (isBedrockPlayer(player)) {
+                        var display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.geyser_my")
+                    } else {
+                        var display_name = MessageConfig.getString("gui-slot-item-name.sky_block_menu_list.my")
+                    }
+                    display_name = Objects.requireNonNull<String?>(display_name).replace("{number}", key)
+                    itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', display_name))
+                    val loreList = ArrayList<String?>()
+                    val world_name = player.world.worldFolder.getName()
+                    val number: Array<String?> =
+                        world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    if (number[0] == "HwaSkyBlock") {
+                        val id = number[1]
+                        if (id == key) {
+                            if (isBedrockPlayer(player)) {
+                                for (lore in MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.geyser_my-lore")) {
+                                    loreList.add(ChatColor.translateAlternateColorCodes('&', lore))
+                                }
+                            } else {
+                                for (lore in MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.my-lore")) {
+                                    loreList.add(ChatColor.translateAlternateColorCodes('&', lore))
+                                }
+                            }
                         }
                     }
+                    itemMeta?.lore = loreList
+                    item.itemMeta = itemMeta
+                    inv.setItem(N, item)
                 }
-                for (lore in MessageConfig.getStringList("gui-slot-item-name.sky_block_menu_list.sharer-lore")) {
-                    loreList.add(ChatColor.translateAlternateColorCodes('&', lore))
-                }
-                itemMeta?.lore = loreList
-                item.itemMeta = itemMeta
-                inv.setItem(N, item)
-                //}
                 N++
                 if (N >= 44) {
                     Page++

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
@@ -24,10 +23,6 @@ class InvBuyClickEvent : Listener {
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
-
-    fun isBedrockPlayer(player: Player): Boolean {
-        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
 
     @EventHandler
     fun onClick(e: InventoryClickEvent) {

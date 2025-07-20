@@ -1,5 +1,6 @@
 package org.hwabeag.hwaskyblock.events.click
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
@@ -8,7 +9,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.geysermc.floodgate.api.FloodgateApi
+import org.hwabeag.hwaskyblock.HwaSkyBlock
 import org.hwabeag.hwaskyblock.database.DatabaseManager
 import org.hwabeag.hwaskyblock.database.config.ConfigManager
 import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
@@ -23,10 +24,6 @@ class InvSharerClickEvent : Listener {
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
     )
-
-    fun isBedrockPlayer(player: Player): Boolean {
-        return FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
-    }
 
     @EventHandler
     fun onClick(e: InventoryClickEvent) {
@@ -63,8 +60,11 @@ class InvSharerClickEvent : Listener {
                                         !player_join,
                                         "setSkyblockSharerJoin"
                                     )
-                                    val inv = HwaSkyBlockSharerGUI(player, id)
-                                    inv.open(player)
+                                    player.closeInventory()
+                                    Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                                        val inv = HwaSkyBlockSharerGUI(player, id)
+                                        inv.open(player)
+                                    }, 2L)
                                     return
                                 }
 
@@ -77,8 +77,11 @@ class InvSharerClickEvent : Listener {
                                         !block_break,
                                         "setSkyblockSharerBreak"
                                     )
-                                    val inv = HwaSkyBlockSharerGUI(player, id)
-                                    inv.open(player)
+                                    player.closeInventory()
+                                    Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                                        val inv = HwaSkyBlockSharerGUI(player, id)
+                                        inv.open(player)
+                                    }, 2L)
                                     return
                                 }
 
@@ -91,8 +94,11 @@ class InvSharerClickEvent : Listener {
                                         !block_place,
                                         "setSkyblockSharerPlace"
                                     )
-                                    val inv = HwaSkyBlockSharerGUI(player, id)
-                                    inv.open(player)
+                                    player.closeInventory()
+                                    Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                                        val inv = HwaSkyBlockSharerGUI(player, id)
+                                        inv.open(player)
+                                    }, 2L)
                                     return
                                 }
 
@@ -103,8 +109,11 @@ class InvSharerClickEvent : Listener {
                                         key.toString(),
                                         "setSkyblockSetting"
                                     )
-                                    val inv = HwaSkyBlockSharerUseGUI(player, key.toString())
-                                    inv.open(player)
+                                    player.closeInventory()
+                                    Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                                        val inv = HwaSkyBlockSharerUseGUI(player, id)
+                                        inv.open(player)
+                                    }, 2L)
                                     return
                                 }
                             }
@@ -120,9 +129,11 @@ class InvSharerClickEvent : Listener {
                             DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
                         val plus = page - 1
                         DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
-                        var inv: HwaSkyBlockSharerGUI? = null
-                        inv = HwaSkyBlockSharerGUI(player, id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerGUI(player, id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
 
@@ -135,9 +146,11 @@ class InvSharerClickEvent : Listener {
                             DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
                         val plus = page + 1
                         DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
-                        var inv: HwaSkyBlockSharerGUI? = null
-                        inv = HwaSkyBlockSharerGUI(player, id)
-                        inv.open(player)
+                        player.closeInventory()
+                        Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
+                            val inv = HwaSkyBlockSharerGUI(player, id)
+                            inv.open(player)
+                        }, 2L)
                         return
                     }
                 }
