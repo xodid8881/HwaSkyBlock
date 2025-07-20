@@ -32,24 +32,24 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
     ): MutableList<String?>? {
         if (args.size == 1) {
             val list: MutableList<String?> = ArrayList<String?>()
-            list.add("구매")
-            list.add("메뉴")
-            list.add("이동")
-            list.add("공유추가")
-            list.add("공유제거")
-            list.add("권한관리")
-            list.add("세부관리")
+            list.add(MessageConfig.getString("sub-command-message.buy"))
+            list.add(MessageConfig.getString("sub-command-message.menu"))
+            list.add(MessageConfig.getString("sub-command-message.move"))
+            list.add(MessageConfig.getString("sub-command-message.add-share"))
+            list.add(MessageConfig.getString("sub-command-message.remove-share"))
+            list.add(MessageConfig.getString("sub-command-message.permission-management"))
+            list.add(MessageConfig.getString("sub-command-message.detailed-management"))
             return list
         }
         if (args.size == 2) {
-            if (args[0].equals("공유추가", ignoreCase = true)) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.add-share"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 for (p in Bukkit.getOnlinePlayers()) {
                     list.add(p.name)
                 }
                 return list
             }
-            if (args[0].equals("공유제거", ignoreCase = true)) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.remove-share"), ignoreCase = true)) {
                 if (sender is Player) {
                     val chunk = sender.location.chunk
                     val chunkZ = chunk.z.toLong()
@@ -65,13 +65,13 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
                 }
             }
-            if (args[0].equals("권한관리", ignoreCase = true)) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.permission-management"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 list.add("글로벌")
                 list.add("공유자")
                 return list
             }
-            if (args[0].equals("세부관리", ignoreCase = true)) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.detailed-management"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 list.add("섬이름")
                 list.add("환영말")
@@ -104,18 +104,18 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             }
             return true
         }
-        if (args[0].equals("구매", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.buy"), ignoreCase = true)) {
             val inv = HwaSkyBlockBuyGUI()
             inv.open(sender)
             return true
         }
-        if (args[0].equals("메뉴", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.menu"), ignoreCase = true)) {
             DatabaseManager.setUserData("$name.skyblock.page", sender, 1, "setPlayerPage")
             val inv = HwaSkyBlockMenuGUI(sender)
             inv.open(sender)
             return true
         }
-        if (args[0].equals("이동", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.move"), ignoreCase = true)) {
             if (args.size == 1) {
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(
@@ -141,7 +141,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             }
             return true
         }
-        if (args[0].equals("공유추가", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.add-share"), ignoreCase = true)) {
             if (args.size == 1) {
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(
@@ -227,7 +227,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 return true
             }
         }
-        if (args[0].equals("공유제거", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.remove-share"), ignoreCase = true)) {
             if (args.size == 1) {
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(
@@ -281,7 +281,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             }
             return true
         }
-        if (args[0].equals("권한관리", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.permission-management"), ignoreCase = true)) {
             if (args.size == 1) {
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(
@@ -338,7 +338,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             }
             return true
         }
-        if (args[0].equals("세부관리", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.detailed-management"), ignoreCase = true)) {
             if (args.size == 1) {
                 sender.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(

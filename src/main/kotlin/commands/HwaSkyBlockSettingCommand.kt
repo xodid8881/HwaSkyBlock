@@ -33,13 +33,13 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
     ): MutableList<String?>? {
         if (args.size == 1) {
             val list: MutableList<String?> = ArrayList<String?>()
-            list.add("주인변경")
-            list.add("강제분해")
-            list.add("리로드")
+            list.add(MessageConfig.getString("sub-command-message.changer"))
+            list.add(MessageConfig.getString("sub-command-message.forced-disassembly"))
+            list.add(MessageConfig.getString("sub-command-message.reload"))
             return list
         }
         if (args.size == 2) {
-            if (args[0].equals("주인변경", ignoreCase = true)) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.changer"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 for (p in Bukkit.getOnlinePlayers()) {
                     list.add(p.name)
@@ -70,7 +70,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             }
             return true
         }
-        if (args[0].equals("주인변경", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.changer"), ignoreCase = true)) {
             val world = sender.world
             val world_name = world.worldFolder.getName()
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -139,7 +139,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                 return true
             }
         }
-        if (args[0].equals("강제분해", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.forced-disassembly"), ignoreCase = true)) {
             val world = sender.world
             val world_name = world.worldFolder.getName()
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -193,7 +193,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                 return true
             }
         }
-        if (args[0].equals("리로드", ignoreCase = true)) {
+        if (args[0].equals(MessageConfig.getString("sub-command-message.reload"), ignoreCase = true)) {
             ConfigManager.reloadConfigs()
             val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
             if (dbType == "mysql") {

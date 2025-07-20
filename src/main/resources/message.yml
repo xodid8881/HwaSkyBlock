@@ -1,3 +1,15 @@
+sub-command-message:
+  buy: "구매"
+  menu: "메뉴"
+  move: "이동"
+  add-share: "공유추가"
+  remove-share: "공유추가"
+  permission-management: "권한관리"
+  detailed-management: "세부관리"
+  changer: "주인변경"
+  forced-disassembly: "강제분해"
+  reload: "리로드"
+
 command-help-message:
   - "&a&l[섬]&7 &7&lChunk Command Help"
   - "&a&l---------------------------------------------"
