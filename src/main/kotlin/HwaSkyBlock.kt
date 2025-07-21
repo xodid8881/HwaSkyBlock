@@ -176,7 +176,7 @@ class HwaSkyBlock : JavaPlugin() {
                 val ignore = ArrayList<String?>(mutableListOf<String?>("uid.dat", "session.lock"))
                 if (!ignore.contains(source.name)) {
                     if (source.isDirectory) {
-                        if (!target.exists()) if (!target.mkdirs()) throw IOException("세계 디렉토리를 만들 수 없습니다!")
+                        if (!target.exists()) if (!target.mkdirs()) throw IOException("Unable to create world directory!")
                         val files = source.list()
                         for (file in files!!) {
                             val srcFile = File(source, file)
@@ -210,12 +210,12 @@ class HwaSkyBlock : JavaPlugin() {
                     }
                 }
                 if (target.delete()) {
-                    println(target.absolutePath + " 삭제 성공")
+                    println(target.absolutePath + " Delete successful")
                 } else {
-                    println(target.absolutePath + " 삭제 실패")
+                    println(target.absolutePath + " Deletion failed")
                 }
             } catch (e: Exception) {
-                throw RuntimeException("파일 삭제 중 오류 발생", e)
+                throw RuntimeException("An error occurred while deleting the file", e)
             }
         }
     }

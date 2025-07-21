@@ -103,7 +103,7 @@ class HwaSkyBlockTask : Runnable {
 
                             player.sendTitle(
                                 Prefix,
-                                ChatColor.translateAlternateColorCodes('&', "&r주인장 &f: &e$chunk_master")
+                                ChatColor.translateAlternateColorCodes('&', "&rLeader &f: &e$chunk_master")
                             )
                             DatabaseManager.setUserData(
                                 "$name.skyblock.pos",
