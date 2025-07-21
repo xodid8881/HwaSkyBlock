@@ -73,7 +73,7 @@ fun handleIslandCommand(player: Player) {
 
 이 프로젝트는 **오픈소스**입니다.  
 Pull Request 및 Issue 등록은 언제든 환영합니다!  
-기여 가이드 및 API 문서는 [Wiki]([https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b])에서 확인하실 수 있습니다.
+기여 가이드 및 API 문서는 [Wiki]([https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b?pvs=143])에서 확인하실 수 있습니다.
 
 - 👉 [이슈 등록하러 가기](https://github.com/xodid8881/HwaSkyBlock/issues)
 - 👉 [PR 보내기](https://github.com/xodid8881/HwaSkyBlock/pulls)
