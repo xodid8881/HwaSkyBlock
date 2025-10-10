@@ -11,7 +11,7 @@ sub-command-message:
   reload: "리로드"
 
 command-help-message:
-  - "&a&l[섬]&7 &7&lChunk Command Help"
+  - "&a&l[섬]&7 &7&lSkyBlock Command Help"
   - "&a&l---------------------------------------------"
   - " &7&l/섬"
   - "  &a&lL &r&7구매 &a&l- &r&7섬를 구매합니다."
@@ -24,7 +24,7 @@ command-help-message:
   - "&a&l---------------------------------------------"
 
 setting-command-help-message:
-  - "&a&l[섬]&7 &7&lChunk Setting Command Help"
+  - "&a&l[섬]&7 &7&lSkyBlock Setting Command Help"
   - "&a&l---------------------------------"
   - " &7&l/섬설정"
   - "  &a&lL &r&7주인변경 &a&l- &r&7섬 주인을 변경합니다."
@@ -381,4 +381,5 @@ gui-slot-item-name:
     OAK_BOAT-lore:
       - "&a- &7클릭 시 &a보트 권한 &7을 설정합니다."
     OAK_BOAT-true: "&a- &7보트 사용 &a허용"
+
     OAK_BOAT-false: "&a- &7카트 사용 &c거부"
