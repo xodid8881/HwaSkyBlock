@@ -1,6 +1,6 @@
 name: HwaSkyBlock
 version: 'v1.0.5-beta'
-main: org.hwabeag.hwaskyblock.HwaSkyBlock
+main: org.hwabaeg.hwaskyblock.HwaSkyBlock
 api-version: '1.13'
 
 commands:

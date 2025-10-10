@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.api
+package org.hwabaeg.hwaskyblock.api
 
 import org.bukkit.entity.Player
-import org.hwabeag.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
 class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 

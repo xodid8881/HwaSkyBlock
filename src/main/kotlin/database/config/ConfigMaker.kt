@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.database.config
+package org.hwabaeg.hwaskyblock.database.config
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration

@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.events.click
+package org.hwabaeg.hwaskyblock.events.click
 
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.io.File
 import java.util.*
 

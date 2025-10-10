@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.events.player
+package org.hwabaeg.hwaskyblock.events.player
 
 import dev.lone.itemsadder.api.CustomBlock
 import dev.lone.itemsadder.api.ItemsAdder
@@ -19,8 +19,8 @@ import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.vehicle.VehicleDamageEvent
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class UseEvent : Listener {

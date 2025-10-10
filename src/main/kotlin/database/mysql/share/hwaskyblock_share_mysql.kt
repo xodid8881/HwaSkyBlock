@@ -1,6 +1,6 @@
-package org.hwabeag.hwaskyblock.database.mysql.skyblock
+package org.hwabaeg.hwaskyblock.database.mysql.skyblock
 
-import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
+import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
 import java.sql.Connection
 
 class hwaskyblock_share_mysql {

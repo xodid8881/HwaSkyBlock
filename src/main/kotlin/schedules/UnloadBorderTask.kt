@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.schedules
+package org.hwabaeg.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
-import org.hwabeag.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
 class UnloadBorderTask : Runnable {
 

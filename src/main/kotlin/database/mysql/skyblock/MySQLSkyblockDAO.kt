@@ -1,8 +1,8 @@
-package org.hwabeag.hwaskyblock.database.mysql.skyblock
+package org.hwabaeg.hwaskyblock.database.mysql.skyblock
 
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
+import org.hwabaeg.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
 import java.sql.Connection
 
 class MySQLSkyblockDAO {

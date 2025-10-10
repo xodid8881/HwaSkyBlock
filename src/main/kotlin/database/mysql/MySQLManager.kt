@@ -1,9 +1,9 @@
-package org.hwabeag.hwaskyblock.database.mysql
+package org.hwabaeg.hwaskyblock.database.mysql
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
-import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.sql.Connection
 import java.sql.DriverManager
 

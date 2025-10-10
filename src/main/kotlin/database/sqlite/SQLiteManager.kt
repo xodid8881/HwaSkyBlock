@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.database.sqlite
+package org.hwabaeg.hwaskyblock.database.sqlite
 
 import org.bukkit.plugin.java.JavaPlugin
-import org.hwabeag.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager

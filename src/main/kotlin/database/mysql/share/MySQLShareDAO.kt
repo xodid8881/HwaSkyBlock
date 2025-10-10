@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.database.mysql.share
+package org.hwabaeg.hwaskyblock.database.mysql.share
 
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
 import java.sql.Connection
 
 class MySQLShareDAO {

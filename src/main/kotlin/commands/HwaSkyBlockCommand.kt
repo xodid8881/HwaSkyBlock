@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.commands
+package org.hwabaeg.hwaskyblock.commands
 
 import net.milkbowl.vault.economy.Economy
 import org.apache.commons.lang.StringUtils
@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
-import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.inventorys.*
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.inventorys.*
 import java.util.*
 
 class HwaSkyBlockCommand : TabCompleter, CommandExecutor {

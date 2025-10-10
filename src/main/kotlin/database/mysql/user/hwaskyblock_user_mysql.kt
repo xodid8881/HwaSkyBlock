@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.database.mysql.user
+package org.hwabaeg.hwaskyblock.database.mysql.user
 
-import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
+import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
+import org.hwabaeg.hwaskyblock.database.mysql.utils.hwaskyblock_user
 import java.sql.Connection
 
 class hwaskyblock_user_mysql {

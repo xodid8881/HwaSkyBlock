@@ -1,18 +1,18 @@
-package org.hwabeag.hwaskyblock.database
+package org.hwabaeg.hwaskyblock.database
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.database.mysql.share.MySQLShareDAO
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.MySQLSkyblockDAO
-import org.hwabeag.hwaskyblock.database.mysql.skyblock.hwaskyblock_skyblock_mysql
-import org.hwabeag.hwaskyblock.database.mysql.user.MySQLUserDAO
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
-import org.hwabeag.hwaskyblock.database.sqlite.share.ShareDAO
-import org.hwabeag.hwaskyblock.database.sqlite.skyblock.SkyblockDAO
-import org.hwabeag.hwaskyblock.database.sqlite.skyblock.hwaskyblock_skyblock_sqlite
-import org.hwabeag.hwaskyblock.database.sqlite.user.UserDAO
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.database.mysql.share.MySQLShareDAO
+import org.hwabaeg.hwaskyblock.database.mysql.skyblock.MySQLSkyblockDAO
+import org.hwabaeg.hwaskyblock.database.mysql.skyblock.hwaskyblock_skyblock_mysql
+import org.hwabaeg.hwaskyblock.database.mysql.user.MySQLUserDAO
+import org.hwabaeg.hwaskyblock.database.mysql.utils.hwaskyblock_skyblock
+import org.hwabaeg.hwaskyblock.database.mysql.utils.hwaskyblock_user
+import org.hwabaeg.hwaskyblock.database.sqlite.share.ShareDAO
+import org.hwabaeg.hwaskyblock.database.sqlite.skyblock.SkyblockDAO
+import org.hwabaeg.hwaskyblock.database.sqlite.skyblock.hwaskyblock_skyblock_sqlite
+import org.hwabaeg.hwaskyblock.database.sqlite.user.UserDAO
 import org.json.simple.JSONObject
 
 

@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.api
+package org.hwabaeg.hwaskyblock.api
 
 import org.bukkit.entity.Player
 

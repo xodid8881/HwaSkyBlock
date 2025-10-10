@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.events.click.geyser
+package org.hwabaeg.hwaskyblock.events.click.geyser
 
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
@@ -8,10 +8,10 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.inventorys.HwaSkyBlockGlobalFragGUI
+import org.hwabaeg.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
 import java.util.*
 
 class GeyserMenuClickEvent : Listener {

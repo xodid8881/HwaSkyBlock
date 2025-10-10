@@ -1,6 +1,6 @@
-package org.hwabeag.hwaskyblock.database.sqlite.user
+package org.hwabaeg.hwaskyblock.database.sqlite.user
 
-import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
+import org.hwabaeg.hwaskyblock.database.sqlite.SQLiteManager
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.sql.Connection

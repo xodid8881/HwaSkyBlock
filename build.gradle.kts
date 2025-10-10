@@ -3,7 +3,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.hwabeag"
+group = "org.hwabaeg"
 version = "v1.0.5-beta"
 
 repositories {

@@ -1,12 +1,12 @@
-package org.hwabeag.hwaskyblock.schedules
+package org.hwabaeg.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.scheduler.BukkitRunnable
-import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockTask : Runnable {

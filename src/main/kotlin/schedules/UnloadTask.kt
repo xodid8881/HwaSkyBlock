@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.schedules
+package org.hwabaeg.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
 import java.io.File

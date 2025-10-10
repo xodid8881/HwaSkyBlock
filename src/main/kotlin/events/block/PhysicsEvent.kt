@@ -1,10 +1,10 @@
-package org.hwabeag.hwaskyblock.events.block
+package org.hwabaeg.hwaskyblock.events.block
 
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
-import org.hwabeag.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
 class PhysicsEvent : Listener {
     @EventHandler

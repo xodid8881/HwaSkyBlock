@@ -1,6 +1,6 @@
-package org.hwabeag.hwaskyblock.database.sqlite.skyblock
+package org.hwabaeg.hwaskyblock.database.sqlite.skyblock
 
-import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
+import org.hwabaeg.hwaskyblock.database.sqlite.SQLiteManager
 import java.sql.Connection
 
 class hwaskyblock_share_sqlite {

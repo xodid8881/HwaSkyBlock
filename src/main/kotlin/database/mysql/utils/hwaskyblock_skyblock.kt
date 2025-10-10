@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.database.mysql.utils
+package org.hwabaeg.hwaskyblock.database.mysql.utils
 
 class hwaskyblock_skyblock {
 

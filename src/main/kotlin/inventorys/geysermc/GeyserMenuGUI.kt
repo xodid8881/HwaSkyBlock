@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.inventorys.geyser
+package org.hwabaeg.hwaskyblock.inventorys.geyser
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class GeyserMenuGUI(skyblockId: String) : Listener {

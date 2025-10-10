@@ -1,11 +1,11 @@
-package org.hwabeag.hwaskyblock.events.entity
+package org.hwabaeg.hwaskyblock.events.entity
 
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntitySpawnEvent
-import org.hwabeag.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
 class SpawnEvent : Listener {
 

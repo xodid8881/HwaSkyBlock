@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.database.sqlite.user
+package org.hwabehwabaegag.hwaskyblock.database.sqlite.user
 
-import org.hwabeag.hwaskyblock.database.mysql.utils.hwaskyblock_user
-import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
+import org.hwabaeg.hwaskyblock.database.mysql.utils.hwaskyblock_user
+import org.hwabaeg.hwaskyblock.database.sqlite.SQLiteManager
 import java.sql.Connection
 
 class hwaskyblock_user_sqlite {

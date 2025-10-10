@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.events.click
+package org.hwabaeg.hwaskyblock.events.click
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -9,11 +9,11 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.hwabeag.hwaskyblock.HwaSkyBlock
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
-import org.hwabeag.hwaskyblock.inventorys.HwaSkyBlockSharerUseGUI
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
+import org.hwabaeg.hwaskyblock.inventorys.HwaSkyBlockSharerUseGUI
 import java.util.*
 
 class InvSharerClickEvent : Listener {

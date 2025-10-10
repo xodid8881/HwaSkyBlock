@@ -1,4 +1,4 @@
-package org.hwabeag.hwaskyblock.inventorys
+package org.hwabaeg.hwaskyblock.inventorys
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -9,8 +9,8 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
 class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {

@@ -1,7 +1,7 @@
-package org.hwabeag.hwaskyblock.database.sqlite.share
+package org.hwabaeg.hwaskyblock.database.sqlite.share
 
-import org.hwabeag.hwaskyblock.database.DatabaseManager
-import org.hwabeag.hwaskyblock.database.sqlite.SQLiteManager
+import org.hwabaeg.hwaskyblock.database.DatabaseManager
+import org.hwabaeg.hwaskyblock.database.sqlite.SQLiteManager
 import java.sql.Connection
 
 class ShareDAO {

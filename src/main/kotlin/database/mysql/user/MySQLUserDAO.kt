@@ -1,6 +1,6 @@
-package org.hwabeag.hwaskyblock.database.mysql.user
+package org.hwabaeg.hwaskyblock.database.mysql.user
 
-import org.hwabeag.hwaskyblock.database.mysql.MySQLManager
+import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.sql.Connection
