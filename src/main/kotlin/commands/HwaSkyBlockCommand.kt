@@ -14,6 +14,7 @@ import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import org.hwabaeg.hwaskyblock.inventorys.*
 import java.util.*
+import kotlin.text.contains
 
 class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
@@ -67,21 +68,21 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             }
             if (args[0].equals(MessageConfig.getString("sub-command-message.permission-management"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
-                list.add("글로벌")
-                list.add("공유자")
+                list.add(MessageConfig.getString("sub-command-message.global"))
+                list.add(MessageConfig.getString("sub-command-message.sharers"))
                 return list
             }
             if (args[0].equals(MessageConfig.getString("sub-command-message.detailed-management"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
-                list.add("섬이름")
-                list.add("환영말")
-                list.add("스폰설정")
-                list.add("환경설정")
-                list.add("공중분해")
-                list.add("양도")
+                list.add(MessageConfig.getString("sub-command-message.is_name_set"))
+                list.add(MessageConfig.getString("sub-command-message.welcome_msg_set"))
+                list.add(MessageConfig.getString("sub-command-message.is_spawn_set"))
+                list.add(MessageConfig.getString("sub-command-message.is_world_set"))
+                list.add(MessageConfig.getString("sub-command-message.is_delete"))
+                list.add(MessageConfig.getString("sub-command-message.is_give"))
                 return list
             }
-            if (args[1].equals("양도", ignoreCase = true)) {
+            if (args[1].equals(MessageConfig.getString("sub-command-message.is_give"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 for (p in Bukkit.getOnlinePlayers()) {
                     list.add(p.name)
@@ -291,7 +292,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 )
                 return true
             }
-            if (args[1].equals("글로벌", ignoreCase = true) || args[1].equals("공유자", ignoreCase = true)) {
+            if (args[1].equals(MessageConfig.getString("sub-command-message.global"), ignoreCase = true) || args[1].equals(MessageConfig.getString("sub-command-message.sharers"), ignoreCase = true)) {
                 val world = sender.world
                 val world_name = world.worldFolder.getName()
                 val number: Array<String?> =
@@ -308,12 +309,12 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         return true
                     }
                     if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
-                        if (args[1] == "글로벌") {
+                        if (args[1] == MessageConfig.getString("sub-command-message.global")) {
                             val inv = HwaSkyBlockGlobalFragGUI(id)
                             inv.open(sender)
                             return true
                         }
-                        if (args[1] == "공유자") {
+                        if (args[1] == MessageConfig.getString("sub-command-message.sharers")) {
                             DatabaseManager.setUserData("$name.skyblock.page", sender, 1, "setPlayerPage")
                             val inv = HwaSkyBlockSharerGUI(sender, id)
                             inv.open(sender)
@@ -363,7 +364,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     return true
                 }
                 if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
-                    if (args[1].equals("섬이름", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_name_set"), ignoreCase = true)) {
                         val msgArgs: MutableList<String?> =
                             ArrayList<String?>(Arrays.asList<String>(*args).subList(2, args.size))
                         val messageArgs = StringUtils.join(msgArgs, " ")
@@ -377,7 +378,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals("환영말", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.welcome_msg_set"), ignoreCase = true)) {
                         val msgArgs: MutableList<String?> =
                             ArrayList<String?>(Arrays.asList<String>(*args).subList(2, args.size))
                         val messageArgs = StringUtils.join(msgArgs, " ")
@@ -396,7 +397,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals("스폰설정", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_spawn_set"), ignoreCase = true)) {
                         val loc = sender.location
                         val homeString = "${loc.world?.name},${loc.x},${loc.y},${loc.z},${loc.yaw},${loc.pitch}"
                         DatabaseManager.setSkyBlockData(id.toString(), "$id.home", homeString, "setSkyBlockHome")
@@ -409,12 +410,12 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals("환경설정", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_world_set"), ignoreCase = true)) {
                         val inv = HwaSkyBlockSettingGUI(id)
                         inv.open(sender)
                         return true
                     }
-                    if (args[1].equals("공중분해", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_delete"), ignoreCase = true)) {
                         val skyblock_master =
                             DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
                         val econ: Economy? = HwaSkyBlock.economy
@@ -449,7 +450,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         return true
                     }
 
-                    if (args[1].equals("양도", ignoreCase = true)) {
+                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_give"), ignoreCase = true)) {
                         if (args.size == 2) {
                             sender.sendMessage(
                                 Prefix + ChatColor.translateAlternateColorCodes(
@@ -563,7 +564,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
-                            MessageConfig.getString("message-event.join_refusal") ?: "&c가입이 거부되었습니다."
+                            Objects.requireNonNull<String?>(MessageConfig.getString("message-event.join_refusal"))
                         )
                     )
                     return
@@ -573,7 +574,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
-                            MessageConfig.getString("message-event.join_refusal") ?: "&c가입이 거부되었습니다."
+                            Objects.requireNonNull<String?>(MessageConfig.getString("message-event.join_refusal"))
                         )
                     )
                     return

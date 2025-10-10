@@ -9,11 +9,19 @@ sub-command-message:
   changer: "주인변경"
   forced-disassembly: "강제분해"
   reload: "리로드"
+  global: "글로벌"
+  sharers: "공유자"
+  is_name_set: "섬이름"
+  welcome_msg_set: "환영말"
+  is_spawn_set: "스폰설정"
+  is_world_set: "환경설정"
+  is_delete: "공중분해"
+  is_give: "양도"
 
 command-help-message:
-  - "&a&l[섬]&7 &7&lSkyBlock Command Help"
+  - "&a&l[상점]&7 &7&lSkyBlock Command Help"
   - "&a&l---------------------------------------------"
-  - " &7&l/섬"
+  - " &7&l/상점"
   - "  &a&lL &r&7구매 &a&l- &r&7섬를 구매합니다."
   - "  &a&lL &r&7메뉴 &a&l- &r&7섬 메뉴를 오픈합니다."
   - "  &a&lL &r&7이동 [섬번호] &a&l- &r&7섬에 이동합니다."
@@ -381,5 +389,4 @@ gui-slot-item-name:
     OAK_BOAT-lore:
       - "&a- &7클릭 시 &a보트 권한 &7을 설정합니다."
     OAK_BOAT-true: "&a- &7보트 사용 &a허용"
-
     OAK_BOAT-false: "&a- &7카트 사용 &c거부"
