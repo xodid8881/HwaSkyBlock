@@ -11,7 +11,7 @@ class UnloadWorldTask : Runnable {
                 val worldDir = File(Bukkit.getServer().worldContainer, worldName)
 
                 if (!worldDir.exists()) {
-                    Bukkit.getLogger().warning("There is no world directory for " + worldName)
+                    Bukkit.getLogger().warning("There is no world directory for $worldName")
                     continue
                 }
 

@@ -46,9 +46,9 @@ class InvGlobalUseClickEvent : Listener {
                         )
                     ) {
                         val current =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.use.door", "isSkyBlockDoor") as? Boolean
+                            DatabaseManager.getSkyBlockData(id.toString(), "isSkyBlockDoor") as? Boolean
                                 ?: false
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.use.door", !current, "setSkyBlockDoor")
+                        DatabaseManager.setSkyBlockData(id.toString(), !current, "setSkyBlockDoor")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockGlobalUseGUI(player)
@@ -63,10 +63,9 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val current = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.chest",
                             "isSkyBlockChest"
                         ) as? Boolean ?: false
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.use.chest", !current, "setSkyBlockChest")
+                        DatabaseManager.setSkyBlockData(id.toString(), !current, "setSkyBlockChest")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockGlobalUseGUI(player)
@@ -81,10 +80,9 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val current = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.barrel",
                             "isSkyBlockBarrel"
                         ) as? Boolean ?: false
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.use.barrel", !current, "setSkyBlockBarrel")
+                        DatabaseManager.setSkyBlockData(id.toString(), !current, "setSkyBlockBarrel")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockGlobalUseGUI(player)
@@ -99,10 +97,9 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val current = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.hopper",
                             "isSkyBlockHopper"
                         ) as? Boolean ?: false
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.use.hopper", !current, "setSkyBlockHopper")
+                        DatabaseManager.setSkyBlockData(id.toString(), !current, "setSkyBlockHopper")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockGlobalUseGUI(player)
@@ -117,12 +114,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val current = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.furnace",
                             "isSkyBlockFurnace"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.furnace",
                             !current,
                             "setSkyBlockFurnace"
                         )
@@ -140,12 +135,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.blast_furnace",
                             "isSkyBlockBlastFurnace"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.blast_furnace",
                             !currentValue,
                             "setSkyBlockBlastFurnace"
                         )
@@ -163,12 +156,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.shulker_box",
                             "isSkyBlockShulkerBox"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.shulker_box",
                             !currentValue,
                             "setSkyBlockShulkerBox"
                         )
@@ -186,12 +177,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.trapdoor",
                             "isSkyBlockTrapdoor"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.trapdoor",
                             !currentValue,
                             "setSkyBlockTrapdoor"
                         )
@@ -209,12 +198,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.button",
                             "isSkyBlockButton"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.button",
                             !currentValue,
                             "setSkyBlockButton"
                         )
@@ -232,12 +219,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.anvil",
                             "isSkyBlockAnvil"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.anvil",
                             !currentValue,
                             "setSkyBlockAnvil"
                         )
@@ -255,12 +240,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.farm",
                             "isSkyBlockFarm"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.farm",
                             !currentValue,
                             "setSkyBlockFarm"
                         )
@@ -278,12 +261,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.beacon",
                             "isSkyBlockBeacon"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.beacon",
                             !currentValue,
                             "setSkyBlockBeacon"
                         )
@@ -301,12 +282,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.minecart",
                             "isSkyBlockMinecart"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.minecart",
                             !currentValue,
                             "setSkyBlockMinecart"
                         )
@@ -324,12 +303,10 @@ class InvGlobalUseClickEvent : Listener {
                     ) {
                         val currentValue = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.use.boat",
                             "isSkyBlockBoat"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.use.boat",
                             !currentValue,
                             "setSkyBlockBoat"
                         )

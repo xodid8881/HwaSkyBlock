@@ -56,7 +56,6 @@ class InvSharerClickEvent : Listener {
                                     DatabaseManager.setShareData(
                                         "$id",
                                         key.toString(),
-                                        "join",
                                         !player_join,
                                         "setSkyblockSharerJoin"
                                     )
@@ -73,7 +72,6 @@ class InvSharerClickEvent : Listener {
                                     DatabaseManager.setShareData(
                                         "$id",
                                         key.toString(),
-                                        "break",
                                         !block_break,
                                         "setSkyblockSharerBreak"
                                     )
@@ -90,7 +88,6 @@ class InvSharerClickEvent : Listener {
                                     DatabaseManager.setShareData(
                                         "$id",
                                         key.toString(),
-                                        "place",
                                         !block_place,
                                         "setSkyblockSharerPlace"
                                     )
@@ -107,7 +104,7 @@ class InvSharerClickEvent : Listener {
                                         "$name.skyblock.setting",
                                         player,
                                         key.toString(),
-                                        "setSkyblockSetting"
+                                        "setPlayerEvent"
                                     )
                                     player.closeInventory()
                                     Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -126,9 +123,9 @@ class InvSharerClickEvent : Listener {
                         )
                     ) {
                         val page =
-                            DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
+                            DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page - 1
-                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
+                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerGUI(player, id)
@@ -143,9 +140,9 @@ class InvSharerClickEvent : Listener {
                         )
                     ) {
                         val page =
-                            DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
+                            DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page + 1
-                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
+                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerGUI(player, id)

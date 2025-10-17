@@ -76,7 +76,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -85,7 +85,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -95,7 +95,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     return true
                 }
                 val skyblock_master =
-                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
 
                 val masterCount = DatabaseManager.getUserData(
                     "$skyblock_master.skyblock.possession_count",
@@ -113,9 +113,9 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     "$skyblock_master.skyblock.possession.$id",
                     sender,
                     null,
-                    "setPlayerSetting"
+                    "setPlayerPossession"
                 )
-                DatabaseManager.setSkyBlockData(id.toString(), "$id.leader", args[1]!!, "setSkyBlockLeader")
+                DatabaseManager.setSkyBlockData(id.toString(), args[1]!!, "setSkyBlockLeader")
                 val newOwnerCount = DatabaseManager.getUserData(
                     "${args[1]}.skyblock.possession_count",
                     sender,
@@ -127,7 +127,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     newOwnerCount + 1,
                     "setPlayerPossessionCount"
                 )
-                DatabaseManager.setUserData("${args[1]}.skyblock.possession.$id", sender, name, "setPlayerSetting")
+                DatabaseManager.setUserData("${args[1]}.skyblock.possession.$id", sender, name, "setPlayerPossession")
 
                 ConfigManager.saveConfigs()
                 sender.sendMessage(
@@ -146,7 +146,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
                 val skyblock_master =
-                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
                 val econ: Economy? = HwaSkyBlock.economy
                 econ!!.depositPlayer(skyblock_master, Config.getInt("chunk-buy").toDouble())
 
@@ -167,11 +167,10 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     "$skyblock_master.skyblock.possession.$id",
                     sender,
                     null,
-                    "setPlayerSetting"
+                    "setPlayerPossession"
                 )
 
                 DatabaseManager.setSkyBlockData(
-                    id.toString(),
                     id.toString(),
                     null,
                     "setSkyBlockName"

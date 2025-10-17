@@ -53,14 +53,14 @@ class UseEvent : Listener {
 
         if (number[0] == "HwaSkyBlock") {
             val id = number[1]
-            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") as? String
+            val leader = DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader") as? String
             if (leader != null && leader != name) {
                 val permissionKey = "$id.sharer.$name"
-                val isSharer = DatabaseManager.getSkyBlockData(id, permissionKey, "getSkyBlockShare") != null
+                val isSharer = DatabaseManager.getSkyBlockData(id, "getSkyBlockShare") != null
                 val useBreakPermission = if (!isSharer) {
-                    DatabaseManager.getSkyBlockData(id, "$id.break", "getSkyBlockBreak") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockBreak") as? Boolean ?: false
                 } else {
-                    DatabaseManager.getSkyBlockData(id, "$permissionKey.use.break", "getSkyBlockShareBreak") as? Boolean
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockShareBreak") as? Boolean
                         ?: false
                 }
 
@@ -89,14 +89,14 @@ class UseEvent : Listener {
 
         val id = parts[1]
 
-        if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") == null) return
+        if (DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader") == null) return
 
         val isSharer = DatabaseManager.getShareList(id).contains(name)
 
         val hasBreakPermission = if (isSharer)
-            DatabaseManager.getShareData(id, name, "use_break", "isUseBreak") as? Boolean ?: false
+            DatabaseManager.getShareData(id, name, "isUseBreak") as? Boolean ?: false
         else
-            DatabaseManager.getSkyBlockData(id, "$id.use.break", "getSkyBlockBreak") as? Boolean ?: false
+            DatabaseManager.getSkyBlockData(id, "getSkyBlockBreak") as? Boolean ?: false
 
         if (!hasBreakPermission) {
             sendNoPermissionActionBar(damager)
@@ -119,16 +119,16 @@ class UseEvent : Listener {
 
             val id = parts[1]
 
-            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader")
+            val leader = DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader")
             if (leader == null || leader == name) return
 
             val isSharer = DatabaseManager.getShareList(id).contains(name)
 
             if (vehicle is Minecart) {
                 val hasPermission = if (isSharer)
-                    DatabaseManager.getShareData(id, name, "use_minecart", "isUseMinecart") as? Boolean ?: false
+                    DatabaseManager.getShareData(id, name, "isUseMinecart") as? Boolean ?: false
                 else
-                    DatabaseManager.getSkyBlockData(id, "$id.use.minecart", "getSkyBlockMinecart") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockMinecart") as? Boolean ?: false
 
                 if (!hasPermission) {
                     sendNoPermissionActionBar(entity)
@@ -137,9 +137,9 @@ class UseEvent : Listener {
             }
             if (vehicle is Boat) {
                 val hasPermission = if (isSharer)
-                    DatabaseManager.getShareData(id, name, "use_boat", "isUseBoat") as? Boolean ?: false
+                    DatabaseManager.getShareData(id, name, "isUseBoat") as? Boolean ?: false
                 else
-                    DatabaseManager.getSkyBlockData(id, "$id.use.boat", "getSkyBlockBoat") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockBoat") as? Boolean ?: false
 
                 if (!hasPermission) {
                     sendNoPermissionActionBar(entity)
@@ -163,21 +163,21 @@ class UseEvent : Listener {
             if (parts.size < 2 || parts[0] != "HwaSkyBlock") return
 
             val id = parts[1]
-            val leader = DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader")
+            val leader = DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader")
             if (leader == null || leader == name) return
 
             val isSharer = DatabaseManager.getShareList(id).contains(name)
 
-            val hasPermission = when {
-                vehicle is Minecart -> if (isSharer)
-                    DatabaseManager.getShareData(id, name, "use_minecart", "isUseMinecart") as? Boolean ?: false
+            val hasPermission = when (vehicle) {
+                is Minecart -> if (isSharer)
+                    DatabaseManager.getShareData(id, name, "isUseMinecart") as? Boolean ?: false
                 else
-                    DatabaseManager.getSkyBlockData(id, "$id.use.minecart", "getSkyBlockMinecart") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockMinecart") as? Boolean ?: false
 
-                vehicle is Boat -> if (isSharer)
-                    DatabaseManager.getShareData(id, name, "use_boat", "isUseBoat") as? Boolean ?: false
+                is Boat -> if (isSharer)
+                    DatabaseManager.getShareData(id, name, "isUseBoat") as? Boolean ?: false
                 else
-                    DatabaseManager.getSkyBlockData(id, "$id.use.boat", "getSkyBlockBoat") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockBoat") as? Boolean ?: false
 
                 else -> true
             }
@@ -203,7 +203,7 @@ class UseEvent : Listener {
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
                 val leader =
-                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
                 if (leader != null && leader != name) {
                     val customBlock = CustomBlock.byAlreadyPlaced(block)
                     if (customBlock != null) {
@@ -230,9 +230,9 @@ class UseEvent : Listener {
             if (customCropDisplayName.contains(type)) {
                 val isSharer = DatabaseManager.getShareList(id).contains(name)
                 val hasFarmPermission = if (isSharer)
-                    DatabaseManager.getShareData(id, name, "use_farm", "isUseFarm") as? Boolean ?: false
+                    DatabaseManager.getShareData(id, name, "isUseFarm") as? Boolean ?: false
                 else
-                    DatabaseManager.getSkyBlockData(id, "$id.use.farm", "getSkyBlockFarm") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id, "getSkyBlockFarm") as? Boolean ?: false
 
                 if (!hasFarmPermission) {
                     sendNoPermissionActionBar(player)
@@ -282,7 +282,7 @@ class UseEvent : Listener {
     ) {
         val isSharer = DatabaseManager.getShareList(id).contains(name)
         if (!isSharer) {
-            if (!(DatabaseManager.getSkyBlockData(id, "$id.use.$permission", "getSkyBlockPermission") as? Boolean
+            if (!(DatabaseManager.getSkyBlockData(id, "getSkyBlockPermission") as? Boolean
                     ?: false)
             ) {
                 sendNoPermissionActionBar(player)
@@ -292,7 +292,6 @@ class UseEvent : Listener {
             if (!(DatabaseManager.getShareData(
                     id,
                     name,
-                    "use_$permission",
                     null
                 ) as? Boolean ?: false)
             ) {
@@ -313,8 +312,8 @@ class UseEvent : Listener {
 
         if (parts.size >= 2 && parts[0] == "HwaSkyBlock") {
             val id = parts[1]
-            if (DatabaseManager.getSkyBlockData(id, "$id.leader", "getSkyBlockLeader") != null) {
-                if (!(DatabaseManager.getSkyBlockData(id, "$id.pvp", "getSkyBlockPvP") as? Boolean ?: false)) {
+            if (DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader") != null) {
+                if (!(DatabaseManager.getSkyBlockData(id, "getSkyBlockPvP") as? Boolean ?: false)) {
                     event.isCancelled = true
                 }
             }

@@ -77,93 +77,81 @@ class InvBuyClickEvent : Listener {
                             }
                             econ.withdrawPlayer(player, buy.toDouble())
                             DatabaseManager.insertSkyBlock(id.toString(), name)
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.name", name, "setSkyBlockName")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.leader", name, "setSkyBlockLeader")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.join", true, "setSkyBlockJoin")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.break", false, "setSkyBlockBreak")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.place", false, "setSkyBlockPlace")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.door", false, "setSkyBlockDoor")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.chest", false, "setSkyBlockChest")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.barrel", false, "setSkyBlockBarrel")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.hopper", false, "setSkyBlockHopper")
+                            DatabaseManager.setSkyBlockData(id.toString(), name, "setSkyBlockName")
+                            DatabaseManager.setSkyBlockData(id.toString(), name, "setSkyBlockLeader")
+                            DatabaseManager.setSkyBlockData(id.toString(), true, "setSkyBlockJoin")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockBreak")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockPlace")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockDoor")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockChest")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockBarrel")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockHopper")
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.use.furnace",
                                 false,
                                 "setSkyBlockFurnace"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.use.blast_furnace",
                                 false,
                                 "setSkyBlockBlastFurnace"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.use.shulker_box",
                                 false,
                                 "setSkyBlockShulkerBox"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.use.trapdoor",
                                 false,
                                 "setSkyBlockTrapdoor"
                             )
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.button", false, "setSkyBlockButton")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.anvil", false, "setSkyBlockAnvil")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.farm", false, "setSkyBlockFarm")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.beacon", false, "setSkyBlockBeacon")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockButton")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockAnvil")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockFarm")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockBeacon")
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.use.minecart",
                                 false,
                                 "setSkyBlockMinecart"
                             )
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.use.boat", false, "setSkyBlockBoat")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.pvp", false, "setSkyBlockPvp")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockBoat")
+                            DatabaseManager.setSkyBlockData(id.toString(), false, "setSkyBlockPvp")
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.welcome_message",
                                 "Welcome $name Farm",
                                 "setSkyBlockWelcomeMessage"
                             )
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.home", 0, "setSkyBlockHome")
-                            DatabaseManager.setSkyBlockData(id.toString(), "$id.size", size, "setSkyBlockSize")
+                            DatabaseManager.setSkyBlockData(id.toString(), 0, "setSkyBlockHome")
+                            DatabaseManager.setSkyBlockData(id.toString(), size, "setSkyBlockSize")
 
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.monster_spawn",
                                 true,
                                 "setSkyBlockMonsterSpawn"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.animal_spawn",
                                 true,
                                 "setSkyBlockAnimalSpawn"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.weather",
                                 "basic",
                                 "setSkyBlockWeather"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.time",
                                 "basic",
                                 "setSkyBlockTime"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.water_physics",
                                 true,
                                 "setSkyBlockWaterPhysics"
                             )
                             DatabaseManager.setSkyBlockData(
                                 id.toString(),
-                                "$id.setting.lava_physics",
                                 true,
                                 "setSkyBlockLavaPhysics"
                             )
@@ -180,7 +168,7 @@ class InvBuyClickEvent : Listener {
                                 currentCount + 1,
                                 "setPlayerPossessionCount"
                             )
-                            DatabaseManager.setUserData("$name.skyblock.possession.$id", player, name, null)
+                            DatabaseManager.setUserData("$name.skyblock.possession.$id", player, true, "setPlayerPossession")
 
                             Config.set("sky-block-number", id)
                             ConfigManager.Companion.saveConfigs()

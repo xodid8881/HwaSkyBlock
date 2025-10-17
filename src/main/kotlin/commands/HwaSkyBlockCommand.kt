@@ -14,7 +14,6 @@ import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import org.hwabaeg.hwaskyblock.inventorys.*
 import java.util.*
-import kotlin.text.contains
 
 class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
@@ -66,7 +65,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
                 }
             }
-            if (args[0].equals(MessageConfig.getString("sub-command-message.permission-management"), ignoreCase = true)) {
+            if (args[0].equals(
+                    MessageConfig.getString("sub-command-message.permission-management"),
+                    ignoreCase = true
+                )
+            ) {
                 val list: MutableList<String?> = ArrayList<String?>()
                 list.add(MessageConfig.getString("sub-command-message.global"))
                 list.add(MessageConfig.getString("sub-command-message.sharers"))
@@ -131,14 +134,16 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
             if (messageArgs.matches("[+-]?((\\d+\\.\\d+)|(\\d+)|(\\.\\d+))".toRegex())) {
                 SkyBlock_Teleport(sender, messageArgs)
             } else {
-                for ((key, skyblock) in DatabaseManager.Select_Skyblock_List) {
-                    if (skyblock != null) {
-                        val skyblockName = skyblock.getSkyBlockName()
-                        if (messageArgs == skyblockName) {
-                            SkyBlock_Teleport(sender, key ?: continue)
-                        }
+                for ((key, _) in DatabaseManager.Select_Skyblock_List) {
+                    if (key == null) continue
+
+                    val skyblockName = DatabaseManager.getSkyBlockData(key, null) as? String
+                    if (skyblockName != null && messageArgs == skyblockName) {
+                        SkyBlock_Teleport(sender, key)
+                        break
                     }
                 }
+
             }
             return true
         }
@@ -153,11 +158,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 return true
             }
             val world = sender.world
-            val world_name = world.worldFolder.getName()
+            val world_name = world.worldFolder.name
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                val leader = DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader")
+                val leader = DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader")
                 if (leader == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
@@ -168,7 +173,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     return true
                 }
 
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == name) {
                     if (DatabaseManager.getUserData(
                             id.toString(),
                             Bukkit.getServer().getPlayer(args[1].toString()),
@@ -205,11 +210,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     )
 
                     for ((type, data) in permissions) {
-                        DatabaseManager.setShareData(id.toString(), args[1]!!, data, true, type)
+                        DatabaseManager.setShareData(id.toString(), args[1]!!, true, type)
                     }
 
 
-                    DatabaseManager.setUserData("${args[1]}.skyblock.sharer.$id", sender, args[1]!!, "setPlayerSetting")
+                    DatabaseManager.setUserData("${args[1]}.skyblock.sharer.$id", sender, args[1]!!, "setPlayerSharer")
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -239,11 +244,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 return true
             }
             val world = sender.world
-            val world_name = world.worldFolder.getName()
+            val world_name = world.worldFolder.name
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -252,7 +257,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == name) {
                     val sharedPlayers = DatabaseManager.getShareDataList(id.toString())
                     if (!sharedPlayers.contains(args[1])) {
                         sender.sendMessage(
@@ -292,14 +297,18 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 )
                 return true
             }
-            if (args[1].equals(MessageConfig.getString("sub-command-message.global"), ignoreCase = true) || args[1].equals(MessageConfig.getString("sub-command-message.sharers"), ignoreCase = true)) {
+            if (args[1].equals(
+                    MessageConfig.getString("sub-command-message.global"),
+                    ignoreCase = true
+                ) || args[1].equals(MessageConfig.getString("sub-command-message.sharers"), ignoreCase = true)
+            ) {
                 val world = sender.world
-                val world_name = world.worldFolder.getName()
+                val world_name = world.worldFolder.name
                 val number: Array<String?> =
                     world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (number[0] == "HwaSkyBlock") {
                     val id = number[1]
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
                                 '&',
@@ -308,7 +317,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
+                    if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == name) {
                         if (args[1] == MessageConfig.getString("sub-command-message.global")) {
                             val inv = HwaSkyBlockGlobalFragGUI(id)
                             inv.open(sender)
@@ -350,11 +359,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 return true
             }
             val world = sender.world
-            val world_name = world.worldFolder.getName()
+            val world_name = world.worldFolder.name
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == null) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -363,12 +372,12 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") == name) {
+                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == name) {
                     if (args[1].equals(MessageConfig.getString("sub-command-message.is_name_set"), ignoreCase = true)) {
                         val msgArgs: MutableList<String?> =
                             ArrayList<String?>(Arrays.asList<String>(*args).subList(2, args.size))
                         val messageArgs = StringUtils.join(msgArgs, " ")
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.name", messageArgs, "setSkyBlockName")
+                        DatabaseManager.setSkyBlockData(id.toString(), messageArgs, "setSkyBlockName")
                         ConfigManager.saveConfigs()
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
@@ -378,13 +387,16 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals(MessageConfig.getString("sub-command-message.welcome_msg_set"), ignoreCase = true)) {
+                    if (args[1].equals(
+                            MessageConfig.getString("sub-command-message.welcome_msg_set"),
+                            ignoreCase = true
+                        )
+                    ) {
                         val msgArgs: MutableList<String?> =
                             ArrayList<String?>(Arrays.asList<String>(*args).subList(2, args.size))
                         val messageArgs = StringUtils.join(msgArgs, " ")
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.welcome_message",
                             messageArgs,
                             "setSkyBlockWelcomeMessage"
                         )
@@ -397,10 +409,14 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_spawn_set"), ignoreCase = true)) {
+                    if (args[1].equals(
+                            MessageConfig.getString("sub-command-message.is_spawn_set"),
+                            ignoreCase = true
+                        )
+                    ) {
                         val loc = sender.location
                         val homeString = "${loc.world?.name},${loc.x},${loc.y},${loc.z},${loc.yaw},${loc.pitch}"
-                        DatabaseManager.setSkyBlockData(id.toString(), "$id.home", homeString, "setSkyBlockHome")
+                        DatabaseManager.setSkyBlockData(id.toString(), homeString, "setSkyBlockHome")
                         ConfigManager.saveConfigs()
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
@@ -410,14 +426,18 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    if (args[1].equals(MessageConfig.getString("sub-command-message.is_world_set"), ignoreCase = true)) {
+                    if (args[1].equals(
+                            MessageConfig.getString("sub-command-message.is_world_set"),
+                            ignoreCase = true
+                        )
+                    ) {
                         val inv = HwaSkyBlockSettingGUI(id)
                         inv.open(sender)
                         return true
                     }
                     if (args[1].equals(MessageConfig.getString("sub-command-message.is_delete"), ignoreCase = true)) {
                         val skyblock_master =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                            DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
                         val econ: Economy? = HwaSkyBlock.economy
                         econ!!.depositPlayer(skyblock_master, Config.getInt("chunk-buy").toDouble())
 
@@ -436,7 +456,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                             "$skyblock_master.skyblock.possession.$id",
                             sender,
                             null,
-                            "setPlayerSetting"
+                            "setPlayerPossession"
                         )
 
                         DatabaseManager.DeleteSkyBlock(id.toString())
@@ -475,7 +495,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                             return true
                         }
                         val skyblock_master =
-                            DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                            DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
                         val econ: Economy? = HwaSkyBlock.economy
                         econ!!.depositPlayer(skyblock_master, Config.getInt("chunk-buy").toDouble())
 
@@ -493,7 +513,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                             "$skyblock_master.skyblock.possession.$id",
                             sender,
                             null,
-                            "setPlayerSetting"
+                            "setPlayerPossession"
                         )
 
                         DatabaseManager.setUserData(
@@ -510,7 +530,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                             "${args[2]}.skyblock.possession.$id",
                             sender,
                             args[2],
-                            "setPlayerSetting"
+                            "setPlayerPossession"
                         )
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
@@ -558,9 +578,9 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
     fun SkyBlock_Teleport(player: Player, number: String) {
         val name = player.name
-        if (DatabaseManager.getSkyBlockData(number, "$number.leader", "getSkyBlockLeader") != name) {
+        if (DatabaseManager.getSkyBlockData(number, "getSkyBlockLeader") != name) {
             if (DatabaseManager.getShareDataList(number).contains(name)) {
-                if (DatabaseManager.getShareData(number, name, "can_join", "isUseJoin") == false) {
+                if (DatabaseManager.getShareData(number, name, "isUseJoin") == false) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -570,7 +590,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     return
                 }
             } else {
-                if (DatabaseManager.getSkyBlockData(number, "$number.join", "isSkyBlockJoin") == false) {
+                if (DatabaseManager.getSkyBlockData(number, "isSkyBlockJoin") == false) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -581,7 +601,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 }
             }
         }
-        if (DatabaseManager.getSkyBlockData(number, "$number.home", "getSkyBlockHome") == 0) {
+        if (DatabaseManager.getSkyBlockData(number, "getSkyBlockHome") == 0) {
             val worldPath = "worlds/HwaSkyBlock.$number"
             var world = Bukkit.getServer().getWorld(worldPath)
             if (world == null) {
@@ -604,7 +624,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 val location = Objects.requireNonNull<World?>(world).spawnLocation
                 player.teleport(location)
             }
-            val location = DatabaseManager.getSkyBlockData(number, "$number.home", "getSkyBlockHome") as? Location
+            val location = DatabaseManager.getSkyBlockData(number, "getSkyBlockHome") as? Location
             player.teleport(Objects.requireNonNull(location)!!)
         }
     }

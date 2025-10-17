@@ -26,23 +26,23 @@ class PlaceEvent : Listener {
         val name = player.name
         val block = event.getBlock()
         val world = block.world
-        val world_name = world.worldFolder.getName()
+        val world_name = world.worldFolder.name
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val id = number[1]
-            val leader = DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+            val leader = DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
             if (leader != null && leader != player.name) {
                 val isSharer = listOf(
                     "can_break", "can_place", "use_door", "use_chest", "use_barrel", "use_hopper",
                     "use_furnace", "use_blast_furnace", "use_shulker_box", "use_trapdoor", "use_button",
                     "use_anvil", "use_farm", "use_beacon", "use_minecart", "use_boat"
                 ).any { permissionKey ->
-                    DatabaseManager.getShareData(id.toString(), player.name, permissionKey, null) != null
+                    DatabaseManager.getShareData(id.toString(), player.name, null) != null
                 }
                 val hasBreakPermission = if (!isSharer) {
-                    DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean ?: false
+                    DatabaseManager.getSkyBlockData(id.toString(), "isSkyBlockBreak") as? Boolean ?: false
                 } else {
-                    DatabaseManager.getShareData(id.toString(), player.name, "break", null) as? Boolean ?: false
+                    DatabaseManager.getShareData(id.toString(), player.name, null) as? Boolean ?: false
                 }
                 if (!hasBreakPermission) {
                     val message = ChatColor.translateAlternateColorCodes(
@@ -64,7 +64,7 @@ class PlaceEvent : Listener {
         val x = block.x
         val y = block.y
         val z = block.z
-        val size = DatabaseManager.getSkyBlockData(id.toString(), "$id.size", "getSkyBlockSize") as? Int ?: 0
+        val size = DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockSize") as? Int ?: 0
         return (x >= 0 && x < size) &&
                 (y >= 0 && y < 256) &&
                 (z >= 0 && z < size)

@@ -17,7 +17,6 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
         val name = player.name
         val leader = DatabaseManager.getSkyBlockData(
             island_number.toString(),
-            "$island_number.leader",
             "getSkyBlockLeader"
         ) as? String
         return leader == name
@@ -25,7 +24,7 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
 
     override fun upgradeIsland(player: Player, island_number: Int, plus_size: Int) {
         val id = island_number.toString()
-        val current = DatabaseManager.getSkyBlockData(id, "$id.size", "getSkyBlockSize") as? Int ?: 0
-        DatabaseManager.setSkyBlockData(id, "$id.size", current + plus_size, "setSkyBlockSize")
+        val current = DatabaseManager.getSkyBlockData(id, "getSkyBlockSize") as? Int ?: 0
+        DatabaseManager.setSkyBlockData(id, current + plus_size, "setSkyBlockSize")
     }
 }

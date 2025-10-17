@@ -30,17 +30,17 @@ class BreakEvent : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val id = number[1]
-            if (DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") != null) {
+            if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") != null) {
                 val leader =
-                    DatabaseManager.getSkyBlockData(id.toString(), "$id.leader", "getSkyBlockLeader") as? String
+                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
                 if (leader != name) {
                     val isSharer = DatabaseManager.getShareDataList(id.toString()).contains(name)
 
                     val hasBreakPermission = if (!isSharer) {
-                        DatabaseManager.getSkyBlockData(id.toString(), "$id.break", "isSkyBlockBreak") as? Boolean
+                        DatabaseManager.getSkyBlockData(id.toString(), "isSkyBlockBreak") as? Boolean
                             ?: false
                     } else {
-                        DatabaseManager.getShareData(id.toString(), name, "can_break", "isUseBreak") as? Boolean
+                        DatabaseManager.getShareData(id.toString(), name, "isUseBreak") as? Boolean
                             ?: false
                     }
 
@@ -66,7 +66,7 @@ class BreakEvent : Listener {
         val x = block.x
         val y = block.y
         val z = block.z
-        val size = (DatabaseManager.getSkyBlockData(id.toString(), "$id.size", "getSkyBlockSize") as? Int) ?: 0
+        val size = (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockSize") as? Int) ?: 0
         return (x >= 0 && x < size) &&
                 (y >= 0 && y < 256) &&
                 (z >= 0 && z < size)

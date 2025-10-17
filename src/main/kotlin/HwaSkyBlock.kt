@@ -7,6 +7,7 @@ import org.bukkit.WorldCreator
 import org.bukkit.command.PluginCommand
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import org.geysermc.floodgate.api.FloodgateApi
 import org.hwabaeg.hwaskyblock.api.HwaSkyBlockAPI
 import org.hwabaeg.hwaskyblock.api.HwaSkyBlockAPIImpl
 import org.hwabaeg.hwaskyblock.commands.HwaSkyBlockCommand
@@ -216,6 +217,18 @@ class HwaSkyBlock : JavaPlugin() {
                 }
             } catch (e: Exception) {
                 throw RuntimeException("An error occurred while deleting the file", e)
+            }
+        }
+        fun isBedrockPlayer(player: Player): Boolean {
+            val plugin = Bukkit.getPluginManager().getPlugin("floodgate")
+            if (plugin == null || !plugin.isEnabled) return false
+
+            return try {
+                FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId)
+            } catch (e: NoClassDefFoundError) {
+                false
+            } catch (e: Exception) {
+                false
             }
         }
     }

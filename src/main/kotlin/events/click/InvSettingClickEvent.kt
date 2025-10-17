@@ -47,13 +47,11 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val monsterSpawn = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.monster_spawn",
                             "isSkyBlockMonsterSpawn"
                         ) as? Boolean ?: false
 
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.monster_spawn",
                             !monsterSpawn,
                             "setSkyBlockMonsterSpawn"
                         )
@@ -71,13 +69,11 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val animalSpawn = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.animal_spawn",
                             "isSkyBlockAnimalSpawn"
                         ) as? Boolean ?: false
 
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.animal_spawn",
                             !animalSpawn,
                             "setSkyBlockAnimalSpawn"
                         )
@@ -95,7 +91,6 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val weather = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.weather",
                             "isSkyBlockWeather"
                         ) as? String ?: "clear"
 
@@ -108,7 +103,6 @@ class InvSettingClickEvent : Listener {
                         }
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.weather",
                             nextWeather,
                             "setSkyBlockWeather"
                         )
@@ -126,7 +120,6 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val time = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.time",
                             "isSkyBlockTime"
                         ) as? String ?: "morn"
                         val nextTime = when (time) {
@@ -138,7 +131,6 @@ class InvSettingClickEvent : Listener {
                         }
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.time",
                             nextTime,
                             "setSkyBlockTime"
                         )
@@ -156,12 +148,10 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val waterPhysics = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.water_physics",
                             "isSkyBlockWaterPhysics"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.water_physics",
                             !waterPhysics,
                             "setSkyBlockWaterPhysics"
                         )
@@ -179,12 +169,10 @@ class InvSettingClickEvent : Listener {
                     if (clickitem == item_name) {
                         val lavaPhysics = DatabaseManager.getSkyBlockData(
                             id.toString(),
-                            "$id.setting.lava_physics",
                             "isSkyBlockLavaPhysics"
                         ) as? Boolean ?: false
                         DatabaseManager.setSkyBlockData(
                             id.toString(),
-                            "$id.setting.lava_physics",
                             !lavaPhysics,
                             "setSkyBlockLavaPhysics"
                         )

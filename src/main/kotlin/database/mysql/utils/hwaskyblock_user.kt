@@ -8,7 +8,6 @@ class hwaskyblock_user() {
     private var playerPos: Int = 0
     private var playerPage: Int = 0
 
-    // Map<String, String> 기반 생성자 추가
     constructor(data: Map<String, String>) : this() {
         this.playerUuid = data["player_uuid"]
         this.playerSetting = data["player_setting"]

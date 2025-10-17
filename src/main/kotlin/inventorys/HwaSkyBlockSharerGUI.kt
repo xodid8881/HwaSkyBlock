@@ -29,16 +29,16 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
 
     private fun getHead(player: Player, name: String): ItemStack {
         val world = player.world
-        val world_name = world.worldFolder.getName()
+        val world_name = world.worldFolder.name
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val id = number[1]
 
         val player_join =
-            DatabaseManager.getShareData("$id", name, "can_join", null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
         val block_break =
-            DatabaseManager.getShareData("$id", name, "can_break", null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
         val block_place =
-            DatabaseManager.getShareData("$id", name, "can_place", null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
 
         val item = ItemStack(Material.PLAYER_HEAD, 1, 3.toShort())
         val skull = item.itemMeta as SkullMeta
@@ -154,7 +154,7 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         if (sharerData != null) {
             for (key in sharerData.keys) {
                 val PlayerPage =
-                    DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
+                    DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                 if (Page == PlayerPage) {
                     val item = getHead(player, key.toString())
                     inv.setItem(N, item)
@@ -179,7 +179,7 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         for (lore in MessageConfig.getStringList("gui-slot-item-name.previous_page-lore")) {
             loreList.add(ChatColor.translateAlternateColorCodes('&', lore))
         }
-        itemMeta?.setLore(loreList)
+        itemMeta?.lore = loreList
         item.itemMeta = itemMeta
         inv.setItem(45, item)
 

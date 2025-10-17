@@ -28,29 +28,26 @@ class MoveEvent : Listener {
         val blockFrom = from.world?.getBlockAt(from)
         val blockTo = to?.world?.getBlockAt(to)
         val world = blockTo?.world
-        val world_name = world?.worldFolder?.getName()
+        val world_name = world?.worldFolder?.name
         val number: Array<String?> = world_name?.split("\\.".toRegex())?.dropLastWhile { it.isEmpty() }!!.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val block_to_id = number[1]
             val leader = DatabaseManager.getSkyBlockData(
                 block_to_id.toString(),
-                "$block_to_id.leader",
                 "getSkyBlockLeader"
             ) as? String
             if (leader != null && leader != name) {
                 val isSharer = (DatabaseManager.getShareData(
                     block_to_id.toString(),
                     "",
-                    "getShareList",
                     null
                 ) as? List<*>)?.contains(name) == true
                 val hasJoinPermission = if (isSharer) {
-                    DatabaseManager.getShareData(block_to_id.toString(), name, "can_join", "isUseJoin") as? Boolean
+                    DatabaseManager.getShareData(block_to_id.toString(), name, "isUseJoin") as? Boolean
                         ?: true
                 } else {
                     DatabaseManager.getSkyBlockData(
                         block_to_id.toString(),
-                        "$block_to_id.join",
                         "isSkyBlockJoin"
                     ) as? Boolean ?: true
                 }

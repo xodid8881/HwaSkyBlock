@@ -42,7 +42,7 @@ class InvSharerUseClickEvent : Listener {
                     val id = number[1]
                     val clickitem = e.currentItem?.itemMeta?.displayName
                     val user_name =
-                        DatabaseManager.getUserData("$name.skyblock.setting", player, "getSkyblockSetting").toString()
+                        DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerEvent").toString()
 
                     if (clickitem == ChatColor.translateAlternateColorCodes(
                             '&',
@@ -52,14 +52,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.door",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.door",
                                 false,
                                 null
                             )
@@ -67,7 +65,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.door",
                                 true,
                                 null
                             )
@@ -87,14 +84,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.chest",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.chest",
                                 false,
                                 null
                             )
@@ -102,7 +97,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.chest",
                                 true,
                                 null
                             )
@@ -122,14 +116,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.barrel",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.barrel",
                                 false,
                                 null
                             )
@@ -137,7 +129,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.barrel",
                                 true,
                                 null
                             )
@@ -157,14 +148,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.hopper",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.hopper",
                                 false,
                                 null
                             )
@@ -172,7 +161,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.hopper",
                                 true,
                                 null
                             )
@@ -192,14 +180,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.furnace",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.furnace",
                                 false,
                                 null
                             )
@@ -207,7 +193,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.furnace",
                                 true,
                                 null
                             )
@@ -227,14 +212,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.blast_furnace",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.blast_furnace",
                                 false,
                                 null
                             )
@@ -242,7 +225,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.blast_furnace",
                                 true,
                                 null
                             )
@@ -262,14 +244,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.shulker_box",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.shulker_box",
                                 false,
                                 null
                             )
@@ -277,7 +257,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.shulker_box",
                                 true,
                                 null
                             )
@@ -297,14 +276,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.trapdoor",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.trapdoor",
                                 false,
                                 null
                             )
@@ -312,7 +289,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.trapdoor",
                                 true,
                                 null
                             )
@@ -332,14 +308,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.button",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.button",
                                 false,
                                 null
                             )
@@ -347,7 +321,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.button",
                                 true,
                                 null
                             )
@@ -367,14 +340,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.anvil",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.anvil",
                                 false,
                                 null
                             )
@@ -382,7 +353,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.anvil",
                                 true,
                                 null
                             )
@@ -402,14 +372,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.farm",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.farm",
                                 false,
                                 null
                             )
@@ -417,7 +385,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.farm",
                                 true,
                                 null
                             )
@@ -437,14 +404,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.beacon",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.beacon",
                                 false,
                                 null
                             )
@@ -452,7 +417,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.beacon",
                                 true,
                                 null
                             )
@@ -472,14 +436,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.minecart",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.minecart",
                                 false,
                                 null
                             )
@@ -487,7 +449,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.minecart",
                                 true,
                                 null
                             )
@@ -507,14 +468,12 @@ class InvSharerUseClickEvent : Listener {
                         if (DatabaseManager.getShareData(
                                 "$id",
                                 user_name,
-                                "use.boat",
                                 null
                             ) as? Boolean ?: false
                         ) {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.boat",
                                 false,
                                 null
                             )
@@ -522,7 +481,6 @@ class InvSharerUseClickEvent : Listener {
                             DatabaseManager.setShareData(
                                 "$id",
                                 user_name,
-                                "use.boat",
                                 true,
                                 null
                             )

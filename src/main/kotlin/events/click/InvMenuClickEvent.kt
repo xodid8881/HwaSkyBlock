@@ -32,7 +32,7 @@ class InvMenuClickEvent : Listener {
             val player = e.whoClicked as Player
             val name = player.name
             var world: World? = player.world
-            val world_name = world!!.worldFolder.getName()
+            val world_name = world!!.worldFolder.name
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (e.view.title == ChatColor.translateAlternateColorCodes(
                     '&',
@@ -40,17 +40,17 @@ class InvMenuClickEvent : Listener {
                 )
             ) {
                 e.isCancelled = true
-                val clickitem = e.currentItem?.getItemMeta()?.getDisplayName()
+                val clickitem = e.currentItem?.itemMeta?.displayName
                 val possessionData = DatabaseManager.getUserData(
                     "$name.skyblock.possession",
                     player,
-                    "getSkyblockPossession"
+                    "getPlayerPossession"
                 )
                 if (possessionData != null) {
-                    val possessionData = DatabaseManager.getUserData(
+                    val possessionData: Map<*, *>? = DatabaseManager.getUserData(
                         "$name.skyblock.possession",
                         player,
-                        "getSkyblockPossession"
+                        "getPlayerPossession"
                     ) as? Map<*, *>
                     if (possessionData != null) {
                         for (key in possessionData.keys) {
@@ -60,8 +60,7 @@ class InvMenuClickEvent : Listener {
                             displayName = displayName?.replace("{number}", islandId) ?: continue
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
                                 if (number.size > 1 && number[1] != null && number[1] == islandId) {
-                                    var inv: GeyserMenuGUI? = null
-                                    inv = GeyserMenuGUI(islandId)
+                                    val inv = GeyserMenuGUI(islandId)
                                     inv.open(player)
                                     return
                                 }
@@ -70,15 +69,13 @@ class InvMenuClickEvent : Listener {
                             displayName = displayName?.replace("{number}", islandId) ?: continue
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
                                 if (number.size > 1 && number[1] != null && number[1] == islandId) {
-                                    if (e.click == ClickType.SHIFT_LEFT) {
+                                    if (e.click.isShiftClick && e.click.isLeftClick) {
                                         val leader = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.leader",
                                             "getSkyBlockLeader"
                                         ) as? String
                                         if (leader == name) {
-                                            var inv: HwaSkyBlockGlobalFragGUI? = null
-                                            inv = HwaSkyBlockGlobalFragGUI(islandId)
+                                            val inv = HwaSkyBlockGlobalFragGUI(islandId)
                                             inv.open(player)
                                         } else {
                                             player.closeInventory()
@@ -90,11 +87,9 @@ class InvMenuClickEvent : Listener {
                                                 .sendMessage(ChatMessageType.ACTION_BAR, TextComponent(message))
                                         }
                                         return
-                                    }
-                                    if (e.click == ClickType.SHIFT_RIGHT) {
+                                    } else if (e.click.isShiftClick && e.click.isRightClick) {
                                         val leader = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.leader",
                                             "getSkyBlockLeader"
                                         ) as? String
 
@@ -103,11 +98,10 @@ class InvMenuClickEvent : Listener {
                                                 name,
                                                 player,
                                                 islandId,
-                                                "setSkyblockSetting"
+                                                "setPlayerPos"
                                             )
                                             ConfigManager.Companion.saveConfigs()
-                                            var inv: HwaSkyBlockSharerGUI? = null
-                                            inv = HwaSkyBlockSharerGUI(player, islandId)
+                                            val inv = HwaSkyBlockSharerGUI(player, islandId)
                                             inv.open(player)
                                         } else {
                                             player.closeInventory()
@@ -120,12 +114,10 @@ class InvMenuClickEvent : Listener {
                                         }
                                         return
                                     }
-                                }
-                                if (e.click == ClickType.LEFT) {
+                                } else if (e.click.isLeftClick) {
                                     player.closeInventory()
                                     val homeValue = DatabaseManager.getSkyBlockData(
                                         islandId,
-                                        "$islandId.home",
                                         "getSkyBlockHome"
                                     ) as? Int ?: 0
                                     if (homeValue == 0) {
@@ -154,37 +146,31 @@ class InvMenuClickEvent : Listener {
                                         }
                                         val worldName = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.world",
                                             "getSkyBlockHomeWorld"
                                         ) as? String
                                         val x = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.x",
                                             "getSkyBlockHomeX"
                                         ) as? Double ?: 0.0
                                         val y = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.y",
                                             "getSkyBlockHomeY"
                                         ) as? Double ?: 0.0
                                         val z = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.z",
                                             "getSkyBlockHomeZ"
                                         ) as? Double ?: 0.0
                                         val yaw = (DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.yaw",
                                             "getSkyBlockHomeYaw"
                                         ) as? Double ?: 0.0).toFloat()
                                         val pitch = (DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.pitch",
                                             "getSkyBlockHomePitch"
                                         ) as? Double ?: 0.0).toFloat()
 
                                         val location: Location? = if (worldName != null) {
-                                            val world = Bukkit.getWorld(worldName)
+                                            val world: World? = Bukkit.getWorld(worldName)
                                             if (world != null) Location(world, x, y, z, yaw, pitch) else null
                                         } else {
                                             null
@@ -200,13 +186,13 @@ class InvMenuClickEvent : Listener {
                 val shareData = DatabaseManager.getUserData(
                     name,
                     player,
-                    "getSkyblockSharer"
+                    "getPlayerSharer"
                 )
                 if (shareData != null) {
                     val sharerData = DatabaseManager.getUserData(
                         name,
                         player,
-                        "getSkyblockSharer"
+                        "getPlayerSharer"
                     ) as? Map<*, *>
 
                     if (sharerData != null) {
@@ -216,11 +202,10 @@ class InvMenuClickEvent : Listener {
                             displayName = displayName?.replace("{number}", islandId) ?: continue
 
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', displayName)) {
-                                if (e.click == ClickType.LEFT) {
+                                if (e.click.isLeftClick) {
                                     player.closeInventory()
                                     val homeValue = DatabaseManager.getSkyBlockData(
                                         islandId,
-                                        "$islandId.home",
                                         "getSkyBlockHome"
                                     ) as? Int ?: 0
 
@@ -232,37 +217,31 @@ class InvMenuClickEvent : Listener {
                                     } else {
                                         val worldName = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.world",
                                             "getSkyBlockHomeWorld"
                                         ) as? String
                                         val x = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.x",
                                             "getSkyBlockHomeX"
                                         ) as? Double ?: 0.0
                                         val y = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.y",
                                             "getSkyBlockHomeY"
                                         ) as? Double ?: 0.0
                                         val z = DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.z",
                                             "getSkyBlockHomeZ"
                                         ) as? Double ?: 0.0
                                         val yaw = (DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.yaw",
                                             "getSkyBlockHomeYaw"
                                         ) as? Double ?: 0.0).toFloat()
                                         val pitch = (DatabaseManager.getSkyBlockData(
                                             islandId,
-                                            "$islandId.home.pitch",
                                             "getSkyBlockHomePitch"
                                         ) as? Double ?: 0.0).toFloat()
 
                                         val location: Location? = if (worldName != null) {
-                                            val world = Bukkit.getWorld(worldName)
+                                            val world: World? = Bukkit.getWorld(worldName)
                                             if (world != null) Location(world, x, y, z, yaw, pitch) else null
                                         } else {
                                             null
@@ -280,12 +259,11 @@ class InvMenuClickEvent : Listener {
                         )
                     ) {
                         val page =
-                            DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
+                            DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page - 1
-                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
+                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
                         ConfigManager.Companion.saveConfigs()
-                        var inv: HwaSkyBlockMenuGUI? = null
-                        inv = HwaSkyBlockMenuGUI(player)
+                        val inv = HwaSkyBlockMenuGUI(player)
                         inv.open(player)
                         return
                     }
@@ -295,12 +273,11 @@ class InvMenuClickEvent : Listener {
                         )
                     ) {
                         val page =
-                            DatabaseManager.getUserData("$name.skyblock.page", player, "getSkyblockPage") as? Int ?: 0
+                            DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page + 1
-                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setSkyblockPage")
+                        DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
                         ConfigManager.Companion.saveConfigs()
-                        var inv: HwaSkyBlockMenuGUI? = null
-                        inv = HwaSkyBlockMenuGUI(player)
+                        val inv = HwaSkyBlockMenuGUI(player)
                         inv.open(player)
                         return
                     }

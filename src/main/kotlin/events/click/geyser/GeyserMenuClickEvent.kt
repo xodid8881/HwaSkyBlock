@@ -33,7 +33,7 @@ class GeyserMenuClickEvent : Listener {
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (e.view.title == ChatColor.translateAlternateColorCodes(
                     '&',
-                    Objects.requireNonNull<String?>(MessageConfig.getString("gui-name.global_use_list"))
+                    Objects.requireNonNull<String?>(MessageConfig.getString("gui-name.geyser_menu_list"))
                 )
             ) {
                 e.isCancelled = true
@@ -48,7 +48,6 @@ class GeyserMenuClickEvent : Listener {
                         player.closeInventory()
                         val homeValue = DatabaseManager.Companion.getSkyBlockData(
                             islandId.toString(),
-                            "$islandId.home",
                             "getSkyBlockHome"
                         ) as? Int ?: 0
                         if (homeValue == 0) {
@@ -77,32 +76,26 @@ class GeyserMenuClickEvent : Listener {
                             }
                             val worldName = DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.world",
                                 "getSkyBlockHomeWorld"
                             ) as? String
                             val x = DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.x",
                                 "getSkyBlockHomeX"
                             ) as? Double ?: 0.0
                             val y = DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.y",
                                 "getSkyBlockHomeY"
                             ) as? Double ?: 0.0
                             val z = DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.z",
                                 "getSkyBlockHomeZ"
                             ) as? Double ?: 0.0
                             val yaw = (DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.yaw",
                                 "getSkyBlockHomeYaw"
                             ) as? Double ?: 0.0).toFloat()
                             val pitch = (DatabaseManager.Companion.getSkyBlockData(
                                 islandId.toString(),
-                                "$islandId.home.pitch",
                                 "getSkyBlockHomePitch"
                             ) as? Double ?: 0.0).toFloat()
 
@@ -124,7 +117,6 @@ class GeyserMenuClickEvent : Listener {
                     ) {
                         val leader = DatabaseManager.Companion.getSkyBlockData(
                             islandId.toString(),
-                            "$islandId.leader",
                             "getSkyBlockLeader"
                         ) as? String
                         if (leader == name) {
@@ -149,7 +141,6 @@ class GeyserMenuClickEvent : Listener {
                     ) {
                         val leader = DatabaseManager.Companion.getSkyBlockData(
                             islandId.toString(),
-                            "$islandId.leader",
                             "getSkyBlockLeader"
                         ) as? String
 
@@ -158,7 +149,7 @@ class GeyserMenuClickEvent : Listener {
                                 name,
                                 player,
                                 islandId,
-                                "setSkyblockSetting"
+                                "setPlayerEvent"
                             )
                             ConfigManager.Companion.saveConfigs()
                             var inv: HwaSkyBlockSharerGUI? = null

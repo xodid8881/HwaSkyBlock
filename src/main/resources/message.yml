@@ -280,7 +280,7 @@ gui-slot-item-name:
       - "&a- &fSHIFT 좌클릭 &7시 해당 섬 글로벌 권한관리"
       - "&a- &fSHIFT 우클릭 &7시 해당 섬 공유자 권한관리"
       - "&a- &f좌클릭 &7시 해당 섬로 텔레포트"
-    geyser_my: "&a- &7{number} &a- &7나의 섬"
+    geyser_my: "&a- &7{number} &a- &7나의 섬 - BedRock"
     geyser_my-lore:
       - "&a- &f클릭 &7시 해당 섬을 관리합니다."
     sharer: "&a- &7{number} &a- &7공유 섬"

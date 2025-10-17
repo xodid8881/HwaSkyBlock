@@ -23,19 +23,17 @@ class HwaSkyBlockTask : Runnable {
             val skyblockId = DatabaseManager.getUserData("$name.skyblock", player, null)
             if (skyblockId != null) {
                 val world = player.world
-                val world_name = world.worldFolder.getName()
+                val world_name = world.worldFolder.name
                 val number: Array<String?> =
                     world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (number[0] == "HwaSkyBlock") {
                     val block_to_id = number[1]
                     val weather = DatabaseManager.getSkyBlockData(
                         block_to_id.toString(),
-                        "$block_to_id.setting.weather",
                         "getSkyBlockWeather"
                     ) as? String
                     val time = DatabaseManager.getSkyBlockData(
                         block_to_id.toString(),
-                        "$block_to_id.setting.time",
                         "getSkyBlockTime"
                     ) as? String
                     object : BukkitRunnable() {
@@ -80,13 +78,11 @@ class HwaSkyBlockTask : Runnable {
                     if (player_chunk != block_to_id) {
                         if (DatabaseManager.getSkyBlockData(
                                 block_to_id.toString(),
-                                "$block_to_id.leader",
                                 "getSkyBlockLeader"
                             ) != null
                         ) {
                             val welcome_message = DatabaseManager.getSkyBlockData(
                                 block_to_id.toString(),
-                                "$block_to_id.welcome_message",
                                 "getSkyBlockWelcomeMessage"
                             ) as? String
                             player.sendMessage(
@@ -97,7 +93,6 @@ class HwaSkyBlockTask : Runnable {
                             )
                             val chunk_master = DatabaseManager.getSkyBlockData(
                                 block_to_id.toString(),
-                                "$block_to_id.leader",
                                 "getSkyBlockLeader"
                             ) as? String
 

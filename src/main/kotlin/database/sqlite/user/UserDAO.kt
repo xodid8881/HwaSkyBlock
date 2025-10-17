@@ -15,7 +15,8 @@ class UserDAO {
                 player_setting TEXT NOT NULL,
                 player_possession_count INTEGER NOT NULL,
                 player_pos TEXT NOT NULL,
-                player_page INTEGER NOT NULL
+                player_page INTEGER NOT NULL,
+                player_event TEXT DEFAULT ''
             );
         """.trimIndent()
         conn.createStatement().use { it.execute(sql) }
@@ -80,15 +81,19 @@ class UserDAO {
     }
 
     fun updateUser(uuid: String, values: Map<String, Any>) {
+        if (values.isEmpty()) return
+
         val setClause = values.keys.joinToString(", ") { "$it = ?" }
         val sql = "UPDATE hwaskyblock_user SET $setClause WHERE player_uuid = ?"
 
         conn.prepareStatement(sql).use { stmt ->
-            values.values.forEachIndexed { i, v ->
+            values.entries.forEachIndexed { i, entry ->
+                val v = entry.value
                 when (v) {
                     is Int -> stmt.setInt(i + 1, v)
                     is String -> stmt.setString(i + 1, v)
-                    else -> stmt.setObject(i + 1, v.toString())
+                    is Boolean -> stmt.setBoolean(i + 1, v)
+                    else -> stmt.setObject(i + 1, v)
                 }
             }
             stmt.setString(values.size + 1, uuid)

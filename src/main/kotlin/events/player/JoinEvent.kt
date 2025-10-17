@@ -14,7 +14,7 @@ class JoinEvent : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
         val name = player.name
-        val hasSkyblockData = DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerSetting") != null
+        val hasSkyblockData = DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerEvent") != null
         if (!hasSkyblockData) {
             DatabaseManager.insertUser(player)
             if (ConfigManager.getConfig("setting")?.getString("database.type") == "yml") {

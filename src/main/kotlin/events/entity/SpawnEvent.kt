@@ -14,19 +14,17 @@ class SpawnEvent : Listener {
         val entityType: EntityType? = event.entityType
         val entity: Entity = event.getEntity()
         val world = entity.world
-        val world_name = world.worldFolder.getName()
+        val world_name = world.worldFolder.name
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (number[0] == "HwaSkyBlock") {
             val block_to_id = number[1]
             val monster_spawn = DatabaseManager.getSkyBlockData(
                 block_to_id.toString(),
-                "$block_to_id.setting.monster_spawn",
                 "isSkyBlockMonsterSpawn"
             ) as? Boolean ?: true
 
             val animal_spawn = DatabaseManager.getSkyBlockData(
                 block_to_id.toString(),
-                "$block_to_id.setting.animal_spawn",
                 "isSkyBlockAnimalSpawn"
             ) as? Boolean ?: true
 

@@ -107,7 +107,7 @@ class DatabaseManager {
         }
     }
 
-    fun getSkyBlockDataStatic(skyblockId: String, data: String, type: String?): Any? {
+    fun getSkyBlockDataStatic(skyblockId: String, type: String?): Any? {
         return when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = SkyblockDAO()
@@ -191,7 +191,7 @@ class DatabaseManager {
         }
     }
 
-    fun setSkyBlockDataStatic(skyblockId: String, data: String, value: Any?, type: String?) {
+    fun setSkyBlockDataStatic(skyblockId: String, value: Any?, type: String?) {
         val stringValue = value?.toString() ?: return
 
         val typeToColumn = mapOf(
@@ -260,7 +260,8 @@ class DatabaseManager {
                     "player_setting" to jsonSetting,
                     "player_possession_count" to 0,
                     "player_pos" to "0",
-                    "player_page" to 1
+                    "player_page" to 1,
+                    "player_event" to ""
                 )
                 dao.insertUser(userData)
             }
@@ -280,7 +281,8 @@ class DatabaseManager {
                     "player_setting" to jsonSetting,
                     "player_possession_count" to 0,
                     "player_pos" to "0",
-                    "player_page" to 1
+                    "player_page" to 1,
+                    "player_event" to ""
                 )
                 dao.insertUser(userData)
             }
@@ -289,102 +291,195 @@ class DatabaseManager {
 
     fun getUserDataStatic(data: String, player: Player?, type: String?): Any? {
         val uuid = player?.uniqueId.toString()
+        if (type == null) return null
+
+        val typeToColumn = mapOf(
+            "getPlayerPossessionCount" to "player_possession_count",
+            "getPlayerPage" to "player_page",
+            "getPlayerPos" to "player_pos",
+            "getPlayerSetting" to "player_setting",
+            "getPlayerEvent" to "player_event",
+            "getPlayerPossession" to "player_setting",
+            "getPlayerSharer" to "player_setting"
+        )
+
+        val column = typeToColumn[type] ?: return null
+
+        fun parseSetting(raw: Any?): Map<String, Any> {
+            return when (raw) {
+                is Map<*, *> -> raw.entries.associate { it.key.toString() to it.value as Any }
+                is String -> {
+                    try {
+                        val parser = org.json.simple.parser.JSONParser()
+                        val obj = parser.parse(raw) as JSONObject
+                        obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }
+                    } catch (e: Exception) {
+                        emptyMap()
+                    }
+                }
+                else -> emptyMap()
+            }
+        }
+
+        fun extractTrueMap(container: Any?): Map<String, Boolean> {
+            val map = when (container) {
+                is Map<*, *> -> container
+                is JSONObject -> container
+                else -> return emptyMap()
+            }
+            return map.mapNotNull { (k, v) ->
+                val key = k?.toString()
+                val value = (v as? Boolean) == true
+                if (key != null && value) key to true else null
+            }.toMap()
+        }
 
         return when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = UserDAO()
                 val result = dao.getUser(uuid) ?: return null
 
-                val path = data.split(".")
-                if (path.size >= 3 && path[1] == "skyblock") {
-                    when (path[2]) {
-                        "possession" -> {
-                            val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
-                            val rawPossession = playerSetting["possession"] as? Map<*, *> ?: return null
-                            return rawPossession.filterValues { it == true }
-                        }
-
-                        "sharer" -> {
-                            val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
-                            val rawSharer = playerSetting["sharer"] as? Map<*, *> ?: return null
-                            return rawSharer.filterValues { it == true }
-                        }
-
-                        "page" -> return result["player_page"]
+                if (column == "player_setting") {
+                    val setting = parseSetting(result["player_setting"])
+                    when (type) {
+                        "getPlayerPossession" -> extractTrueMap(setting["possession"])
+                        "getPlayerSharer"     -> extractTrueMap(setting["sharer"])
+                        "getPlayerSetting"    -> setting
+                        else                  -> setting[data] // 필요 시 개별 키 접근
                     }
+                } else {
+                    result[column]
                 }
-                return result[data]
             }
 
             "mysql" -> {
                 val dao = MySQLUserDAO()
                 val result = dao.getUser(uuid) ?: return null
 
-                val path = data.split(".")
-                if (path.size >= 3 && path[1] == "skyblock") {
-                    when (path[2]) {
-                        "possession" -> {
-                            val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
-                            val rawPossession = playerSetting["possession"] as? Map<*, *> ?: return null
-                            return rawPossession.filterValues { it == true }
-                        }
-
-                        "sharer" -> {
-                            val playerSetting = result["player_setting"] as? Map<*, *> ?: return null
-                            val rawSharer = playerSetting["sharer"] as? Map<*, *> ?: return null
-                            return rawSharer.filterValues { it == true }
-                        }
-
-                        "page" -> return result["player_page"]
+                if (column == "player_setting") {
+                    val setting = parseSetting(result["player_setting"])
+                    when (type) {
+                        "getPlayerPossession" -> extractTrueMap(setting["possession"])
+                        "getPlayerSharer"     -> extractTrueMap(setting["sharer"])
+                        "getPlayerSetting"    -> setting
+                        else                  -> setting[data]
                     }
+                } else {
+                    result[column]
                 }
-                return result[data]
             }
 
             else -> null
         }
     }
 
+
+
     fun setUserDataStatic(data: String, player: Player, value: Any?, type: String?) {
         val uuid = player.uniqueId.toString()
+        val stringValue = value?.toString() ?: return
+
+        val typeToColumn = mapOf(
+            "setPlayerPossessionCount" to "player_possession_count",
+            "setPlayerPage" to "player_page",
+            "setPlayerPos" to "player_pos",
+            "setPlayerSetting" to "player_setting",
+            "setPlayerEvent" to "player_event",
+            "setPlayerPossession" to "player_setting",
+            "setPlayerSharer" to "player_setting"
+        )
+
+        val column = typeToColumn[type] ?: return
+        val jsonParser = org.json.simple.parser.JSONParser()
 
         when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = UserDAO()
-                val uuid = player.uniqueId.toString()
-                val userData = dao.getUser(uuid)?.toMutableMap() ?: return
-                val settingMap = userData["player_setting"] as? Map<*, *> ?: emptyMap<Any, Any>()
 
-                val newSetting = settingMap.toMutableMap()
+                if (column == "player_setting" &&
+                    (data.contains(".skyblock.possession.") || data.contains(".skyblock.sharer."))
+                ) {
+                    val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
-                if (data.startsWith("${player.name}.skyblock.possession.")) {
+                    val rawSetting = userData["player_setting"]
+                    val settingMap: MutableMap<String, Any> = when (rawSetting) {
+                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }.toMutableMap()
+                        is String -> {
+                            try {
+                                val obj = jsonParser.parse(rawSetting) as org.json.simple.JSONObject
+                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }.toMutableMap()
+                            } catch (e: Exception) {
+                                mutableMapOf()
+                            }
+                        }
+                        else -> mutableMapOf()
+                    }
+
+                    val newSetting = settingMap.toMutableMap()
                     val islandId = data.substringAfterLast(".")
-                    val possession = (newSetting["possession"] as? MutableMap<String, Boolean> ?: mutableMapOf())
-                    possession[islandId] = true
-                    newSetting["possession"] = possession
-                }
 
-                val jsonString = JSONObject(newSetting).toJSONString()
-                dao.updateUser(uuid, mapOf("player_setting" to jsonString))
+                    val keyType = if (data.contains(".skyblock.possession.")) "possession" else "sharer"
+
+                    val oldSubMap = (newSetting[keyType] as? Map<*, *>)?.toMutableMap()
+                        ?.mapKeys { it.key.toString() }
+                        ?.mapValues { it.value.toString().toBoolean() }
+                        ?.toMutableMap() ?: mutableMapOf()
+
+                    if (stringValue.equals("false", ignoreCase = true)) {
+                        oldSubMap.remove(islandId)
+                    } else {
+                        oldSubMap[islandId] = true
+                    }
+
+                    newSetting[keyType] = oldSubMap
+                    dao.updateUser(uuid, mapOf(column to org.json.simple.JSONObject(newSetting).toJSONString()))
+                } else {
+                    dao.updateUser(uuid, mapOf(column to stringValue))
+                }
             }
 
             "mysql" -> {
                 val dao = MySQLUserDAO()
-                val uuid = player.uniqueId.toString()
-                val userData = dao.getUser(uuid)?.toMutableMap() ?: return
-                val settingMap = userData["player_setting"] as? Map<*, *> ?: emptyMap<Any, Any>()
 
-                val newSetting = settingMap.toMutableMap()
+                if (column == "player_setting" &&
+                    (data.contains(".skyblock.possession.") || data.contains(".skyblock.sharer."))
+                ) {
+                    val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
-                if (data.startsWith("${player.name}.skyblock.possession.")) {
+                    val rawSetting = userData["player_setting"]
+                    val settingMap: MutableMap<String, Any> = when (rawSetting) {
+                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }.toMutableMap()
+                        is String -> {
+                            try {
+                                val obj = jsonParser.parse(rawSetting) as org.json.simple.JSONObject
+                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }.toMutableMap()
+                            } catch (e: Exception) {
+                                mutableMapOf()
+                            }
+                        }
+                        else -> mutableMapOf()
+                    }
+
+                    val newSetting = settingMap.toMutableMap()
                     val islandId = data.substringAfterLast(".")
-                    val possession = (newSetting["possession"] as? MutableMap<String, Boolean> ?: mutableMapOf())
-                    possession[islandId] = true
-                    newSetting["possession"] = possession
-                }
+                    val keyType = if (data.contains(".skyblock.possession.")) "possession" else "sharer"
 
-                val jsonString = JSONObject(newSetting).toJSONString()
-                dao.updateUser(uuid, mapOf("player_setting" to jsonString))
+                    val oldSubMap = (newSetting[keyType] as? Map<*, *>)?.toMutableMap()
+                        ?.mapKeys { it.key.toString() }
+                        ?.mapValues { it.value.toString().toBoolean() }
+                        ?.toMutableMap() ?: mutableMapOf()
+
+                    if (stringValue.equals("false", ignoreCase = true)) {
+                        oldSubMap.remove(islandId)
+                    } else {
+                        oldSubMap[islandId] = true
+                    }
+
+                    newSetting[keyType] = oldSubMap
+                    dao.updateUser(uuid, mapOf(column to org.json.simple.JSONObject(newSetting).toJSONString()))
+                } else {
+                    dao.updateUser(uuid, mapOf(column to stringValue))
+                }
             }
         }
     }
@@ -427,7 +522,7 @@ class DatabaseManager {
         }
     }
 
-    fun getShareDataStatic(skyblockId: String, playerName: String, data: String, type: String?): Any? {
+    fun getShareDataStatic(skyblockId: String, playerName: String, type: String?): Any? {
         return when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = ShareDAO()
@@ -497,7 +592,7 @@ class DatabaseManager {
         }
     }
 
-    fun setShareDataStatic(skyblockId: String, playerName: String, data: String, value: Any?, type: String?) {
+    fun setShareDataStatic(skyblockId: String, playerName: String, value: Any?, type: String?) {
         when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = ShareDAO()
@@ -659,12 +754,12 @@ class DatabaseManager {
             DatabaseManager().insertSkyBlockStatic(skyblockId, name)
 
         @JvmStatic
-        fun getSkyBlockData(skyblockId: String, data: String, type: String?) =
-            DatabaseManager().getSkyBlockDataStatic(skyblockId, data, type)
+        fun getSkyBlockData(skyblockId: String, type: String?) =
+            DatabaseManager().getSkyBlockDataStatic(skyblockId, type)
 
         @JvmStatic
-        fun setSkyBlockData(skyblockId: String, data: String, value: Any?, type: String?) =
-            DatabaseManager().setSkyBlockDataStatic(skyblockId, data, value, type)
+        fun setSkyBlockData(skyblockId: String, value: Any?, type: String?) =
+            DatabaseManager().setSkyBlockDataStatic(skyblockId, value, type)
 
         @JvmStatic
         fun insertUser(player: Player) =
@@ -687,12 +782,12 @@ class DatabaseManager {
             DatabaseManager().insertShareStatic(skyblockId, playerName)
 
         @JvmStatic
-        fun getShareData(skyblockId: String, playerName: String, data: String, type: String?) =
-            DatabaseManager().getShareDataStatic(skyblockId, playerName, data, type)
+        fun getShareData(skyblockId: String, playerName: String, type: String?) =
+            DatabaseManager().getShareDataStatic(skyblockId, playerName, type)
 
         @JvmStatic
-        fun setShareData(skyblockId: String, playerName: String, data: String, value: Any?, type: String?) =
-            DatabaseManager().setShareDataStatic(skyblockId, playerName, data, value, type)
+        fun setShareData(skyblockId: String, playerName: String, value: Any?, type: String?) =
+            DatabaseManager().setShareDataStatic(skyblockId, playerName, value, type)
 
         @JvmStatic
         fun getShareList(skyblockId: String): List<String> =
