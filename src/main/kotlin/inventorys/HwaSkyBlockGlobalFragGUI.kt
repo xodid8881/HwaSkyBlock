@@ -98,7 +98,7 @@ class HwaSkyBlockGlobalFragGUI(key: String?) : Listener {
         inv.setItem(12, item)
 
         item = ItemStack(Material.SCAFFOLDING, 1)
-        itemMeta = item.getItemMeta()
+        itemMeta = item.itemMeta
         loreList = ArrayList<String?>()
         itemMeta?.setDisplayName(
             ChatColor.translateAlternateColorCodes(
@@ -145,7 +145,7 @@ class HwaSkyBlockGlobalFragGUI(key: String?) : Listener {
         inv.setItem(14, item)
 
         item = ItemStack(Material.DIAMOND_SWORD, 1)
-        itemMeta = item.getItemMeta()
+        itemMeta = item.itemMeta
         loreList = ArrayList<String?>()
         itemMeta?.setDisplayName(
             ChatColor.translateAlternateColorCodes(

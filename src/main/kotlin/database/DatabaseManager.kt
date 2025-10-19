@@ -317,6 +317,7 @@ class DatabaseManager {
                         emptyMap()
                     }
                 }
+
                 else -> emptyMap()
             }
         }
@@ -343,9 +344,9 @@ class DatabaseManager {
                     val setting = parseSetting(result["player_setting"])
                     when (type) {
                         "getPlayerPossession" -> extractTrueMap(setting["possession"])
-                        "getPlayerSharer"     -> extractTrueMap(setting["sharer"])
-                        "getPlayerSetting"    -> setting
-                        else                  -> setting[data] // 필요 시 개별 키 접근
+                        "getPlayerSharer" -> extractTrueMap(setting["sharer"])
+                        "getPlayerSetting" -> setting
+                        else -> setting[data] // 필요 시 개별 키 접근
                     }
                 } else {
                     result[column]
@@ -360,9 +361,9 @@ class DatabaseManager {
                     val setting = parseSetting(result["player_setting"])
                     when (type) {
                         "getPlayerPossession" -> extractTrueMap(setting["possession"])
-                        "getPlayerSharer"     -> extractTrueMap(setting["sharer"])
-                        "getPlayerSetting"    -> setting
-                        else                  -> setting[data]
+                        "getPlayerSharer" -> extractTrueMap(setting["sharer"])
+                        "getPlayerSetting" -> setting
+                        else -> setting[data]
                     }
                 } else {
                     result[column]
@@ -372,7 +373,6 @@ class DatabaseManager {
             else -> null
         }
     }
-
 
 
     fun setUserDataStatic(data: String, player: Player, value: Any?, type: String?) {
@@ -403,15 +403,19 @@ class DatabaseManager {
 
                     val rawSetting = userData["player_setting"]
                     val settingMap: MutableMap<String, Any> = when (rawSetting) {
-                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }.toMutableMap()
+                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }
+                            .toMutableMap()
+
                         is String -> {
                             try {
-                                val obj = jsonParser.parse(rawSetting) as org.json.simple.JSONObject
-                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }.toMutableMap()
+                                val obj = jsonParser.parse(rawSetting) as JSONObject
+                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }
+                                    .toMutableMap()
                             } catch (e: Exception) {
                                 mutableMapOf()
                             }
                         }
+
                         else -> mutableMapOf()
                     }
 
@@ -432,7 +436,7 @@ class DatabaseManager {
                     }
 
                     newSetting[keyType] = oldSubMap
-                    dao.updateUser(uuid, mapOf(column to org.json.simple.JSONObject(newSetting).toJSONString()))
+                    dao.updateUser(uuid, mapOf(column to JSONObject(newSetting).toJSONString()))
                 } else {
                     dao.updateUser(uuid, mapOf(column to stringValue))
                 }
@@ -448,15 +452,19 @@ class DatabaseManager {
 
                     val rawSetting = userData["player_setting"]
                     val settingMap: MutableMap<String, Any> = when (rawSetting) {
-                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }.toMutableMap()
+                        is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }
+                            .toMutableMap()
+
                         is String -> {
                             try {
-                                val obj = jsonParser.parse(rawSetting) as org.json.simple.JSONObject
-                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }.toMutableMap()
+                                val obj = jsonParser.parse(rawSetting) as JSONObject
+                                obj.entries.associate { (it as Map.Entry<*, *>).key.toString() to it.value as Any }
+                                    .toMutableMap()
                             } catch (e: Exception) {
                                 mutableMapOf()
                             }
                         }
+
                         else -> mutableMapOf()
                     }
 
@@ -476,7 +484,7 @@ class DatabaseManager {
                     }
 
                     newSetting[keyType] = oldSubMap
-                    dao.updateUser(uuid, mapOf(column to org.json.simple.JSONObject(newSetting).toJSONString()))
+                    dao.updateUser(uuid, mapOf(column to JSONObject(newSetting).toJSONString()))
                 } else {
                     dao.updateUser(uuid, mapOf(column to stringValue))
                 }

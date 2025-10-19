@@ -219,6 +219,7 @@ class HwaSkyBlock : JavaPlugin() {
                 throw RuntimeException("An error occurred while deleting the file", e)
             }
         }
+
         fun isBedrockPlayer(player: Player): Boolean {
             val plugin = Bukkit.getPluginManager().getPlugin("floodgate")
             if (plugin == null || !plugin.isEnabled) return false

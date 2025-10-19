@@ -23,7 +23,7 @@ class PlaceEvent : Listener {
     @EventHandler
     fun onPlace(event: BlockPlaceEvent) {
         val player = event.getPlayer()
-        val name = player.name
+        player.name
         val block = event.getBlock()
         val world = block.world
         val world_name = world.worldFolder.name

@@ -2,7 +2,9 @@ package org.hwabaeg.hwaskyblock.commands
 
 import net.milkbowl.vault.economy.Economy
 import org.apache.commons.lang.StringUtils
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
+import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -209,7 +211,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         "setUseBoat" to "use_boat"
                     )
 
-                    for ((type, data) in permissions) {
+                    for ((type, _) in permissions) {
                         DatabaseManager.setShareData(id.toString(), args[1]!!, true, type)
                     }
 
@@ -578,13 +580,14 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
     fun SkyBlock_Teleport(player: Player, number: String) {
         val name = player.name
+
         if (DatabaseManager.getSkyBlockData(number, "getSkyBlockLeader") != name) {
             if (DatabaseManager.getShareDataList(number).contains(name)) {
                 if (DatabaseManager.getShareData(number, name, "isUseJoin") == false) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
-                            Objects.requireNonNull<String?>(MessageConfig.getString("message-event.join_refusal"))
+                            MessageConfig.getString("message-event.join_refusal").toString()
                         )
                     )
                     return
@@ -594,38 +597,40 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
-                            Objects.requireNonNull<String?>(MessageConfig.getString("message-event.join_refusal"))
+                            MessageConfig.getString("message-event.join_refusal").toString()
                         )
                     )
                     return
                 }
             }
         }
-        if (DatabaseManager.getSkyBlockData(number, "getSkyBlockHome") == 0) {
-            val worldPath = "worlds/HwaSkyBlock.$number"
-            var world = Bukkit.getServer().getWorld(worldPath)
-            if (world == null) {
-                world = WorldCreator(worldPath).createWorld()
-                val location = Objects.requireNonNull<World?>(world).spawnLocation
-                player.teleport(location)
-                return
-            }
-            val location = Objects.requireNonNull<World?>(world).spawnLocation
+
+        val homeData = DatabaseManager.getSkyBlockData(number, "getSkyBlockHome")
+
+        val worldName = "HwaSkyBlock.$number"
+        val world = Bukkit.getWorld(worldName)
+
+        if (world == null) {
+            player.sendMessage(
+                Prefix + ChatColor.translateAlternateColorCodes(
+                    '&',
+                    MessageConfig.getString("message-event.island_not_exist").toString()
+                )
+            )
+            return
+        }
+
+        if (homeData == null || homeData == 0) {
+            val location = world.spawnLocation
             player.teleport(location)
+            return
+        }
+
+        if (homeData is Location) {
+            player.teleport(homeData)
         } else {
-            val worldPath = "worlds/HwaSkyBlock.$number"
-            val world = Bukkit.getServer().getWorld(worldPath)
-            if (world == null) {
-                val createWorld = WorldCreator(worldPath).createWorld()
-                val location = Objects.requireNonNull<World?>(createWorld).spawnLocation
-                player.teleport(location)
-                return
-            } else {
-                val location = Objects.requireNonNull<World?>(world).spawnLocation
-                player.teleport(location)
-            }
-            val location = DatabaseManager.getSkyBlockData(number, "getSkyBlockHome") as? Location
-            player.teleport(Objects.requireNonNull(location)!!)
+            val location = world.spawnLocation
+            player.teleport(location)
         }
     }
 }

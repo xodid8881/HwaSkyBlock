@@ -1,7 +1,5 @@
 package org.hwabaeg.hwaskyblock.events.player
 
-import dev.lone.itemsadder.api.CustomBlock
-import dev.lone.itemsadder.api.ItemsAdder
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.ChatColor
@@ -15,10 +13,11 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.vehicle.VehicleDamageEvent
+import org.bukkit.event.vehicle.VehicleEnterEvent
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent
+import org.hwabaeg.hwaskyblock.api.customblock.CustomBlockManager
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
@@ -55,7 +54,6 @@ class UseEvent : Listener {
             val id = number[1]
             val leader = DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader") as? String
             if (leader != null && leader != name) {
-                val permissionKey = "$id.sharer.$name"
                 val isSharer = DatabaseManager.getSkyBlockData(id, "getSkyBlockShare") != null
                 val useBreakPermission = if (!isSharer) {
                     DatabaseManager.getSkyBlockData(id, "getSkyBlockBreak") as? Boolean ?: false
@@ -64,7 +62,7 @@ class UseEvent : Listener {
                         ?: false
                 }
 
-                if (useBreakPermission != true) {
+                if (!useBreakPermission) {
                     sendNoPermissionActionBar(damager)
                     event.isCancelled = true
                 }
@@ -103,7 +101,6 @@ class UseEvent : Listener {
             event.isCancelled = true
         }
     }
-
 
     @EventHandler
     fun onEntityCollision(event: VehicleEntityCollisionEvent) {
@@ -149,16 +146,15 @@ class UseEvent : Listener {
         }
     }
 
-
     @EventHandler
-    fun onEntityMount(event: EntityMountEvent) {
-        val entity = event.entity
-        val vehicle = event.mount
+    fun onVehicleEnter(event: VehicleEnterEvent) {
+        val vehicle = event.vehicle
+        val entered = event.entered
 
-        if (entity is Player && (vehicle is Minecart || vehicle is Boat)) {
-            val name = entity.name
-            val world = entity.world
-            val worldName = world.worldFolder.name
+        if (entered is Player && (vehicle is Minecart || vehicle is Boat)) {
+            val name = entered.name
+            val world = entered.world
+            val worldName = world.name
             val parts = worldName.split('.')
             if (parts.size < 2 || parts[0] != "HwaSkyBlock") return
 
@@ -183,36 +179,37 @@ class UseEvent : Listener {
             }
 
             if (!hasPermission) {
-                sendNoPermissionActionBar(entity)
+                sendNoPermissionActionBar(entered)
                 event.isCancelled = true
             }
         }
     }
 
-
     @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
         val player = event.player
         val name = player.name
-        if (event.action == Action.RIGHT_CLICK_BLOCK) {
-            val block = event.clickedBlock ?: return
-            val world = block.world
-            val worldName = world.worldFolder.name
-            val number = worldName.split('.')
 
-            if (number[0] == "HwaSkyBlock") {
-                val id = number[1]
-                val leader =
-                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
-                if (leader != null && leader != name) {
-                    val customBlock = CustomBlock.byAlreadyPlaced(block)
-                    if (customBlock != null) {
-                        handleCustomBlockInteraction(player, block, id, name, event)
-                    } else {
-                        handleStandardBlockInteraction(player, block, id, name, event)
-                    }
-                }
-            }
+        if (event.action != Action.RIGHT_CLICK_BLOCK) return
+        val block = event.clickedBlock ?: return
+
+        val world = block.world
+        val worldName = world.worldFolder.name
+        val parts = worldName.split('.')
+        if (parts.size < 2 || parts[0] != "HwaSkyBlock") return
+
+        val id = parts[1]
+        val leader = DatabaseManager.getSkyBlockData(id, "getSkyBlockLeader") as? String ?: return
+
+        if (leader == name) return
+
+        val handler = CustomBlockManager.getHandler()
+        val isCustomBlock = handler?.isCustomBlock(block) == true
+
+        if (isCustomBlock) {
+            handleCustomBlockInteraction(player, block, id, name, event)
+        } else {
+            handleStandardBlockInteraction(player, block, id, name, event)
         }
     }
 
@@ -223,12 +220,13 @@ class UseEvent : Listener {
         name: String,
         event: PlayerInteractEvent
     ) {
-        val customCrop = ItemsAdder.getCustomBlock(block)
-        val customCropDisplayName = customCrop.itemMeta!!.displayName
+        val customCropDisplayName = CustomBlockManager.getHandler()?.getCustomBlockDisplayName(block) ?: return
+        val configSection = Config.getConfigurationSection("Custom-Crop-Interact") ?: return
 
-        for (type in Config.getConfigurationSection("Custom-Crop-Interact")?.getKeys(false) ?: emptySet()) {
-            if (customCropDisplayName.contains(type)) {
-                val isSharer = DatabaseManager.getShareList(id).contains(name)
+        for (type in configSection.getKeys(false)) {
+            if (customCropDisplayName.contains(type, ignoreCase = true)) {
+                val isSharer = DatabaseManager.getShareList(id).any { it.equals(name, ignoreCase = true) }
+
                 val hasFarmPermission = if (isSharer)
                     DatabaseManager.getShareData(id, name, "isUseFarm") as? Boolean ?: false
                 else
@@ -265,9 +263,9 @@ class UseEvent : Listener {
             "BEACON" to "beacon"
         )
 
-        for ((blockName, permission) in blockPermissions) {
+        for ((blockName, _) in blockPermissions) {
             if (blockType.contains(blockName)) {
-                checkPermissionAndCancel(player, id, name, permission, event)
+                checkPermissionAndCancel(player, id, name, event)
                 return
             }
         }
@@ -277,7 +275,6 @@ class UseEvent : Listener {
         player: Player,
         id: String,
         name: String,
-        permission: String,
         event: PlayerInteractEvent
     ) {
         val isSharer = DatabaseManager.getShareList(id).contains(name)

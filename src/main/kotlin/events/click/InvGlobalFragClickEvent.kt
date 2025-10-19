@@ -28,7 +28,7 @@ class InvGlobalFragClickEvent : Listener {
         if (e.clickedInventory == null) return
         if (e.currentItem != null) {
             val player = e.whoClicked as Player
-            val name = player.name
+            player.name
             var world: World? = player.world
             val world_name = world!!.worldFolder.getName()
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

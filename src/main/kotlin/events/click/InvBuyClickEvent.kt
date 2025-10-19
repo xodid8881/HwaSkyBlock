@@ -32,7 +32,7 @@ class InvBuyClickEvent : Listener {
             val name = player.name
             var world: World? = player.world
             val world_name = world!!.worldFolder.getName()
-            val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (e.view.title == ChatColor.translateAlternateColorCodes(
                     '&',
                     Objects.requireNonNull<String?>(MessageConfig.getString("gui-name.buy"))
@@ -168,7 +168,12 @@ class InvBuyClickEvent : Listener {
                                 currentCount + 1,
                                 "setPlayerPossessionCount"
                             )
-                            DatabaseManager.setUserData("$name.skyblock.possession.$id", player, true, "setPlayerPossession")
+                            DatabaseManager.setUserData(
+                                "$name.skyblock.possession.$id",
+                                player,
+                                true,
+                                "setPlayerPossession"
+                            )
 
                             Config.set("sky-block-number", id)
                             ConfigManager.Companion.saveConfigs()
