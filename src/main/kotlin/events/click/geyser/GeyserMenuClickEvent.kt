@@ -15,8 +15,8 @@ import org.hwabaeg.hwaskyblock.inventorys.HwaSkyBlockSharerGUI
 import java.util.*
 
 class GeyserMenuClickEvent : Listener {
-    var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
-    var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
+    var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
+    var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -46,7 +46,7 @@ class GeyserMenuClickEvent : Listener {
                         )
                     ) {
                         player.closeInventory()
-                        val homeValue = DatabaseManager.Companion.getSkyBlockData(
+                        val homeValue = DatabaseManager.getSkyBlockData(
                             islandId.toString(),
                             "getSkyBlockHome"
                         ) as? Int ?: 0
@@ -74,27 +74,27 @@ class GeyserMenuClickEvent : Listener {
                                 val location = Objects.requireNonNull<World?>(world).spawnLocation
                                 player.teleport(location)
                             }
-                            val worldName = DatabaseManager.Companion.getSkyBlockData(
+                            val worldName = DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomeWorld"
                             ) as? String
-                            val x = DatabaseManager.Companion.getSkyBlockData(
+                            val x = DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomeX"
                             ) as? Double ?: 0.0
-                            val y = DatabaseManager.Companion.getSkyBlockData(
+                            val y = DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomeY"
                             ) as? Double ?: 0.0
-                            val z = DatabaseManager.Companion.getSkyBlockData(
+                            val z = DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomeZ"
                             ) as? Double ?: 0.0
-                            val yaw = (DatabaseManager.Companion.getSkyBlockData(
+                            val yaw = (DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomeYaw"
                             ) as? Double ?: 0.0).toFloat()
-                            val pitch = (DatabaseManager.Companion.getSkyBlockData(
+                            val pitch = (DatabaseManager.getSkyBlockData(
                                 islandId.toString(),
                                 "getSkyBlockHomePitch"
                             ) as? Double ?: 0.0).toFloat()
@@ -115,7 +115,7 @@ class GeyserMenuClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.geyser_menu.sky_world_global"))
                         )
                     ) {
-                        val leader = DatabaseManager.Companion.getSkyBlockData(
+                        val leader = DatabaseManager.getSkyBlockData(
                             islandId.toString(),
                             "getSkyBlockLeader"
                         ) as? String
@@ -139,19 +139,19 @@ class GeyserMenuClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.geyser_menu.sky_world_sharer"))
                         )
                     ) {
-                        val leader = DatabaseManager.Companion.getSkyBlockData(
+                        val leader = DatabaseManager.getSkyBlockData(
                             islandId.toString(),
                             "getSkyBlockLeader"
                         ) as? String
 
                         if (leader == name) {
-                            DatabaseManager.Companion.setUserData(
+                            DatabaseManager.setUserData(
                                 name,
                                 player,
                                 islandId,
                                 "setPlayerEvent"
                             )
-                            ConfigManager.Companion.saveConfigs()
+                            ConfigManager.saveConfigs()
                             var inv: HwaSkyBlockSharerGUI? = null
                             inv = HwaSkyBlockSharerGUI(player, islandId)
                             inv.open(player)

@@ -88,8 +88,7 @@ class UserDAO {
 
         conn.prepareStatement(sql).use { stmt ->
             values.entries.forEachIndexed { i, entry ->
-                val v = entry.value
-                when (v) {
+                when (val v = entry.value) {
                     is Int -> stmt.setInt(i + 1, v)
                     is String -> stmt.setString(i + 1, v)
                     is Boolean -> stmt.setBoolean(i + 1, v)

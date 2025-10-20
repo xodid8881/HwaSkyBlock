@@ -401,8 +401,7 @@ class DatabaseManager {
                 ) {
                     val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
-                    val rawSetting = userData["player_setting"]
-                    val settingMap: MutableMap<String, Any> = when (rawSetting) {
+                    val settingMap: MutableMap<String, Any> = when (val rawSetting = userData["player_setting"]) {
                         is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }
                             .toMutableMap()
 
@@ -450,8 +449,7 @@ class DatabaseManager {
                 ) {
                     val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
-                    val rawSetting = userData["player_setting"]
-                    val settingMap: MutableMap<String, Any> = when (rawSetting) {
+                    val settingMap: MutableMap<String, Any> = when (val rawSetting = userData["player_setting"]) {
                         is Map<*, *> -> rawSetting.entries.associate { it.key.toString() to it.value as Any }
                             .toMutableMap()
 

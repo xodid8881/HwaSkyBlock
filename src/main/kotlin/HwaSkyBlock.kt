@@ -30,8 +30,8 @@ import org.hwabaeg.hwaskyblock.schedules.UnloadWorldTask
 import java.io.*
 import java.util.*
 
-
 class HwaSkyBlock : JavaPlugin() {
+
     private fun registerEvents() {
         server.pluginManager.registerEvents(BreakEvent(), this)
 
@@ -69,8 +69,7 @@ class HwaSkyBlock : JavaPlugin() {
         saveResource("message.yml", false)
         ConfigManager.setupConfigs(this)
 
-        val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")
-        when (dbType) {
+        when (val dbType = ConfigManager.getConfig("setting")!!.getString("database.type")) {
             "mysql" -> MySQLManager.init(this)
             "sqlite" -> SQLiteManager.init(this)
             else -> error("지원하지 않는 데이터베이스 타입입니다: $dbType")
@@ -122,103 +121,6 @@ class HwaSkyBlock : JavaPlugin() {
 
         val plugin: HwaSkyBlock
             get() = getPlugin(HwaSkyBlock::class.java)
-
-        @Suppress(
-            "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
-            "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
-        )
-        fun setRemoveIsland(id: String?) {
-            for (world in Bukkit.getServer().worlds) {
-                val worldName = world.worldFolder.name
-                if (("HwaSkyBlock.$id") == worldName) {
-                    for (player in world.players) {
-                        val worldPath = ConfigManager.getConfig("setting")!!.getString("main-spawn-world")
-                        val mainWorld = Bukkit.getServer().getWorld(Objects.requireNonNull<String?>(worldPath))
-                        val spawnLocation = Objects.requireNonNull<World?>(mainWorld).spawnLocation
-                        player.teleport(spawnLocation)
-                    }
-                    Bukkit.getServer().unloadWorld(world, true)
-                }
-            }
-            val serverDir = System.getProperty("user.dir")
-            val worldPath = "$serverDir/worlds/HwaSkyBlock.$id"
-            deleteFileStructure(File(worldPath))
-        }
-
-        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-        fun addIsland(player: Player, id: Int, filepath: String) {
-            var world = Bukkit.getServer().getWorld(filepath)
-            if (world == null) {
-                world = WorldCreator(filepath).createWorld()
-                val worldName = "worlds/HwaSkyBlock.$id"
-                copyFileStructure(
-                    Objects.requireNonNull<World?>(world).worldFolder,
-                    File(Bukkit.getWorldContainer(), worldName)
-                )
-                WorldCreator(worldName).createWorld()
-                val location = Objects.requireNonNull<World?>(Bukkit.getServer().getWorld("worlds/HwaSkyBlock.$id"))
-                    .spawnLocation
-                player.teleport(location)
-            } else {
-                val worldName = "worlds/HwaSkyBlock.$id"
-                copyFileStructure(
-                    Objects.requireNonNull<World?>(world).worldFolder,
-                    File(Bukkit.getWorldContainer(), worldName)
-                )
-                WorldCreator(worldName).createWorld()
-                val location = Objects.requireNonNull<World?>(Bukkit.getServer().getWorld("worlds/HwaSkyBlock.$id"))
-                    .spawnLocation
-                player.teleport(location)
-            }
-        }
-
-        private fun copyFileStructure(source: File, target: File) {
-            try {
-                val ignore = ArrayList<String?>(mutableListOf<String?>("uid.dat", "session.lock"))
-                if (!ignore.contains(source.name)) {
-                    if (source.isDirectory) {
-                        if (!target.exists()) if (!target.mkdirs()) throw IOException("Unable to create world directory!")
-                        val files = source.list()
-                        for (file in files!!) {
-                            val srcFile = File(source, file)
-                            val destFile = File(target, file)
-                            copyFileStructure(srcFile, destFile)
-                        }
-                    } else {
-                        val `in`: InputStream = FileInputStream(source)
-                        val out: OutputStream = FileOutputStream(target)
-                        val buffer = ByteArray(1024)
-                        var length: Int
-                        while ((`in`.read(buffer).also { length = it }) > 0) out.write(buffer, 0, length)
-                        `in`.close()
-                        out.close()
-                    }
-                }
-            } catch (e: IOException) {
-                throw RuntimeException(e)
-            }
-        }
-
-        private fun deleteFileStructure(target: File) {
-            try {
-                if (target.isDirectory) {
-                    val files = target.list()
-                    if (files != null) {
-                        for (file in files) {
-                            val subFile = File(target, file)
-                            deleteFileStructure(subFile)
-                        }
-                    }
-                }
-                if (target.delete()) {
-                    println(target.absolutePath + " Delete successful")
-                } else {
-                    println(target.absolutePath + " Deletion failed")
-                }
-            } catch (e: Exception) {
-                throw RuntimeException("An error occurred while deleting the file", e)
-            }
-        }
 
         fun isBedrockPlayer(player: Player): Boolean {
             val plugin = Bukkit.getPluginManager().getPlugin("floodgate")

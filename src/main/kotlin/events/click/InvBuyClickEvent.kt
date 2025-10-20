@@ -13,12 +13,13 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.hwabaeg.hwaskyblock.HwaSkyBlock
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
+import org.hwabaeg.hwaskyblock.world.SkyblockWorldManager
 import java.io.File
 import java.util.*
 
 class InvBuyClickEvent : Listener {
-    var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
-    var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
+    var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
+    var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -58,7 +59,7 @@ class InvBuyClickEvent : Listener {
                         }
                         val count = Config.getInt("sky-block-number")
                         val id = count + 1
-                        val econ: Economy? = HwaSkyBlock.Companion.economy
+                        val econ: Economy? = HwaSkyBlock.economy
                         if (econ!!.has(player, buy.toDouble())) {
                             val possessionCount = DatabaseManager.getUserData(
                                 "$name.skyblock.possession_count",
@@ -176,8 +177,8 @@ class InvBuyClickEvent : Listener {
                             )
 
                             Config.set("sky-block-number", id)
-                            ConfigManager.Companion.saveConfigs()
-                            filepath?.let { HwaSkyBlock.Companion.addIsland(player, id, it) }
+                            ConfigManager.saveConfigs()
+                            filepath?.let { SkyblockWorldManager.addIsland(player, id, it) }
                             player.sendMessage(
                                 Prefix + ChatColor.translateAlternateColorCodes(
                                     '&',

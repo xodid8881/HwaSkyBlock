@@ -17,8 +17,8 @@ import org.hwabaeg.hwaskyblock.inventorys.geyser.GeyserMenuGUI
 import java.util.*
 
 class InvMenuClickEvent : Listener {
-    var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
-    var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
+    var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
+    var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
@@ -99,7 +99,7 @@ class InvMenuClickEvent : Listener {
                                                 islandId,
                                                 "setPlayerPos"
                                             )
-                                            ConfigManager.Companion.saveConfigs()
+                                            ConfigManager.saveConfigs()
                                             val inv = HwaSkyBlockSharerGUI(player, islandId)
                                             inv.open(player)
                                         } else {
@@ -261,7 +261,7 @@ class InvMenuClickEvent : Listener {
                             DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page - 1
                         DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
-                        ConfigManager.Companion.saveConfigs()
+                        ConfigManager.saveConfigs()
                         val inv = HwaSkyBlockMenuGUI(player)
                         inv.open(player)
                         return
@@ -275,7 +275,7 @@ class InvMenuClickEvent : Listener {
                             DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                         val plus = page + 1
                         DatabaseManager.setUserData("$name.skyblock.page", player, plus, "setPlayerPage")
-                        ConfigManager.Companion.saveConfigs()
+                        ConfigManager.saveConfigs()
                         val inv = HwaSkyBlockMenuGUI(player)
                         inv.open(player)
                         return

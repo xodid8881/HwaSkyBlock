@@ -11,7 +11,7 @@ class SpawnEvent : Listener {
 
     @EventHandler
     fun onEntitySpawn(event: EntitySpawnEvent) {
-        val entityType: EntityType? = event.entityType
+        val entityType: EntityType = event.entityType
         val entity: Entity = event.getEntity()
         val world = entity.world
         val world_name = world.worldFolder.name

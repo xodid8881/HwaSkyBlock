@@ -15,6 +15,7 @@ import org.hwabaeg.hwaskyblock.HwaSkyBlock
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import org.hwabaeg.hwaskyblock.inventorys.*
+import org.hwabaeg.hwaskyblock.world.SkyblockWorldManager
 import java.util.*
 
 class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
@@ -462,7 +463,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
 
                         DatabaseManager.DeleteSkyBlock(id.toString())
-                        HwaSkyBlock.setRemoveIsland(id)
+                        SkyblockWorldManager.setRemoveIsland(id)
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
                                 '&',

@@ -15,6 +15,7 @@ import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import org.hwabaeg.hwaskyblock.database.mysql.MySQLManager
 import org.hwabaeg.hwaskyblock.database.sqlite.SQLiteManager
+import org.hwabaeg.hwaskyblock.world.SkyblockWorldManager
 import java.util.*
 
 class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
@@ -175,7 +176,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     null,
                     "setSkyBlockName"
                 )
-                HwaSkyBlock.setRemoveIsland(id)
+                SkyblockWorldManager.setRemoveIsland(id)
                 val PlayerExact = Bukkit.getServer().getPlayerExact(Objects.requireNonNull<String?>(skyblock_master))
                 PlayerExact?.sendMessage(
                     Prefix + ChatColor.translateAlternateColorCodes(

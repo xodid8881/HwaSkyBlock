@@ -39,19 +39,19 @@ class HwaSkyBlockTask : Runnable {
                     object : BukkitRunnable() {
                         override fun run() {
                             if (weather == "clear") {
-                                world.clearWeatherDuration = Int.Companion.MAX_VALUE
+                                world.clearWeatherDuration = Int.MAX_VALUE
                             } else {
                                 world.clearWeatherDuration = 0
                             }
                             if (weather == "rainy") {
                                 world.setStorm(true)
-                                world.weatherDuration = Int.Companion.MAX_VALUE
+                                world.weatherDuration = Int.MAX_VALUE
                             } else {
                                 world.setStorm(false)
                                 world.weatherDuration = 0
                             }
                             if (weather == "thunder") {
-                                world.thunderDuration = Int.Companion.MAX_VALUE
+                                world.thunderDuration = Int.MAX_VALUE
                                 world.setStorm(true)
                             } else {
                                 world.thunderDuration = 0

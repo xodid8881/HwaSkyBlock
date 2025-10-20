@@ -18,8 +18,8 @@ import java.util.*
 
 class InvSharerClickEvent : Listener {
 
-    var Config: FileConfiguration = ConfigManager.Companion.getConfig("setting")!!
-    var MessageConfig: FileConfiguration = ConfigManager.Companion.getConfig("message")!!
+    var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
+    var MessageConfig: FileConfiguration = ConfigManager.getConfig("message")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',
         Objects.requireNonNull<String?>(Config.getString("hwaskyblock-system.prefix"))
