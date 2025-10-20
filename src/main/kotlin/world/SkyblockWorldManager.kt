@@ -66,14 +66,14 @@ object SkyblockWorldManager {
 
             if (!Files.exists(target)) {
                 sendAction(player, "§aCopying world data...")
-                copyFileStructureWithProgress(source, target, player, bar)
+                copyFileStructureWithProgress(source, target, bar)
             }
 
             SchedulerUtil.runSync {
                 val world = WorldCreator(worldName).createWorld()
                 if (world != null) player.teleport(world.spawnLocation)
 
-                bar.setProgress(1.0)
+                bar.progress = 1.0
                 bar.setTitle("§aIsland Ready!")
 
                 SchedulerUtil.runLater(100L) { bar.removeAll() }
@@ -82,7 +82,7 @@ object SkyblockWorldManager {
         }
     }
 
-    private fun copyFileStructureWithProgress(source: Path, target: Path, player: Player, bar: BossBar) {
+    private fun copyFileStructureWithProgress(source: Path, target: Path, bar: BossBar) {
         val ignore = setOf("uid.dat", "session.lock")
 
         val files = Files.walk(source).use { stream ->
@@ -107,7 +107,7 @@ object SkyblockWorldManager {
                 if (count % 10 == 0 || count == total) {
                     val percent = (count.toDouble() / total.toDouble()).coerceIn(0.0, 1.0)
                     SchedulerUtil.runSync {
-                        bar.setProgress(percent)
+                        bar.progress = percent
                         bar.setTitle("§aCopying world... §f${(percent * 100).toInt()}%")
                     }
                 }
@@ -158,7 +158,7 @@ object SkyblockWorldManager {
         style: BarStyle
     ): BossBar {
         val bar = Bukkit.createBossBar(title, color, style)
-        bar.setProgress(progress)
+        bar.progress = progress
         bar.addPlayer(player)
         return bar
     }
