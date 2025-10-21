@@ -27,4 +27,10 @@ class HwaSkyBlockAPIImpl : HwaSkyBlockAPI {
         val current = DatabaseManager.getSkyBlockData(id, "getSkyBlockSize") as? Int ?: 0
         DatabaseManager.setSkyBlockData(id, current + plus_size, "setSkyBlockSize")
     }
+
+    override fun addIslandPoint(player: Player, island_number: Int, point: Int) {
+        val id = island_number.toString()
+        val current = DatabaseManager.getSkyBlockData(id, "getSkyBlockPoint") as? Int ?: 0
+        DatabaseManager.setSkyBlockData(id, current + point, "setSkyBlockPoint")
+    }
 }
