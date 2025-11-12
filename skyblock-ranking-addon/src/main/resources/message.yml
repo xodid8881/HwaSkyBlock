@@ -1,0 +1,392 @@
+sub-command-message:
+  buy: "구매"
+  menu: "메뉴"
+  move: "이동"
+  add-share: "공유추가"
+  remove-share: "공유추가"
+  permission-management: "권한관리"
+  detailed-management: "세부관리"
+  changer: "주인변경"
+  forced-disassembly: "강제분해"
+  reload: "리로드"
+  global: "글로벌"
+  sharers: "공유자"
+  is_name_set: "섬이름"
+  welcome_msg_set: "환영말"
+  is_spawn_set: "스폰설정"
+  is_world_set: "환경설정"
+  is_delete: "공중분해"
+  is_give: "양도"
+
+command-help-message:
+  - "&a&l[섬]&7 &7&lSkyBlock Command Help"
+  - "&a&l---------------------------------------------"
+  - " &7&l/섬"
+  - "  &a&lL &r&7구매 &a&l- &r&7섬를 구매합니다."
+  - "  &a&lL &r&7메뉴 &a&l- &r&7섬 메뉴를 오픈합니다."
+  - "  &a&lL &r&7이동 [섬번호] &a&l- &r&7섬에 이동합니다."
+  - "  &a&lL &r&7공유추가 [닉네임] &a&l- &r&7섬에 공유 유저를 추가합니다."
+  - "  &a&lL &r&7공유제거 [닉네임] &a&l- &r&7섬에 공유 유저를 제거합니다."
+  - "  &a&lL &r&7권한관리 [글로벌,공유자] &a&l- &r&7기본 섬 권한을 관리합니다."
+  - "  &a&lL &r&7세부관리 [섬이름,환영말,스폰설정,환경설정,공중분해,양도] [양도유저] &a&l- &r&7섬 세부관리를 진행합니다."
+  - "&a&l---------------------------------------------"
+
+setting-command-help-message:
+  - "&a&l[섬]&7 &7&lSkyBlock Setting Command Help"
+  - "&a&l---------------------------------"
+  - " &7&l/섬설정"
+  - "  &a&lL &r&7주인변경 &a&l- &r&7섬 주인을 변경합니다."
+  - "  &a&lL &r&7강제분해 &a&l- &r&7섬을 강제분해를 진행합니다."
+  - "  &a&lL &r&7리로드 &a&l- &r&7섬 콘피그를 리로드를 진행합니다."
+  - "&a&l---------------------------------"
+
+message-event:
+  no_permission: "당신은 권한이 없습니다."
+  not_the_owner: "당신은 해당 섬의 주인이 아닙니다."
+  forced_refund_of_skyblock_zones: "당신의 섬이 강제분해됨으로써 구매비용을 환급 받았습니다."
+  disassembly_refund: "당신의 섬을 공중분해하고 구매비용을 환급받았습니다."
+  forced_disassembly_completed: "해당 위치의 섬을 강제분해 했습니다."
+  create_restricted_area: "해당 위치의 섬을 금지 구역으로 만들었습니다."
+  no_sky_block: "해당 위치는 섬 정보가 존재하지 않습니다."
+  same_previous_owner: "해당 위치의 섬 구역의 주인장이 변경을 진행할 유저와 동일합니다."
+  change_owner: "해당 위치의 섬 구역의 주인장을 변경했습니다."
+  owner_existence: "해당 위치는 이미 주인이 있습니다."
+  hold_the_maximum: "당신은 이미 섬를 최대치로 보유하고 있습니다."
+  purchase_completed: "섬를 구매했습니다."
+  insufficient_funds: "보유 금액이 부족해서 구매할 수 없습니다."
+  nickname_blank: "닉네임을 적어주세요."
+  number_blank: "번호를 적어주세요."
+  existing_sharer: "해당 유저는 이미 공유 유저로 추가되어 있습니다."
+  sharer_added_completed: "닉네임의 유저를 공유 유저로 추가했습니다."
+  sharer_without: "해당 유저는 공유 유저로 추가되어 있지 않습니다."
+  remove_sharer: "닉네임의 유저를 공유 유저에서 제거했습니다."
+  write_down_global_or_sharers: "글로벌,공유자 중 하나를 적어주세요."
+  welcome_message_transfer_of_spawn_settings_public_disassembly: "환영말,스폰설정,양도,공중분해 중 하나를 적어주세요."
+  welcome_message_setting: "환영말을 설정했습니다."
+  skyblock_name_setting: "섬 이름을 정상적으로 변경했습니다."
+  spawn_settings: "해당 위치로 스폰을 정상적으로 설정했습니다."
+  transferred_user_maximum: "해당 유저는 섬를 최대치로 보유하고 있습니다."
+  refund_after_transfer: "당신의 섬 구역을 양도하고 구매 비용을 환급받았습니다."
+  transfer_completed: "당신의 섬 구역을 정상적으로 양도했습니다."
+  received_transfer: "당신은 섬를 양도 받았습니다."
+  join_refusal: "섬 방문이 금지되어 있습니다."
+  reload: "정상적으로 리로드 했습니다."
+
+gui-name:
+  buy: "섬 구매" # 섬 구매 GUI 이름
+  global_setting: "섬 관리" # 섬 관리 GUI 이름
+  global_use_list: "비공유자 사용 금지 목록" # 비공유자들의 블럭 사용금지 GUI 이름
+  sharer_setting: "공유 관리" # 섬 관리 GUI 이름
+  sharer_use_list: "공유자 사용 금지 목록" # 공유자들의 블럭 사용금지 GUI 이름
+  sky_block_menu_list: "섬 메뉴" # 플레이어 섬 메뉴 GUI 이름
+  world_setting: "월드 환경 설정" # 섬 월드 환경을 설정합니다.
+  geyser_menu_list: "월드 메뉴 도우미" # 베드락 유저 호환성 상향
+
+gui-slot-item-name:
+  previous_page: "&a이전 페이지"
+  previous_page-lore:
+    - "&a- &f클릭 시 이전 페이지로 이동합니다."
+  next_page: "&a다음 페이지"
+  next_page-lore:
+    - "&a- &f클릭 시 다음 페이지로 이동합니다."
+
+  geyser_menu:
+    sky_world_move: "&a섬 이동"
+    sky_world_move-lore:
+      - "&a- &f클릭 시 섬으로 이동합니다."
+    sky_world_global: "&a글로벌 권한관리"
+    sky_world_global-lore:
+      - "&a- &f클릭 시 섬의 글로벌 권한을 관리합니다."
+    sky_world_sharer: "&a공유자 권한관리"
+    sky_world_sharer-lore:
+      - "&a- &f클릭 시 섬의 공유자 권한을 관리합니다."
+
+  world_setting:
+    monster_spawn: "&a- &7몬스터 스폰 관리"
+    monster_spawn-lore:
+      - "&a- &7클릭 시 &a몬스터 스폰 &7을 설정합니다."
+    monster_spawn-true: "&a- &7몬스터 스폰 &a허용"
+    monster_spawn-false: "&a- &7몬스터 스폰 &c거부"
+
+    animal_spawn: "&a- &7동물 스폰 관리"
+    animal_spawn-lore:
+      - "&a- &7클릭 시 &a동물 스폰 &7을 설정합니다."
+    animal_spawn-true: "&a- &7동물 스폰 &a허용"
+    animal_spawn-false: "&a- &7동물 스폰 &c거부"
+
+    weather: "&a- &7날씨 관리"
+    weather-lore:
+      - "&a- &7클릭 시 &a월드 날씨 &7를 설정합니다."
+    weather-clear: "&a- &7날씨 &a맑음"
+    weather-rainy: "&a- &7날씨 &b비"
+    weather-thunder: "&a- &7날씨 &c폭풍"
+    weather-basic: "&a- &7날씨 &e자연스러움"
+
+    time: "&a- &7월드 시간 관리"
+    time-lore:
+      - "&a- &7클릭 시 &a월드 시간 &7을 설정합니다."
+    time-morn: "&a- &7월드 시간 &a아침"
+    time-noon: "&a- &7월드 시간 &b점심"
+    time-evening: "&a- &7월드 시간 &c저녁"
+    time-basic: "&a- &7월드 시간 &e자연스러움"
+
+    water_physics: "&a- &7물 흐름 관리"
+    water_physics-lore:
+      - "&a- &7클릭 시 &a물 흐름 &7을 설정합니다."
+    water_physics-true: "&a- &7물 흐름 &a허용"
+    water_physics-false: "&a- &7물 흐름 &c거부"
+
+    lava_physics: "&a- &7용암 흐름 관리"
+    lava_physics-lore:
+      - "&a- &7클릭 시 &a용암 흐름 &7을 설정합니다."
+    lava_physics-true: "&a- &7용암 흐름 &a허용"
+    lava_physics-false: "&a- &7용암 흐름 &c거부"
+
+  global_setting:
+    join: "&a- &7섬 접근 권한 관리"
+    join-lore:
+      - "&a- &7클릭 시 &a섬 접근 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    join-true: "&a- &7섬 접근 &a허용"
+    join-false: "&a- &7섬 접근 &c거부"
+
+    break: "&a- &7블럭 파괴 권한 설정"
+    break-lore:
+      - "&a- &7클릭을 진행하면 &a블럭 파괴 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    break-true: "&a- &7섬 블럭 파괴 &a허용"
+    break-false: "&a- &7섬 블럭 파괴 &c거부"
+
+    place: "&a- &7블럭 설치 권한 설정"
+    place-lore:
+      - "&a- &7클릭을 진행하면 &a블럭 설치 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    place-true: "&a- &7섬 블럭 설치 &a허용"
+    place-false: "&a- &7섬 블럭 설치 &c거부"
+
+    use: "&a- &7블럭 이용 권한 설정"
+    use-lore:
+      - "&a- &7클릭을 진행하면 &a블럭 이용 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+
+    pvp: "&a- &7전투 권한 설정"
+    pvp-lore:
+      - "&a- &7클릭을 진행하면 &a전투 권한 &7을 설정합니다."
+    pvp-true: "&a- &7전투 &a허용"
+    pvp-false: "&a- &7전투 &c거부"
+
+  global_use_list:
+    OAK_DOOR: "&a- &7문 권한 관리"
+    OAK_DOOR-lore:
+      - "&a- &7클릭 시 &a문 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    OAK_DOOR-true: "&a- &7문 사용 &a허용"
+    OAK_DOOR-false: "&a- &7문 사용 &c거부"
+
+    CHEST: "&a- &7창고 권한 관리"
+    CHEST-lore:
+      - "&a- &7클릭 시 &a창고 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    CHEST-true: "&a- &7창고 사용 &a허용"
+    CHEST-false: "&a- &7창고 사용 &c거부"
+
+    BARREL: "&a- &7통 권한 관리"
+    BARREL-lore:
+      - "&a- &7클릭 시 &a통 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    BARREL-true: "&a- &7통 사용 &a허용"
+    BARREL-false: "&a- &7통 사용 &c거부"
+
+    HOPPER: "&a- &7호퍼 권한 관리"
+    HOPPER-lore:
+      - "&a- &7클릭 시 &a호퍼 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    HOPPER-true: "&a- &7호퍼 사용 &a허용"
+    HOPPER-false: "&a- &7호퍼 사용 &c거부"
+
+    FURNACE: "&a- &7화로 권한 관리"
+    FURNACE-lore:
+      - "&a- &7클릭 시 &a화로 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    FURNACE-true: "&a- &7화로 사용 &a허용"
+    FURNACE-false: "&a- &7화로 사용 &c거부"
+
+    BLAST_FURNACE: "&a- &7용광로 권한 관리"
+    BLAST_FURNACE-lore:
+      - "&a- &7클릭 시 &a용광로 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    BLAST_FURNACE-true: "&a- &7용광로 사용 &a허용"
+    BLAST_FURNACE-false: "&a- &7용광로 사용 &c거부"
+
+    SHULKER_BOX: "&a- &7셜커상자 권한 관리"
+    SHULKER_BOX-lore:
+      - "&a- &7클릭 시 &a셜커상자 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    SHULKER_BOX-true: "&a- &7셜커상자 사용 &a허용"
+    SHULKER_BOX-false: "&a- &7셜커상자 사용 &c거부"
+
+    OAK_TRAPDOOR: "&a- &7다락문 권한 관리"
+    OAK_TRAPDOOR-lore:
+      - "&a- &7클릭 시 &a다락문 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    OAK_TRAPDOOR-true: "&a- &7다락문 사용 &a허용"
+    OAK_TRAPDOOR-false: "&a- &7다락문 사용 &c거부"
+
+    OAK_BUTTON: "&a- &7버튼 권한 관리"
+    OAK_BUTTON-lore:
+      - "&a- &7클릭 시 &a버튼 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    OAK_BUTTON-true: "&a- &7버튼 사용 &a허용"
+    OAK_BUTTON-false: "&a- &7버튼 사용 &c거부"
+
+    ANVIL: "&a- &7모루 권한 관리"
+    ANVIL-lore:
+      - "&a- &7클릭 시 &a모루 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    ANVIL-true: "&a- &7모루 사용 &a허용"
+    ANVIL-false: "&a- &7모루 사용 &c거부"
+
+    SWEET_BERRIES: "&a- &7클릭형 농작물 권한 관리"
+    SWEET_BERRIES-lore:
+      - "&a- &7클릭 시 &a클릭형 농작물 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    SWEET_BERRIES-true: "&a- &7클릭형 농작물 사용 &a허용"
+    SWEET_BERRIES-false: "&a- &7클릭형 농작물 사용 &c거부"
+
+    BEACON: "&a- &7신호기 권한 관리"
+    BEACON-lore:
+      - "&a- &7클릭 시 &a신호기 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    BEACON-true: "&a- &7신호기 사용 &a허용"
+    BEACON-false: "&a- &7신호기 사용 &c거부"
+
+    MINECART: "&a- &7카트 권한 관리"
+    MINECART-lore:
+      - "&a- &7클릭 시 &a카트 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    MINECART-true: "&a- &7카트 사용 &a허용"
+    MINECART-false: "&a- &7카트 사용 &c거부"
+
+    OAK_BOAT: "&a- &7보트 권한 관리"
+    OAK_BOAT-lore:
+      - "&a- &7클릭 시 &a보트 권한 &7을 설정합니다."
+      - "&a- &7공유자가 아닌 유저들의 제한을 설정합니다."
+    OAK_BOAT-true: "&a- &7보트 사용 &a허용"
+    OAK_BOAT-false: "&a- &7카트 사용 &c거부"
+
+  sky_block_menu_list:
+    my: "&a- &7{number} &a- &7나의 섬"
+    my-lore:
+      - "&a- &fSHIFT 좌클릭 &7시 해당 섬 글로벌 권한관리"
+      - "&a- &fSHIFT 우클릭 &7시 해당 섬 공유자 권한관리"
+      - "&a- &f좌클릭 &7시 해당 섬로 텔레포트"
+    geyser_my: "&a- &7{number} &a- &7나의 섬 - BedRock"
+    geyser_my-lore:
+      - "&a- &f클릭 &7시 해당 섬을 관리합니다."
+    sharer: "&a- &7{number} &a- &7공유 섬"
+    sharer-lore:
+      - "&a- &f좌클릭 &7시 해당 섬로 텔레포트"
+
+  sharer_setting:
+    sharer: "&a&l{name} &7님 (공유자)"
+    online-lore: "&7&l- &r&a온라인"
+    offline-lore: "&7&l- &r&c오프라인"
+
+    join: "&a- &fSHIFT 좌클릭 &7시 &a섬 접근 권한&7을 설정합니다."
+    join-true: "&a- &7섬 접근 &a허용"
+    join-false: "&a- &7섬 접근 &c거부"
+
+    break: "&a- &fSHIFT 우클릭 &7시 &a블럭 파괴 권한&7을 설정합니다."
+    break-true: "&a- &7섬 블럭 파괴 &a허용"
+    break-false: "&a- &7섬 블럭 파괴 &c거부"
+
+    place: "&a- &f좌클릭 &7시 &a블럭 설치 권한&7을 설정합니다."
+    place-true: "&a- &7섬 블럭 설치 &a허용"
+    place-false: "&a- &7섬 블럭 설치 &c거부"
+
+    use: "&a- &f우클릭 &7시 &a블럭 이용 권한&7을 설정합니다."
+
+  sharer_use_list:
+    OAK_DOOR: "&a- &7문 권한 관리"
+    OAK_DOOR-lore:
+      - "&a- &7클릭 시 &a문 권한 &7을 설정합니다."
+    OAK_DOOR-true: "&a- &7문 사용 &a허용"
+    OAK_DOOR-false: "&a- &7문 사용 &c거부"
+
+    CHEST: "&a- &7창고 권한 관리"
+    CHEST-lore:
+      - "&a- &7클릭 시 &a창고 권한 &7을 설정합니다."
+    CHEST-true: "&a- &7창고 사용 &a허용"
+    CHEST-false: "&a- &7창고 사용 &c거부"
+
+    BARREL: "&a- &7통 권한 관리"
+    BARREL-lore:
+      - "&a- &7클릭 시 &a통 권한 &7을 설정합니다."
+    BARREL-true: "&a- &7통 사용 &a허용"
+    BARREL-false: "&a- &7통 사용 &c거부"
+
+    HOPPER: "&a- &7호퍼 권한 관리"
+    HOPPER-lore:
+      - "&a- &7클릭 시 &a호퍼 권한 &7을 설정합니다."
+    HOPPER-true: "&a- &7호퍼 사용 &a허용"
+    HOPPER-false: "&a- &7호퍼 사용 &c거부"
+
+    FURNACE: "&a- &7화로 권한 관리"
+    FURNACE-lore:
+      - "&a- &7클릭 시 &a화로 권한 &7을 설정합니다."
+    FURNACE-true: "&a- &7화로 사용 &a허용"
+    FURNACE-false: "&a- &7화로 사용 &c거부"
+
+    BLAST_FURNACE: "&a- &7용광로 권한 관리"
+    BLAST_FURNACE-lore:
+      - "&a- &7클릭 시 &a용광로 권한 &7을 설정합니다."
+    BLAST_FURNACE-true: "&a- &7용광로 사용 &a허용"
+    BLAST_FURNACE-false: "&a- &7용광로 사용 &c거부"
+
+    SHULKER_BOX: "&a- &7셜커상자 권한 관리"
+    SHULKER_BOX-lore:
+      - "&a- &7클릭 시 &a셜커상자 권한 &7을 설정합니다."
+    SHULKER_BOX-true: "&a- &7셜커상자 사용 &a허용"
+    SHULKER_BOX-false: "&a- &7셜커상자 사용 &c거부"
+
+    OAK_TRAPDOOR: "&a- &7다락문 권한 관리"
+    OAK_TRAPDOOR-lore:
+      - "&a- &7클릭 시 &a다락문 권한 &7을 설정합니다."
+    OAK_TRAPDOOR-true: "&a- &7다락문 사용 &a허용"
+    OAK_TRAPDOOR-false: "&a- &7다락문 사용 &c거부"
+
+    OAK_BUTTON: "&a- &7버튼 권한 관리"
+    OAK_BUTTON-lore:
+      - "&a- &7클릭 시 &a버튼 권한 &7을 설정합니다."
+    OAK_BUTTON-true: "&a- &7버튼 사용 &a허용"
+    OAK_BUTTON-false: "&a- &7버튼 사용 &c거부"
+
+    ANVIL: "&a- &7모루 권한 관리"
+    ANVIL-lore:
+      - "&a- &7클릭 시 &a모루 권한 &7을 설정합니다."
+    ANVIL-true: "&a- &7모루 사용 &a허용"
+    ANVIL-false: "&a- &7모루 사용 &c거부"
+
+    SWEET_BERRIES: "&a- &7클릭형 농작물 권한 관리"
+    SWEET_BERRIES-lore:
+      - "&a- &7클릭 시 &a클릭형 농작물 권한 &7을 설정합니다."
+    SWEET_BERRIES-true: "&a- &7클릭형 농작물 사용 &a허용"
+    SWEET_BERRIES-false: "&a- &7클릭형 농작물 사용 &c거부"
+
+    BEACON: "&a- &7신호기 권한 관리"
+    BEACON-lore:
+      - "&a- &7클릭 시 &a신호기 권한 &7을 설정합니다."
+    BEACON-true: "&a- &7신호기 사용 &a허용"
+    BEACON-false: "&a- &7신호기 사용 &c거부"
+
+    MINECART: "&a- &7카트 권한 관리"
+    MINECART-lore:
+      - "&a- &7클릭 시 &a카트 권한 &7을 설정합니다."
+    MINECART-true: "&a- &7카트 사용 &a허용"
+    MINECART-false: "&a- &7카트 사용 &c거부"
+
+    OAK_BOAT: "&a- &7보트 권한 관리"
+    OAK_BOAT-lore:
+      - "&a- &7클릭 시 &a보트 권한 &7을 설정합니다."
+    OAK_BOAT-true: "&a- &7보트 사용 &a허용"
+    OAK_BOAT-false: "&a- &7카트 사용 &c거부"
