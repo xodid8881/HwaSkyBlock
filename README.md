@@ -6,7 +6,6 @@
 <p><b>PaperMC 전용</b> • <b>모듈형 API 제공</b> • <b>커스터마이징 자유도 극대화</b></p>
 
 </div>
-### [Wiki](https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b?pvs=74)
 ---
 
 ## 🌟 프로젝트 소개
