@@ -4,7 +4,8 @@
 
 <h3>📦 Kotlin 기반의 커스텀 스카이블럭 플러그인</h3>
 <p><b>PaperMC 전용</b> • <b>모듈형 API 제공</b> • <b>커스터마이징 자유도 극대화</b></p>
-[![Wiki](https://img.shields.io)]([링크URL](https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b?pvs=74))
+[![Wiki](https://img.shields.io)]([https://your-blog-url.com](https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b?pvs=74))
+
 
 </div>
 
