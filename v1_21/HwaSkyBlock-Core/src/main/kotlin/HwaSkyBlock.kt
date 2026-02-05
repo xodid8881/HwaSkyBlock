@@ -22,12 +22,12 @@ import org.hwabaeg.hwaskyblock.events.click.*
 import org.hwabaeg.hwaskyblock.events.click.geyser.GeyserMenuClickEvent
 import org.hwabaeg.hwaskyblock.events.entity.SpawnEvent
 import org.hwabaeg.hwaskyblock.events.player.JoinEvent
-import org.hwabaeg.hwaskyblock.events.player.MoveEvent
+import org.hwabaeg.hwaskyblock.events.player.QuitEvent
 import org.hwabaeg.hwaskyblock.events.player.UseEvent
 import org.hwabaeg.hwaskyblock.schedules.HwaSkyBlockTask
+import org.hwabaeg.hwaskyblock.schedules.PlayerPermissionTask
 import org.hwabaeg.hwaskyblock.schedules.UnloadBorderTask
 import org.hwabaeg.hwaskyblock.schedules.UnloadWorldTask
-import java.io.File
 import java.util.*
 
 class HwaSkyBlock : JavaPlugin() {
@@ -45,7 +45,7 @@ class HwaSkyBlock : JavaPlugin() {
         server.pluginManager.registerEvents(InvSharerUseClickEvent(), this)
 
         server.pluginManager.registerEvents(JoinEvent(), this)
-        server.pluginManager.registerEvents(MoveEvent(), this)
+        server.pluginManager.registerEvents(QuitEvent(), this)
         server.pluginManager.registerEvents(PhysicsEvent(), this)
         server.pluginManager.registerEvents(PlaceEvent(), this)
         server.pluginManager.registerEvents(SpawnEvent(), this)
@@ -92,6 +92,7 @@ class HwaSkyBlock : JavaPlugin() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), 20L * 2, 20L * 2)
         Bukkit.getScheduler().runTaskTimer(this, UnloadWorldTask(), 0L, 400L)
         Bukkit.getScheduler().runTaskTimer(this, UnloadBorderTask(), 0L, 400L)
+        Bukkit.getScheduler().runTaskTimer(this, PlayerPermissionTask(), 0L, 50L)
 
         api = HwaSkyBlockAPIImpl()
         DatabaseManager().loadAllSkyblocks()
