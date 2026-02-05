@@ -8,5 +8,9 @@ plugins {
 }
 rootProject.name = "HwaSkyBlock"
 
-include("HwaSkyBlock-Core")
-include("skyblock-ranking-addon")
+include(
+    ":v1_21:HwaSkyBlock-Core",
+    ":v1_21:skyblock-ranking-addon"
+)
+
+include("v1_21:skyblock-custompoint-addon")

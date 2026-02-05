@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.25" apply false
+    kotlin("jvm") version "2.1.20" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
@@ -15,21 +15,22 @@ allprojects {
 
 subprojects {
     afterEvaluate {
-        tasks.matching { it.name == "shadowJar" || it.name == "jar" }.configureEach {
-            doLast {
+        tasks.findByName("shadowJar")?.let { shadowTask ->
+            shadowTask.doLast {
                 val jarFile = outputs.files.singleFile
+
                 val outputDir = File(rootProject.buildDir, "libs")
                 outputDir.mkdirs()
 
                 val dest = File(outputDir, jarFile.name)
                 jarFile.copyTo(dest, overwrite = true)
-                println("✅ Copied ${jarFile.name} → ${dest.path}")
-            }
-        }
 
-        tasks.named("build") {
-            dependsOn("shadowJar")
+                println("✅ [${project.path}] Copied ${jarFile.name} → ${dest.path}")
+            }
+
+            tasks.named("build") {
+                dependsOn(shadowTask)
+            }
         }
     }
 }
-
