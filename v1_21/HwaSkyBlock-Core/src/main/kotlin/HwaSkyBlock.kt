@@ -89,10 +89,10 @@ class HwaSkyBlock : JavaPlugin() {
             return
         }
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, HwaSkyBlockTask(), 20L * 2, 20L * 2)
-        Bukkit.getScheduler().runTaskTimer(this, UnloadWorldTask(), 0L, 400L)
-        Bukkit.getScheduler().runTaskTimer(this, UnloadBorderTask(), 0L, 400L)
-        Bukkit.getScheduler().runTaskTimer(this, PlayerPermissionTask(), 0L, 50L)
+        HwaSkyBlockTask().runTaskTimerAsynchronously(this, 40L, 40L)
+        UnloadWorldTask().runTaskTimer(this, 0L, 400L)
+        UnloadBorderTask().runTaskTimer(this, 0L, 400L)
+        PlayerPermissionTask().runTaskTimer(this, 0L, 50L)
 
         api = HwaSkyBlockAPIImpl()
         DatabaseManager().loadAllSkyblocks()

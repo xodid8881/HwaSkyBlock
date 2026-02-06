@@ -9,7 +9,7 @@ import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import java.util.*
 
-class HwaSkyBlockTask : Runnable {
+class HwaSkyBlockTask : BukkitRunnable() {
     var Config: FileConfiguration = ConfigManager.getConfig("setting")!!
     var Prefix: String = ChatColor.translateAlternateColorCodes(
         '&',

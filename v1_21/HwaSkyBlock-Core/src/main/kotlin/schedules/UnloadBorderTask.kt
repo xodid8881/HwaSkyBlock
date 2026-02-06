@@ -1,9 +1,10 @@
 package org.hwabaeg.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
+import org.bukkit.scheduler.BukkitRunnable
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
-class UnloadBorderTask : Runnable {
+class UnloadBorderTask : BukkitRunnable() {
 
     override fun run() {
         for (player in Bukkit.getOnlinePlayers()) {

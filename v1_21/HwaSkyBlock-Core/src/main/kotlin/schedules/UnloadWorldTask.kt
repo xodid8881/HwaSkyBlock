@@ -1,9 +1,10 @@
 package org.hwabaeg.hwaskyblock.schedules
 
 import org.bukkit.Bukkit
+import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
 
-class UnloadWorldTask : Runnable {
+class UnloadWorldTask : BukkitRunnable() {
     override fun run() {
         for (world in Bukkit.getServer().worlds) {
             val worldName = world.name
