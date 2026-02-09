@@ -16,32 +16,50 @@ class JoinEvent : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
         val name = player.name
-        val hasSkyblockData = DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerEvent") != null
+
+        val hasSkyblockData =
+            DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerEvent") != null
+
         if (!hasSkyblockData) {
             DatabaseManager.insertUser(player)
             if (ConfigManager.getConfig("setting")?.getString("database.type") == "yml") {
                 ConfigManager.saveConfigs()
             }
         }
+
         val lastWorld = LAST_WORLD[player.uniqueId]
 
-        if (lastWorld != null) {
-            val world = Bukkit.getWorld(lastWorld)
+        // ✅ 서버 재시작 대응 로직
+        if (lastWorld == null) {
 
-            if (world != null) {
-                player.teleport(world.spawnLocation)
-            } else {
-                var worldName = Config.getString("main-spawn-world")
+            // DB에 저장된 섬 월드명 (예시)
+            val islandWorldName =
+                DatabaseManager.getUserData("$name.skyblock.world", player, "getPlayerEvent") as? String
+
+            val islandWorld = islandWorldName?.let { Bukkit.getWorld(it) }
+
+            if (islandWorld == null) {
+                val worldName = Config.getString("main-spawn-world")
                 val mainWorld = Bukkit.getWorld(worldName.toString())
-                if (mainWorld == null) {
-                    val safeWorld = Bukkit.getWorlds()[0]
-                    player.teleport(safeWorld.spawnLocation)
-                } else {
-                    player.teleport(mainWorld.spawnLocation)
-                }
+                val safeWorld = mainWorld ?: Bukkit.getWorlds()[0]
+                player.teleport(safeWorld.spawnLocation)
             }
 
-            LAST_WORLD.remove(player.uniqueId)
+            return
         }
+
+        // 기존 로직 유지
+        val world = Bukkit.getWorld(lastWorld)
+
+        if (world != null) {
+            player.teleport(world.spawnLocation)
+        } else {
+            val worldName = Config.getString("main-spawn-world")
+            val mainWorld = Bukkit.getWorld(worldName.toString())
+            val safeWorld = mainWorld ?: Bukkit.getWorlds()[0]
+            player.teleport(safeWorld.spawnLocation)
+        }
+
+        LAST_WORLD.remove(player.uniqueId)
     }
 }
