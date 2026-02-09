@@ -1,0 +1,6 @@
+feeds:
+  특수사료:
+    material: WHEAT
+    display-name: "&a특수 사료"
+    lore:
+      - "&7섬 가축 전용 먹이"

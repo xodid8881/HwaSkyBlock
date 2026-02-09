@@ -18,6 +18,7 @@ dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("reflect"))
 
+
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
@@ -36,7 +37,7 @@ kotlin {
 
 tasks {
     shadowJar {
-        archiveFileName.set("SkyblockRankingAddon-${version}-v1.21.jar")
+        archiveFileName.set("SkyblockCattleAddon-${version}-v1.21.jar")
 
         from("src/main/resources/addon.yml") {
             into("")
@@ -44,9 +45,9 @@ tasks {
 
         manifest {
             attributes(
-                "Addon-Main" to "org.hwabaeg.hwaskyblock.addon.ranking.SkyblockRankingAddon",
-                "Addon-Name" to "SkyblockRankingAddon",
-                "Addon-Version" to version
+                    "Addon-Main" to "org.hwabaeg.hwaskyblock.addon.cattle.SkyblockCattleAddon",
+                    "Addon-Name" to "SkyblockCattleAddon",
+                    "Addon-Version" to version
             )
         }
     }

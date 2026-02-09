@@ -1,0 +1,343 @@
+enabled: true
+
+database:
+  type: sqlite
+  sqlite:
+    file: dailymission.db
+  mysql:
+    host: localhost
+    port: 3306
+    database: hwaskyblock
+    user: root
+    password: ""
+
+main-point:
+  enabled: true
+  ratio: 1.0
+
+mission:
+  allow-creative: false
+  crop-cooldown-ms: 500
+  block-break:
+    allow-placed: false
+  entity:
+    allow-spawn-egg: false
+    allow-spawner: true
+    allow-command: false
+  item-pickup:
+    block-drop-reacquire: true
+    block-drop-reacquire-ms: 3000
+
+gui:
+  rows: 3
+  filler:
+    enabled: true
+    material: BLACK_STAINED_GLASS_PANE
+  icon:
+    very-easy: LIME_DYE
+    easy: GREEN_DYE
+    normal: YELLOW_DYE
+    hard: ORANGE_DYE
+    very-hard: RED_DYE
+    status:
+      none: BOOK
+      progress: WRITABLE_BOOK
+      done: LIME_STAINED_GLASS_PANE
+    set:
+      very-easy:
+        none: ""
+        progress: ""
+        done: ""
+      easy:
+        none: ""
+        progress: ""
+        done: ""
+      normal:
+        none: ""
+        progress: ""
+        done: ""
+      hard:
+        none: ""
+        progress: ""
+        done: ""
+      very-hard:
+        none: ""
+        progress: ""
+        done: ""
+  slot:
+    very-easy: 10
+    easy: 12
+    normal: 14
+    hard: 16
+    very-hard: 22
+    info: 26
+  custom:
+    enabled: false
+    items:
+      - slot: 10
+        type: MISSION_VERY_EASY
+        material: WHEAT_SEEDS
+        name: ""
+        lore: []
+        glow: false
+      - slot: 12
+        type: MISSION_EASY
+        material: OAK_LOG
+        name: ""
+        lore: []
+        glow: false
+      - slot: 14
+        type: MISSION_NORMAL
+        material: IRON_INGOT
+        name: ""
+        lore: []
+        glow: false
+      - slot: 16
+        type: MISSION_HARD
+        material: DIAMOND
+        name: ""
+        lore: []
+        glow: false
+      - slot: 22
+        type: MISSION_VERY_HARD
+        material: NETHER_STAR
+        name: ""
+        lore: []
+        glow: false
+      - slot: 26
+        type: INFO
+        material: PAPER
+        name: ""
+        lore: []
+        glow: false
+  detail:
+    rows: 3
+    back-slot: 22
+    back-material: ARROW
+    info-slot: 13
+    filler:
+      enabled: true
+      material: BLACK_STAINED_GLASS_PANE
+    reward-slot: -1
+    status-slot: -1
+    point-slot: -1
+    buttons:
+      - slot: 24
+        material: BELL
+        name: "&e알림 설정"
+        lore:
+          - "&7클릭하여 알림을 켜거나 끕니다."
+        glow: false
+        action: MESSAGE
+        value: "&a준비중입니다."
+
+missions:
+  very_easy:
+    - id: mission_ve_1
+      name: 블럭 64개 파괴
+      description: 아무 블럭이나 64개 파괴하세요.
+      type: BLOCK_BREAK
+      target: ANY
+      amount: 64
+      reward: 5
+      enabled: true
+    - id: mission_ve_2
+      name: 작물 32개 수확
+      description: 아무 작물이나 32개 수확하세요.
+      type: CROP_HARVEST
+      target: ANY
+      amount: 32
+      reward: 5
+      enabled: true
+    - id: mission_ve_3
+      name: 몹 10마리 처치
+      description: 몹 10마리를 처치하세요.
+      type: ENTITY_KILL
+      target: ANY
+      amount: 10
+      reward: 5
+      enabled: true
+    - id: mission_ve_4
+      name: 아이템 16개 제작
+      description: 아무 아이템이나 16개 제작하세요.
+      type: CRAFT
+      target: ANY
+      amount: 16
+      reward: 5
+      enabled: true
+    - id: mission_ve_5
+      name: 제련 아이템 16개 획득
+      description: 제련 결과물 16개를 획득하세요.
+      type: SMELT
+      target: ANY
+      amount: 16
+      reward: 5
+      enabled: true
+
+  easy:
+    - id: mission_e_1
+      name: 나무 128개 채집
+      description: 나무(통나무) 128개를 채집하세요.
+      type: BLOCK_BREAK
+      target: MATERIAL:OAK_LOG
+      amount: 128
+      reward: 10
+      enabled: true
+    - id: mission_e_2
+      name: 몹 30마리 처치
+      description: 몹 30마리를 처치하세요.
+      type: ENTITY_KILL
+      target: ANY
+      amount: 30
+      reward: 10
+      enabled: true
+    - id: mission_e_3
+      name: 작물 64개 수확
+      description: 아무 작물이나 64개 수확하세요.
+      type: CROP_HARVEST
+      target: ANY
+      amount: 64
+      reward: 10
+      enabled: true
+    - id: mission_e_4
+      name: 광물 16개 채굴
+      description: 광물 16개를 채굴하세요.
+      type: BLOCK_BREAK
+      target: MATERIAL:IRON_ORE
+      amount: 16
+      reward: 10
+      enabled: true
+    - id: mission_e_5
+      name: 자동농장 수확 1회
+      description: 자동농장으로 작물을 수확하세요.
+      type: CROP_HARVEST
+      target: ANY
+      amount: 1
+      reward: 10
+      enabled: true
+
+  normal:
+    - id: mission_n_1
+      name: 광물 64개 채굴
+      description: 광물 64개를 채굴하세요.
+      type: BLOCK_BREAK
+      target: MATERIAL:IRON_ORE
+      amount: 64
+      reward: 20
+      enabled: true
+    - id: mission_n_2
+      name: 몹 100마리 처치
+      description: 몹 100마리를 처치하세요.
+      type: ENTITY_KILL
+      target: ANY
+      amount: 100
+      reward: 20
+      enabled: true
+    - id: mission_n_3
+      name: 작물 256개 수확
+      description: 아무 작물이나 256개 수확하세요.
+      type: CROP_HARVEST
+      target: ANY
+      amount: 256
+      reward: 20
+      enabled: true
+    - id: mission_n_4
+      name: 아이템 128개 제작
+      description: 아무 아이템이나 128개 제작하세요.
+      type: CRAFT
+      target: ANY
+      amount: 128
+      reward: 20
+      enabled: true
+    - id: mission_n_5
+      name: 제련 아이템 128개 획득
+      description: 제련 결과물 128개를 획득하세요.
+      type: SMELT
+      target: ANY
+      amount: 128
+      reward: 20
+      enabled: true
+
+  hard:
+    - id: mission_h_1
+      name: 희귀 몹 20마리 처치
+      description: 엔더맨 20마리를 처치하세요.
+      type: ENTITY_KILL
+      target: ENTITY:ENDERMAN
+      amount: 20
+      reward: 40
+      enabled: true
+    - id: mission_h_2
+      name: 특정 광물 32개 채굴
+      description: 다이아몬드 광석 32개를 채굴하세요.
+      type: BLOCK_BREAK
+      target: MATERIAL:DIAMOND_ORE
+      amount: 32
+      reward: 40
+      enabled: true
+    - id: mission_h_3
+      name: 자동농장 대량 수확
+      description: 대량의 작물을 수확하세요.
+      type: CROP_HARVEST
+      target: ANY
+      amount: 512
+      reward: 40
+      enabled: true
+    - id: mission_h_4
+      name: 특정 아이템 64개 제작
+      description: 지정된 아이템 64개를 제작하세요.
+      type: CRAFT
+      target: ANY
+      amount: 64
+      reward: 40
+      enabled: true
+    - id: mission_h_5
+      name: 네더 자원 32개 획득
+      description: 네더 자원 32개를 획득하세요.
+      type: SMELT
+      target: ANY
+      amount: 32
+      reward: 40
+      enabled: true
+
+  very_hard:
+    - id: mission_vh_1
+      name: 보스급 몹 처치
+      description: 엔더 드래곤을 처치하세요.
+      type: ENTITY_KILL
+      target: ENTITY:ENDER_DRAGON
+      amount: 1
+      reward: 80
+      enabled: true
+    - id: mission_vh_2
+      name: 고급 아이템 제작
+      description: 고급 아이템을 제작하세요.
+      type: CRAFT
+      target: ANY
+      amount: 256
+      reward: 80
+      enabled: true
+    - id: mission_vh_3
+      name: 대규모 자동화 목표 달성
+      description: 대량의 제련을 완료하세요.
+      type: SMELT
+      target: ANY
+      amount: 512
+      reward: 80
+      enabled: true
+    - id: mission_vh_4
+      name: 희귀 자원 64개 수집
+      description: 에메랄드 광석 64개를 채굴하세요.
+      type: BLOCK_BREAK
+      target: MATERIAL:EMERALD_ORE
+      amount: 64
+      reward: 80
+      enabled: true
+    - id: mission_vh_5
+      name: 복합 조건 미션 달성
+      description: 다양한 몹을 다수 처치하세요.
+      type: ENTITY_KILL
+      target: ANY
+      amount: 200
+      reward: 80
+      enabled: true

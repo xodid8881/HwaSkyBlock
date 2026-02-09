@@ -1,0 +1,51 @@
+prefix: "&7[&aHwaSkyBlock&7] "
+
+message:
+  disabled: "&c일일 미션 애드온이 비활성화되어 있습니다."
+  reload: "&a일일 미션 설정이 리로드되었습니다."
+  no-island: "&c섬이 없습니다."
+  actionbar-progress: "&e%name% &7(&a%current%&7/&f%goal%&7)"
+  broadcast-complete: "&a미션 완료: &f%name% &7(+%reward%)"
+
+gui:
+  title: "&6일일 미션"
+  detail:
+    title: "&6미션 상세"
+    back-name: "&a뒤로가기"
+    info-name: "&e%name%"
+    reward-name: "&b보상"
+    status-name: "&e상태"
+    point-name: "&e미션 포인트"
+    reward-lore: "&7미션 포인트 +%reward%"
+    status-lore: "&7%status%"
+    point-lore: "&7누적: %point%"
+    lore:
+      header: "&7----------------"
+      description: "&f%description%"
+      target: "&f목표: &b%goal%"
+      progress: "&f진행: &a%current%&7/&f%goal%"
+      reward: "&f보상: &b%reward%"
+      gauge: "&f진행률: &a%bar% &7(%percent%%)"
+  diff:
+    very-easy: "&a매우 쉬움"
+    easy: "&a쉬움"
+    normal: "&e일반"
+    hard: "&c어려움"
+    very-hard: "&4매우 어려움"
+  info-title: "&e정보"
+  info-date: "&7오늘 날짜: &f%date%"
+  info-point: "&7미션 포인트: &f%point%"
+  lore:
+    mission: "&f미션: &e%name%"
+    progress: "&f진행도: &a%current% &7/ &f%goal%"
+    reward: "&f보상: &b%reward%"
+    main-point: "&f메인 포인트: &b%main%"
+    status: "&f상태: %status%"
+  status:
+    none: "&7미진행"
+    progress: "&e진행 중"
+    done: "&a완료"
+  status-prefix:
+    none: "&7[ ] "
+    progress: "&e[~] "
+    done: "&a[✔] "

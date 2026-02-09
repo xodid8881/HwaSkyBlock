@@ -26,6 +26,7 @@ dependencies {
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
     compileOnly("com.github.oraxen:oraxen:1.173.0")
     implementation("org.xerial:sqlite-jdbc:3.43.0.0")
+    implementation("mysql:mysql-connector-java:8.0.33")
 
     compileOnly(project(":v1_21:HwaSkyBlock-Core"))
 }
@@ -36,7 +37,7 @@ kotlin {
 
 tasks {
     shadowJar {
-        archiveFileName.set("SkyblockRankingAddon-${version}-v1.21.jar")
+        archiveFileName.set("SkyblockDailyMissionAddon-${version}-v1.21.jar")
 
         from("src/main/resources/addon.yml") {
             into("")
@@ -44,8 +45,8 @@ tasks {
 
         manifest {
             attributes(
-                "Addon-Main" to "org.hwabaeg.hwaskyblock.addon.ranking.SkyblockRankingAddon",
-                "Addon-Name" to "SkyblockRankingAddon",
+                "Addon-Main" to "addon.dailymission.SkyblockDailyMissionAddon",
+                "Addon-Name" to "SkyblockDailyMissionAddon",
                 "Addon-Version" to version
             )
         }

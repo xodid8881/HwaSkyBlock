@@ -1,0 +1,15 @@
+name: SkyblockDailyMissionAddon
+version: 1.0.0
+main: addon.dailymission.SkyblockDailyMissionAddon
+author: HwaBaeg
+description: Daily missions for island teamwork and long-term ranking.
+api-version: "1.21"
+
+depend:
+  - HwaSkyBlock-Core
+
+softdepend:
+  - ItemsAdder
+  - Oraxen
+  - Nexo
+  - CustomCrops

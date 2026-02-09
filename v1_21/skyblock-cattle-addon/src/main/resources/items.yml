@@ -1,0 +1,13 @@
+items:
+  프리미엄소고기:
+    material: BEEF
+    display-name: "&c프리미엄 소고기"
+  가공양모:
+    material: WHITE_WOOL
+    display-name: "&f가공 양모"
+  프리미엄돼지고기:
+    material: PORKCHOP
+    display-name: "&d프리미엄 돼지고기"
+  프리미엄닭고기:
+    material: CHICKEN
+    display-name: "&e프리미엄 닭고기"

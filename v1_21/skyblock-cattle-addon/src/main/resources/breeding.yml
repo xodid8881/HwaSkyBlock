@@ -1,0 +1,9 @@
+breeding-items:
+  번식토큰:
+    material: NETHER_STAR
+    display-name: "&d가축 번식 토큰"
+    lore:
+      - "&7두 마리에 각각 사용하면 번식합니다."
+      - "&7성공하면 즉시 소멸합니다."
+    max-uses: 2
+    duration-seconds: 600
