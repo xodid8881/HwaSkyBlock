@@ -1,0 +1,24 @@
+gui:
+  ranking:
+    title: "&6🏆 SkyBlock Rankings"
+
+    empty:
+      name: "&cNo Data"
+      lore:
+        - "&7No islands have been registered yet."
+
+    item:
+      name: "&e#{rank} &f- &a{leader}"
+      lore:
+        - "&7Points: &b{point}"
+        - "&7Click to teleport (&f{id}&7)"
+
+message-event:
+  ranking_move: "&aTeleporting to rank #{rank} island (&f{id}&a)..."
+  join_refusal: "&cYou are not allowed to enter this island."
+  island_not_exist: "&cThis island does not exist."
+
+log:
+  config_load_error: "[SkyblockRankingAddon] Failed to load config files: {error}"
+  load_complete: "✅ SkyblockRankingAddon loaded successfully"
+  command_not_defined: "[SkyblockRankingAddon] ⚠ Command '섬랭킹' is not defined in plugin.yml"
