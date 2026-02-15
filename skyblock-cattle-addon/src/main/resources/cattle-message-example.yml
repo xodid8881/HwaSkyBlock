@@ -1,0 +1,71 @@
+cattle:
+  prefix: "&6&l[가축]&r "
+
+  help:
+    lines:
+      - "&7사용 가능한 명령어"
+      - " &f- &e/가축 상점"
+      - " &f- &e/가축 리로드"
+      - " &f- &e/가축 급식지급 <플레이어> <사료ID> [수량]"
+      - " &f- &e/가축 번식지급 <플레이어> <토큰ID> [수량]"
+
+  command:
+    reload:
+      success: "가축 애드온 설정을 다시 불러왔습니다."
+    givefeed:
+      success: "급식 아이템을 지급했습니다."
+      invalid-id: "급식 ID를 찾을 수 없습니다."
+    givebreed:
+      success: "번식 토큰을 지급했습니다."
+      invalid-id: "번식 토큰 ID를 찾을 수 없습니다."
+
+  gui:
+    shop:
+      title: "&0가축 상점"
+      info-title: "&6&l가축 상점 안내"
+      info-lore:
+        - "&7좌클릭으로 가축 스폰알을 구매합니다."
+        - "&7표시 가축: &f{shown} &7/ 전체: &f{total}"
+        - "&7구매한 스폰알은 섬에서만 사용 가능합니다."
+      spawn-egg-lore: "&7섬 전용 가축 스폰알"
+      item-price: "&e가격: &f{price}"
+    breed-item:
+      uses: "&7남은 사용 횟수: &f{uses}"
+
+  success:
+    shop:
+      purchased: "{name} 스폰알을 구매했습니다."
+    breed:
+      done: "번식에 성공했습니다."
+
+  info:
+    breed:
+      token-uses: "번식 토큰 남은 사용 횟수: {uses}"
+
+  warn:
+    shop:
+      limit: "상점 표시 한도({limit}개)를 초과해 일부 가축은 표시되지 않습니다."
+    feed:
+      already-full: "이미 오늘 먹이 요구량을 충족했습니다."
+    breed:
+      waiting: "번식 대상 대기 상태로 등록되었습니다. ({minutes}분 유지)"
+      creative-no-consume: "크리에이티브 모드에서는 번식 토큰이 소모되지 않습니다."
+
+  error:
+    spawn:
+      island-only: "섬 내부에서만 가축을 소환할 수 있습니다."
+      click-block: "블럭을 우클릭해서 소환하세요."
+    use:
+      island-only: "섬 내부에서만 이 아이템을 사용할 수 있습니다."
+    feed:
+      no-vanilla: "바닐라 먹이는 사용할 수 없습니다. 특수 사료를 사용하세요."
+      wrong-item: "이 가축이 먹는 사료가 아닙니다."
+    breed:
+      wrong-item: "이 가축 번식 토큰이 아닙니다."
+      need-feed: "먼저 사료를 모두 지급해야 번식할 수 있습니다."
+      cooldown: "이 가축은 아직 번식 쿨타임입니다."
+    shop:
+      island-only: "섬 내부에서만 구매할 수 있습니다."
+      no-economy: "경제 플러그인(Vault)을 찾을 수 없습니다."
+      not-enough-money: "잔액이 부족합니다. 필요 금액: {price}"
+      payment-failed: "결제 처리에 실패했습니다. 잠시 후 다시 시도해주세요."
