@@ -49,26 +49,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_DOOR"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseDoor") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseDoor")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -81,26 +64,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.CHEST"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseChest") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseChest")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -113,26 +79,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BARREL"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseBarrel") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseBarrel")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -145,26 +94,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.HOPPER"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseHopper") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseHopper")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -177,26 +109,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.FURNACE"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseFurnace") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseFurnace")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -209,26 +124,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BLAST_FURNACE"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseBlastFurnace") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseBlastFurnace")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -241,26 +139,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.SHULKER_BOX"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseShulkerBox") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseShulkerBox")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -273,26 +154,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_TRAPDOOR"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseTrapdoor") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseTrapdoor")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -305,26 +169,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_BUTTON"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseButton") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseButton")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -337,26 +184,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.ANVIL"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseAnvil") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseAnvil")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -369,26 +199,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.SWEET_BERRIES"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseFarm") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseFarm")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -401,26 +214,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.BEACON"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseBeacon") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseBeacon")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -433,26 +229,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.MINECART"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseMinecart") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseMinecart")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)
@@ -465,26 +244,9 @@ class InvSharerUseClickEvent : Listener {
                             Objects.requireNonNull<String?>(MessageConfig.getString("gui-slot-item-name.sharer_use_list.OAK_BOAT"))
                         )
                     ) {
-                        if (DatabaseManager.getShareData(
-                                "$id",
-                                user_name,
-                                null
-                            ) as? Boolean ?: false
-                        ) {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                false,
-                                null
-                            )
-                        } else {
-                            DatabaseManager.setShareData(
-                                "$id",
-                                user_name,
-                                true,
-                                null
-                            )
-                        }
+                        val current =
+                            DatabaseManager.getShareData("$id", user_name, "isUseBoat") as? Boolean ?: false
+                        DatabaseManager.setShareData("$id", user_name, !current, "setUseBoat")
                         player.closeInventory()
                         Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
                             val inv = HwaSkyBlockSharerUseGUI(player, user_name)

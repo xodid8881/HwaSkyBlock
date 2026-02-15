@@ -32,21 +32,21 @@ class HwaSkyBlockSharerUseGUI(player: Player, key: String?) : Listener {
         val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val id = number[1]
 
-        val player_door = DatabaseManager.getShareData("$id", name!!, null) as? Boolean ?: false
-        val player_chest = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_barrel = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_hopper = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_furnace = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
+        val player_door = DatabaseManager.getShareData("$id", name!!, "isUseDoor") as? Boolean ?: false
+        val player_chest = DatabaseManager.getShareData("$id", name, "isUseChest") as? Boolean ?: false
+        val player_barrel = DatabaseManager.getShareData("$id", name, "isUseBarrel") as? Boolean ?: false
+        val player_hopper = DatabaseManager.getShareData("$id", name, "isUseHopper") as? Boolean ?: false
+        val player_furnace = DatabaseManager.getShareData("$id", name, "isUseFurnace") as? Boolean ?: false
         val player_blast_furnace =
-            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_shulker_box = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_trapdoor = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_button = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_anvil = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_farm = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_beacon = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_minecart = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
-        val player_boat = DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, "isUseBlastFurnace") as? Boolean ?: false
+        val player_shulker_box = DatabaseManager.getShareData("$id", name, "isUseShulkerBox") as? Boolean ?: false
+        val player_trapdoor = DatabaseManager.getShareData("$id", name, "isUseTrapdoor") as? Boolean ?: false
+        val player_button = DatabaseManager.getShareData("$id", name, "isUseButton") as? Boolean ?: false
+        val player_anvil = DatabaseManager.getShareData("$id", name, "isUseAnvil") as? Boolean ?: false
+        val player_farm = DatabaseManager.getShareData("$id", name, "isUseFarm") as? Boolean ?: false
+        val player_beacon = DatabaseManager.getShareData("$id", name, "isUseBeacon") as? Boolean ?: false
+        val player_minecart = DatabaseManager.getShareData("$id", name, "isUseMinecart") as? Boolean ?: false
+        val player_boat = DatabaseManager.getShareData("$id", name, "isUseBoat") as? Boolean ?: false
 
         var item = ItemStack(Material.OAK_DOOR, 1)
         var itemMeta = item.itemMeta

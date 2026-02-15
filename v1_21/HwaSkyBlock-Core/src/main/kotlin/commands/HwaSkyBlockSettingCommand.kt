@@ -30,6 +30,9 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
         alias: String,
         args: Array<out String>
     ): MutableList<String?>? {
+        if (!Bukkit.isPrimaryThread()) {
+            return mutableListOf()
+        }
         if (args.size == 1) {
             val list: MutableList<String?> = ArrayList<String?>()
             list.add(MessageConfig.getString("sub-command-message.changer"))
@@ -40,9 +43,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
         if (args.size == 2) {
             if (args[0].equals(MessageConfig.getString("sub-command-message.changer"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
-                for (p in Bukkit.getOnlinePlayers()) {
-                    list.add(p.name)
-                }
+                list.addAll(org.hwabaeg.hwaskyblock.HwaSkyBlock.onlineNameCache)
                 return list
             }
         }
@@ -67,7 +68,6 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             )
             return true
         }
-        val name = sender.name
         if (args.isEmpty()) {
             for (key in MessageConfig.getStringList("setting-command-help-message")) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', key))
@@ -75,12 +75,22 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
             return true
         }
         if (args[0].equals(MessageConfig.getString("sub-command-message.changer"), ignoreCase = true)) {
+            if (args.size == 1) {
+                sender.sendMessage(
+                    Prefix + ChatColor.translateAlternateColorCodes(
+                        '&',
+                        Objects.requireNonNull<String?>(MessageConfig.getString("message-event.nickname_blank"))
+                    )
+                )
+                return true
+            }
             val world = sender.world
             val world_name = world.worldFolder.getName()
             val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (number[0] == "HwaSkyBlock") {
                 val id = number[1]
-                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
+                val leader = DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
+                if (leader == null) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -89,7 +99,7 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == null) {
+                if (leader.equals(args[1], ignoreCase = true)) {
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -98,40 +108,44 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                     )
                     return true
                 }
-                val skyblock_master =
-                    DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
+                val skyblock_master = leader
 
-                val masterCount = DatabaseManager.getUserData(
+                val masterCount = DatabaseManager.getUserDataByName(
                     "$skyblock_master.skyblock.possession_count",
-                    sender,
+                    skyblock_master,
                     "getPlayerPossessionCount"
                 ) as? Int ?: 1
-                DatabaseManager.setUserData(
+                DatabaseManager.setUserDataByName(
                     "$skyblock_master.skyblock.possession_count",
-                    sender,
+                    skyblock_master,
                     masterCount - 1,
                     "setPlayerPossessionCount"
                 )
 
-                DatabaseManager.setUserData(
+                DatabaseManager.setUserDataByName(
                     "$skyblock_master.skyblock.possession.$id",
-                    sender,
-                    null,
+                    skyblock_master,
+                    false,
                     "setPlayerPossession"
                 )
                 DatabaseManager.setSkyBlockData(id.toString(), args[1]!!, "setSkyBlockLeader")
-                val newOwnerCount = DatabaseManager.getUserData(
+                val newOwnerCount = DatabaseManager.getUserDataByName(
                     "${args[1]}.skyblock.possession_count",
-                    sender,
+                    args[1]!!,
                     "getPlayerPossessionCount"
                 ) as? Int ?: 0
-                DatabaseManager.setUserData(
+                DatabaseManager.setUserDataByName(
                     "${args[1]}.skyblock.possession_count",
-                    sender,
+                    args[1]!!,
                     newOwnerCount + 1,
                     "setPlayerPossessionCount"
                 )
-                DatabaseManager.setUserData("${args[1]}.skyblock.possession.$id", sender, name, "setPlayerPossession")
+                DatabaseManager.setUserDataByName(
+                    "${args[1]}.skyblock.possession.$id",
+                    args[1]!!,
+                    true,
+                    "setPlayerPossession"
+                )
 
                 ConfigManager.saveConfigs()
                 sender.sendMessage(
@@ -151,24 +165,33 @@ class HwaSkyBlockSettingCommand : TabCompleter, CommandExecutor {
                 val id = number[1]
                 val skyblock_master =
                     DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
+                if (skyblock_master == null) {
+                    sender.sendMessage(
+                        Prefix + ChatColor.translateAlternateColorCodes(
+                            '&',
+                            Objects.requireNonNull<String?>(MessageConfig.getString("message-event.no_sky_block"))
+                        )
+                    )
+                    return true
+                }
 
-                val currentCount = DatabaseManager.getUserData(
+                val currentCount = DatabaseManager.getUserDataByName(
                     "$skyblock_master.skyblock.possession_count",
-                    sender,
+                    skyblock_master,
                     "getPlayerPossessionCount"
                 ) as? Int ?: 1
 
-                DatabaseManager.setUserData(
+                DatabaseManager.setUserDataByName(
                     "$skyblock_master.skyblock.possession_count",
-                    sender,
+                    skyblock_master,
                     currentCount - 1,
                     "setPlayerPossessionCount"
                 )
 
-                DatabaseManager.setUserData(
+                DatabaseManager.setUserDataByName(
                     "$skyblock_master.skyblock.possession.$id",
-                    sender,
-                    null,
+                    skyblock_master,
+                    false,
                     "setPlayerPossession"
                 )
 

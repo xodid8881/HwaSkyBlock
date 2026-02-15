@@ -3,7 +3,7 @@
   menu: "메뉴"
   move: "이동"
   add-share: "공유추가"
-  remove-share: "공유추가"
+  remove-share: "공유제거"
   permission-management: "권한관리"
   detailed-management: "세부관리"
   changer: "주인변경"

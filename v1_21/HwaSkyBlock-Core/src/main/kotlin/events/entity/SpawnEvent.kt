@@ -1,51 +1,75 @@
 package org.hwabaeg.hwaskyblock.events.entity
 
-import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
+import org.bukkit.entity.Animals
+import org.bukkit.entity.Monster
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntitySpawnEvent
+import org.bukkit.event.entity.CreatureSpawnEvent
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 
 class SpawnEvent : Listener {
 
-    @EventHandler
-    fun onEntitySpawn(event: EntitySpawnEvent) {
-        val entityType: EntityType = event.entityType
-        val entity: Entity = event.getEntity()
-        val world = entity.world
-        val world_name = world.worldFolder.name
-        val number: Array<String?> = world_name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        if (number[0] == "HwaSkyBlock") {
-            val block_to_id = number[1]
-            val monster_spawn = DatabaseManager.getSkyBlockData(
-                block_to_id.toString(),
-                "isSkyBlockMonsterSpawn"
-            ) as? Boolean ?: true
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onEntitySpawn(event: CreatureSpawnEvent) {
+        val worldName = event.entity.world.name
+        if (!worldName.startsWith("HwaSkyBlock.")) return
 
-            val animal_spawn = DatabaseManager.getSkyBlockData(
-                block_to_id.toString(),
-                "isSkyBlockAnimalSpawn"
-            ) as? Boolean ?: true
+        val rawBlockId = worldName.substringAfter("HwaSkyBlock.")
+        if (rawBlockId.isBlank()) return
 
-            if (!monster_spawn) {
-                if (isMonster(entityType)) {
-                    event.isCancelled = true
-                }
-            }
-            if (!animal_spawn) {
-                if (isAnimal(entityType)) {
-                    event.isCancelled = false
-                }
-            }
+        val blockIdCandidates = buildList {
+            add(rawBlockId)
+            val normalized = rawBlockId.substringBefore("_")
+            if (normalized != rawBlockId) add(normalized)
+        }
+
+        val monsterSpawn = getBooleanSetting(
+            blockIdCandidates,
+            "isSkyBlockMonsterSpawn",
+            true
+        )
+
+        val animalSpawn = getBooleanSetting(
+            blockIdCandidates,
+            "isSkyBlockAnimalSpawn",
+            true
+        )
+
+        if (!monsterSpawn && event.entity is Monster) {
+            event.isCancelled = true
+            return
+        }
+
+        if (!animalSpawn && event.entity is Animals) {
+            event.isCancelled = true
         }
     }
 
-    private fun isMonster(entityType: EntityType?): Boolean {
-        return entityType == EntityType.ZOMBIE || entityType == EntityType.SKELETON || entityType == EntityType.CREEPER || entityType == EntityType.SPIDER || entityType == EntityType.ENDERMAN || entityType == EntityType.WITCH || entityType == EntityType.SLIME || entityType == EntityType.GHAST || entityType == EntityType.PIGLIN || entityType == EntityType.VEX || entityType == EntityType.WITHER || entityType == EntityType.DROWNED || entityType == EntityType.HUSK || entityType == EntityType.PHANTOM
+    private fun getBooleanSetting(
+        blockIdCandidates: List<String>,
+        key: String,
+        defaultValue: Boolean
+    ): Boolean {
+        for (blockId in blockIdCandidates) {
+            val parsed = parseBoolean(DatabaseManager.getSkyBlockData(blockId, key))
+            if (parsed != null) return parsed
+        }
+        return defaultValue
     }
 
-    private fun isAnimal(entityType: EntityType?): Boolean {
-        return entityType == EntityType.COW || entityType == EntityType.PIG || entityType == EntityType.SHEEP || entityType == EntityType.CHICKEN || entityType == EntityType.HORSE || entityType == EntityType.RABBIT || entityType == EntityType.LLAMA || entityType == EntityType.OCELOT || entityType == EntityType.PARROT || entityType == EntityType.TURTLE
+    private fun parseBoolean(value: Any?): Boolean? {
+        return when (value) {
+            is Boolean -> value
+            is Number -> value.toInt() != 0
+            is String -> {
+                when (value.trim().lowercase()) {
+                    "true", "1", "yes", "on" -> true
+                    "false", "0", "no", "off" -> false
+                    else -> null
+                }
+            }
+            else -> null
+        }
     }
 }

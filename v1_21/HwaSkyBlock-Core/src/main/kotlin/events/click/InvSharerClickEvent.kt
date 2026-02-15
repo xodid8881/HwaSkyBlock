@@ -43,21 +43,26 @@ class InvSharerClickEvent : Listener {
                 if (number[0] == "HwaSkyBlock") {
                     val id = number[1]
                     val clickitem = e.currentItem?.itemMeta?.displayName
-                    val sharerData = DatabaseManager.getSharePermissionsMap(id.toString()) as? Map<*, *>
-                    if (sharerData != null) {
-                        for (key in sharerData.keys) {
+                    val sharerList = DatabaseManager.getShareDataList(id.toString())
+                    if (sharerList.isNotEmpty()) {
+                        for (key in sharerList) {
                             var display_name = MessageConfig.getString("gui-slot-item-name.sharer_setting.sharer")
-                            display_name = Objects.requireNonNull(display_name)?.replace("{name}", key.toString())
+                            display_name = Objects.requireNonNull(display_name)?.replace("{name}", key)
 
                             if (clickitem == ChatColor.translateAlternateColorCodes('&', display_name.toString())) {
 
                                 if (e.click == ClickType.SHIFT_LEFT) {
-                                    val player_join = (sharerData[key] as? Map<*, *>)?.get("join") as? Boolean ?: false
-                                    DatabaseManager.setShareData(
-                                        "$id",
-                                        key.toString(),
+                                    val player_join =
+                                        DatabaseManager.getUserDataByName(
+                                            "$key.skyblock.sharer_join.$id",
+                                            key,
+                                            "getPlayerSharerJoin"
+                                        ) as? Boolean ?: true
+                                    DatabaseManager.setUserDataByName(
+                                        "$key.skyblock.sharer_join.$id",
+                                        key,
                                         !player_join,
-                                        "setSkyblockSharerJoin"
+                                        "setPlayerSharerJoin"
                                     )
                                     player.closeInventory()
                                     Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -68,12 +73,13 @@ class InvSharerClickEvent : Listener {
                                 }
 
                                 if (e.click == ClickType.SHIFT_RIGHT) {
-                                    val block_break = (sharerData[key] as? Map<*, *>)?.get("break") as? Boolean ?: false
+                                    val block_break =
+                                        DatabaseManager.getShareData("$id", key, "isUseBreak") as? Boolean ?: false
                                     DatabaseManager.setShareData(
                                         "$id",
-                                        key.toString(),
+                                        key,
                                         !block_break,
-                                        "setSkyblockSharerBreak"
+                                        "setUseBreak"
                                     )
                                     player.closeInventory()
                                     Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -84,12 +90,13 @@ class InvSharerClickEvent : Listener {
                                 }
 
                                 if (e.click == ClickType.LEFT) {
-                                    val block_place = (sharerData[key] as? Map<*, *>)?.get("place") as? Boolean ?: false
+                                    val block_place =
+                                        DatabaseManager.getShareData("$id", key, "isUsePlace") as? Boolean ?: false
                                     DatabaseManager.setShareData(
                                         "$id",
-                                        key.toString(),
+                                        key,
                                         !block_place,
-                                        "setSkyblockSharerPlace"
+                                        "setUsePlace"
                                     )
                                     player.closeInventory()
                                     Bukkit.getScheduler().runTaskLater(HwaSkyBlock.plugin, Runnable {
@@ -103,7 +110,7 @@ class InvSharerClickEvent : Listener {
                                     DatabaseManager.setUserData(
                                         "$name.skyblock.setting",
                                         player,
-                                        key.toString(),
+                                        key,
                                         "setPlayerEvent"
                                     )
                                     player.closeInventory()

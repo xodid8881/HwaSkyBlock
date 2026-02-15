@@ -1,5 +1,6 @@
 package org.hwabaeg.hwaskyblock.database
 
+import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
@@ -288,7 +289,11 @@ class DatabaseManager {
     }
 
     fun getUserDataStatic(data: String, player: Player?, type: String?): Any? {
-        val uuid = player?.uniqueId.toString()
+        val uuid = player?.uniqueId?.toString() ?: return null
+        return getUserDataByUuid(data, uuid, type)
+    }
+
+    fun getUserDataByUuid(data: String, uuid: String, type: String?): Any? {
         if (type == null) return null
 
         val typeToColumn = mapOf(
@@ -298,7 +303,8 @@ class DatabaseManager {
             "getPlayerSetting" to "player_setting",
             "getPlayerEvent" to "player_event",
             "getPlayerPossession" to "player_setting",
-            "getPlayerSharer" to "player_setting"
+            "getPlayerSharer" to "player_setting",
+            "getPlayerSharerJoin" to "player_setting"
         )
 
         val column = typeToColumn[type] ?: return null
@@ -333,6 +339,23 @@ class DatabaseManager {
             }.toMap()
         }
 
+        fun extractBooleanMap(container: Any?): Map<String, Boolean> {
+            val map = when (container) {
+                is Map<*, *> -> container
+                is JSONObject -> container
+                else -> return emptyMap()
+            }
+            return map.mapNotNull { (k, v) ->
+                val key = k?.toString() ?: return@mapNotNull null
+                val value = when (v) {
+                    is Boolean -> v
+                    is String -> v.equals("true", ignoreCase = true)
+                    else -> false
+                }
+                key to value
+            }.toMap()
+        }
+
         return when (Config.get("database.type")) {
             "sqlite" -> {
                 val dao = UserDAO()
@@ -343,6 +366,15 @@ class DatabaseManager {
                     when (type) {
                         "getPlayerPossession" -> extractTrueMap(setting["possession"])
                         "getPlayerSharer" -> extractTrueMap(setting["sharer"])
+                        "getPlayerSharerJoin" -> {
+                            val map = extractBooleanMap(setting["sharer_join"])
+                            if (data.contains(".skyblock.sharer_join.")) {
+                                val islandId = data.substringAfterLast(".")
+                                map[islandId]
+                            } else {
+                                map
+                            }
+                        }
                         "getPlayerSetting" -> setting
                         else -> setting[data]
                     }
@@ -360,6 +392,15 @@ class DatabaseManager {
                     when (type) {
                         "getPlayerPossession" -> extractTrueMap(setting["possession"])
                         "getPlayerSharer" -> extractTrueMap(setting["sharer"])
+                        "getPlayerSharerJoin" -> {
+                            val map = extractBooleanMap(setting["sharer_join"])
+                            if (data.contains(".skyblock.sharer_join.")) {
+                                val islandId = data.substringAfterLast(".")
+                                map[islandId]
+                            } else {
+                                map
+                            }
+                        }
                         "getPlayerSetting" -> setting
                         else -> setting[data]
                     }
@@ -375,6 +416,10 @@ class DatabaseManager {
 
     fun setUserDataStatic(data: String, player: Player, value: Any?, type: String?) {
         val uuid = player.uniqueId.toString()
+        setUserDataByUuid(data, uuid, value, type)
+    }
+
+    fun setUserDataByUuid(data: String, uuid: String, value: Any?, type: String?) {
         val stringValue = value?.toString() ?: return
 
         val typeToColumn = mapOf(
@@ -384,7 +429,8 @@ class DatabaseManager {
             "setPlayerSetting" to "player_setting",
             "setPlayerEvent" to "player_event",
             "setPlayerPossession" to "player_setting",
-            "setPlayerSharer" to "player_setting"
+            "setPlayerSharer" to "player_setting",
+            "setPlayerSharerJoin" to "player_setting"
         )
 
         val column = typeToColumn[type] ?: return
@@ -395,7 +441,9 @@ class DatabaseManager {
                 val dao = UserDAO()
 
                 if (column == "player_setting" &&
-                    (data.contains(".skyblock.possession.") || data.contains(".skyblock.sharer."))
+                    (data.contains(".skyblock.possession.") ||
+                        data.contains(".skyblock.sharer.") ||
+                        data.contains(".skyblock.sharer_join."))
                 ) {
                     val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
@@ -419,17 +467,25 @@ class DatabaseManager {
                     val newSetting = settingMap.toMutableMap()
                     val islandId = data.substringAfterLast(".")
 
-                    val keyType = if (data.contains(".skyblock.possession.")) "possession" else "sharer"
+                    val keyType = when {
+                        data.contains(".skyblock.possession.") -> "possession"
+                        data.contains(".skyblock.sharer_join.") -> "sharer_join"
+                        else -> "sharer"
+                    }
 
                     val oldSubMap = (newSetting[keyType] as? Map<*, *>)?.toMutableMap()
                         ?.mapKeys { it.key.toString() }
                         ?.mapValues { it.value.toString().toBoolean() }
                         ?.toMutableMap() ?: mutableMapOf()
 
-                    if (stringValue.equals("false", ignoreCase = true)) {
-                        oldSubMap.remove(islandId)
+                    if (keyType == "sharer_join") {
+                        oldSubMap[islandId] = stringValue.equals("true", ignoreCase = true)
                     } else {
-                        oldSubMap[islandId] = true
+                        if (stringValue.equals("false", ignoreCase = true)) {
+                            oldSubMap.remove(islandId)
+                        } else {
+                            oldSubMap[islandId] = true
+                        }
                     }
 
                     newSetting[keyType] = oldSubMap
@@ -443,7 +499,9 @@ class DatabaseManager {
                 val dao = MySQLUserDAO()
 
                 if (column == "player_setting" &&
-                    (data.contains(".skyblock.possession.") || data.contains(".skyblock.sharer."))
+                    (data.contains(".skyblock.possession.") ||
+                        data.contains(".skyblock.sharer.") ||
+                        data.contains(".skyblock.sharer_join."))
                 ) {
                     val userData = dao.getUser(uuid)?.toMutableMap() ?: return
 
@@ -466,17 +524,25 @@ class DatabaseManager {
 
                     val newSetting = settingMap.toMutableMap()
                     val islandId = data.substringAfterLast(".")
-                    val keyType = if (data.contains(".skyblock.possession.")) "possession" else "sharer"
+                    val keyType = when {
+                        data.contains(".skyblock.possession.") -> "possession"
+                        data.contains(".skyblock.sharer_join.") -> "sharer_join"
+                        else -> "sharer"
+                    }
 
                     val oldSubMap = (newSetting[keyType] as? Map<*, *>)?.toMutableMap()
                         ?.mapKeys { it.key.toString() }
                         ?.mapValues { it.value.toString().toBoolean() }
                         ?.toMutableMap() ?: mutableMapOf()
 
-                    if (stringValue.equals("false", ignoreCase = true)) {
-                        oldSubMap.remove(islandId)
+                    if (keyType == "sharer_join") {
+                        oldSubMap[islandId] = stringValue.equals("true", ignoreCase = true)
                     } else {
-                        oldSubMap[islandId] = true
+                        if (stringValue.equals("false", ignoreCase = true)) {
+                            oldSubMap.remove(islandId)
+                        } else {
+                            oldSubMap[islandId] = true
+                        }
                     }
 
                     newSetting[keyType] = oldSubMap
@@ -504,7 +570,7 @@ class DatabaseManager {
                 data["skyblock_id"] = skyblockId
                 data["player_name"] = playerName
                 listOf(
-                    "can_join", "can_break", "can_place", "use_door", "use_chest", "use_barrel", "use_hopper",
+                    "use_break", "use_place", "use_door", "use_chest", "use_barrel", "use_hopper",
                     "use_furnace", "use_blast_furnace", "use_shulker_box", "use_trapdoor", "use_button",
                     "use_anvil", "use_farm", "use_beacon", "use_minecart", "use_boat"
                 ).forEach { key -> data[key] = "true" }
@@ -517,7 +583,7 @@ class DatabaseManager {
                 data["skyblock_id"] = skyblockId
                 data["player_name"] = playerName
                 listOf(
-                    "can_join", "can_break", "can_place", "use_door", "use_chest", "use_barrel", "use_hopper",
+                    "use_break", "use_place", "use_door", "use_chest", "use_barrel", "use_hopper",
                     "use_furnace", "use_blast_furnace", "use_shulker_box", "use_trapdoor", "use_button",
                     "use_anvil", "use_farm", "use_beacon", "use_minecart", "use_boat"
                 ).forEach { key -> data[key] = "true" }
@@ -532,9 +598,9 @@ class DatabaseManager {
                 val dao = ShareDAO()
                 val result = dao.getShare(skyblockId, playerName) ?: return null
                 val column = when (type) {
-                    "isUseJoin" -> "can_join"
-                    "isUseBreak" -> "can_break"
-                    "isUsePlace" -> "can_place"
+                    "isUseJoin" -> null
+                    "isUseBreak" -> "use_break"
+                    "isUsePlace" -> "use_place"
                     "isUseDoor" -> "use_door"
                     "isUseChest" -> "use_chest"
                     "isUseBarrel" -> "use_barrel"
@@ -551,6 +617,7 @@ class DatabaseManager {
                     "isUseBoat" -> "use_boat"
                     else -> null
                 }
+                if (type == "isUseJoin") return true
                 column?.let { result[it] }?.let {
                     when (it.lowercase()) {
                         "true", "1" -> true
@@ -564,9 +631,9 @@ class DatabaseManager {
                 val dao = MySQLShareDAO()
                 val result = dao.getShare(skyblockId, playerName) ?: return null
                 val column = when (type) {
-                    "isUseJoin" -> "can_join"
-                    "isUseBreak" -> "can_break"
-                    "isUsePlace" -> "can_place"
+                    "isUseJoin" -> null
+                    "isUseBreak" -> "use_break"
+                    "isUsePlace" -> "use_place"
                     "isUseDoor" -> "use_door"
                     "isUseChest" -> "use_chest"
                     "isUseBarrel" -> "use_barrel"
@@ -583,6 +650,7 @@ class DatabaseManager {
                     "isUseBoat" -> "use_boat"
                     else -> null
                 }
+                if (type == "isUseJoin") return true
                 column?.let { result[it] }?.let {
                     when (it.lowercase()) {
                         "true", "1" -> true
@@ -601,9 +669,9 @@ class DatabaseManager {
             "sqlite" -> {
                 val dao = ShareDAO()
                 val column = when (type) {
-                    "setUseJoin" -> "can_join"
-                    "setUseBreak" -> "can_break"
-                    "setUsePlace" -> "can_place"
+                    "setUseJoin" -> null
+                    "setUseBreak" -> "use_break"
+                    "setUsePlace" -> "use_place"
                     "setUseDoor" -> "use_door"
                     "setUseChest" -> "use_chest"
                     "setUseBarrel" -> "use_barrel"
@@ -628,9 +696,9 @@ class DatabaseManager {
             "mysql" -> {
                 val dao = MySQLShareDAO()
                 val column = when (type) {
-                    "setUseJoin" -> "can_join"
-                    "setUseBreak" -> "can_break"
-                    "setUsePlace" -> "can_place"
+                    "setUseJoin" -> null
+                    "setUseBreak" -> "use_break"
+                    "setUsePlace" -> "use_place"
                     "setUseDoor" -> "use_door"
                     "setUseChest" -> "use_chest"
                     "setUseBarrel" -> "use_barrel"
@@ -776,6 +844,23 @@ class DatabaseManager {
         @JvmStatic
         fun setUserData(data: String, player: Player, value: Any?, type: String?) =
             DatabaseManager().setUserDataStatic(data, player, value, type)
+
+        @JvmStatic
+        fun getUserDataByName(data: String, playerName: String, type: String?) =
+            DatabaseManager().getUserDataByUuid(
+                data,
+                Bukkit.getOfflinePlayer(playerName).uniqueId.toString(),
+                type
+            )
+
+        @JvmStatic
+        fun setUserDataByName(data: String, playerName: String, value: Any?, type: String?) =
+            DatabaseManager().setUserDataByUuid(
+                data,
+                Bukkit.getOfflinePlayer(playerName).uniqueId.toString(),
+                value,
+                type
+            )
 
         @JvmStatic
         fun DeleteSkyBlock(skyblockId: String) =

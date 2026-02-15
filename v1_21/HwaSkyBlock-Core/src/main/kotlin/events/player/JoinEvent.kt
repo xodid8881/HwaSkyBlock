@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import org.hwabaeg.hwaskyblock.HwaSkyBlock
 import org.hwabaeg.hwaskyblock.database.DatabaseManager
 import org.hwabaeg.hwaskyblock.database.config.ConfigManager
 import org.hwabaeg.hwaskyblock.events.player.QuitEvent.Companion.LAST_WORLD
@@ -16,6 +17,7 @@ class JoinEvent : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
         val name = player.name
+        HwaSkyBlock.onlineNameCache.add(name)
 
         val hasSkyblockData =
             DatabaseManager.getUserData("$name.skyblock.setting", player, "getPlayerEvent") != null

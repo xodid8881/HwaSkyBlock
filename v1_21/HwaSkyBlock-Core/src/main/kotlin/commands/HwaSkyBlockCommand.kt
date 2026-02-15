@@ -31,6 +31,9 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
         alias: String,
         args: Array<out String>
     ): MutableList<String?>? {
+        if (!Bukkit.isPrimaryThread()) {
+            return mutableListOf()
+        }
         if (args.size == 1) {
             val list: MutableList<String?> = ArrayList<String?>()
             list.add(MessageConfig.getString("sub-command-message.buy"))
@@ -45,9 +48,7 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
         if (args.size == 2) {
             if (args[0].equals(MessageConfig.getString("sub-command-message.add-share"), ignoreCase = true)) {
                 val list: MutableList<String?> = ArrayList<String?>()
-                for (p in Bukkit.getOnlinePlayers()) {
-                    list.add(p.name)
-                }
+                list.addAll(org.hwabaeg.hwaskyblock.HwaSkyBlock.onlineNameCache)
                 return list
             }
             if (args[0].equals(MessageConfig.getString("sub-command-message.remove-share"), ignoreCase = true)) {
@@ -86,11 +87,13 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 list.add(MessageConfig.getString("sub-command-message.is_give"))
                 return list
             }
-            if (args[1].equals(MessageConfig.getString("sub-command-message.is_give"), ignoreCase = true)) {
+        }
+        if (args.size == 3) {
+            if (args[0].equals(MessageConfig.getString("sub-command-message.detailed-management"), ignoreCase = true) &&
+                args[1].equals(MessageConfig.getString("sub-command-message.is_give"), ignoreCase = true)
+            ) {
                 val list: MutableList<String?> = ArrayList<String?>()
-                for (p in Bukkit.getOnlinePlayers()) {
-                    list.add(p.name)
-                }
+                list.addAll(org.hwabaeg.hwaskyblock.HwaSkyBlock.onlineNameCache)
                 return list
             }
         }
@@ -180,12 +183,9 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                 }
 
                 if (DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") == name) {
-                    if (DatabaseManager.getUserData(
-                            id.toString(),
-                            Bukkit.getServer().getPlayer(args[1].toString()),
-                            "getSkyBlockName"
-                        ) != null
-                    ) {
+                    val targetName = args[1]!!
+                    val sharedPlayers = DatabaseManager.getShareDataList(id.toString())
+                    if (sharedPlayers.any { it.equals(targetName, ignoreCase = true) }) {
                         sender.sendMessage(
                             Prefix + ChatColor.translateAlternateColorCodes(
                                 '&',
@@ -194,11 +194,11 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         )
                         return true
                     }
-                    DatabaseManager.insertShare(id.toString(), args[1]!!)
+                    DatabaseManager.insertShare(id.toString(), targetName)
 
                     val permissions = listOf(
-                        "setUseBreak" to "can_break",
-                        "setUsePlace" to "can_place",
+                        "setUseBreak" to "use_break",
+                        "setUsePlace" to "use_place",
                         "setUseDoor" to "use_door",
                         "setUseChest" to "use_chest",
                         "setUseBarrel" to "use_barrel",
@@ -216,11 +216,15 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     )
 
                     for ((type, _) in permissions) {
-                        DatabaseManager.setShareData(id.toString(), args[1]!!, true, type)
+                        DatabaseManager.setShareData(id.toString(), targetName, true, type)
                     }
 
-
-                    DatabaseManager.setUserData("${args[1]}.skyblock.sharer.$id", sender, args[1]!!, "setPlayerSharer")
+                    DatabaseManager.setUserDataByName(
+                        "${targetName}.skyblock.sharer.$id",
+                        targetName,
+                        true,
+                        "setPlayerSharer"
+                    )
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -275,6 +279,12 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         return true
                     }
                     DatabaseManager.deleteShare(id.toString(), args[1].toString())
+                    DatabaseManager.setUserDataByName(
+                        "${args[1]}.skyblock.sharer.$id",
+                        args[1].toString(),
+                        false,
+                        "setPlayerSharer"
+                    )
                     sender.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',
@@ -444,24 +454,25 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                     if (args[1].equals(MessageConfig.getString("sub-command-message.is_delete"), ignoreCase = true)) {
                         val skyblock_master =
                             DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
-
-                        DatabaseManager.setUserData(
-                            "$skyblock_master.skyblock.possession_count",
-                            sender,
-                            (DatabaseManager.getUserData(
+                        if (skyblock_master != null) {
+                            DatabaseManager.setUserDataByName(
                                 "$skyblock_master.skyblock.possession_count",
-                                sender,
-                                "getPlayerPossessionCount"
-                            ) as? Int ?: 1) - 1,
-                            "setPlayerPossessionCount"
-                        )
+                                skyblock_master,
+                                (DatabaseManager.getUserDataByName(
+                                    "$skyblock_master.skyblock.possession_count",
+                                    skyblock_master,
+                                    "getPlayerPossessionCount"
+                                ) as? Int ?: 1) - 1,
+                                "setPlayerPossessionCount"
+                            )
 
-                        DatabaseManager.setUserData(
-                            "$skyblock_master.skyblock.possession.$id",
-                            sender,
-                            null,
-                            "setPlayerPossession"
-                        )
+                            DatabaseManager.setUserDataByName(
+                                "$skyblock_master.skyblock.possession.$id",
+                                skyblock_master,
+                                false,
+                                "setPlayerPossession"
+                            )
+                        }
 
                         DatabaseManager.DeleteSkyBlock(id.toString())
                         SkyblockWorldManager.setRemoveIsland(id)
@@ -484,9 +495,10 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                             )
                             return true
                         }
-                        if ((DatabaseManager.getUserData(
-                                "${args[2]}.skyblock.possession_count",
-                                sender,
+                        val targetName = args[2]!!
+                        if ((DatabaseManager.getUserDataByName(
+                                "${targetName}.skyblock.possession_count",
+                                targetName,
                                 "getPlayerPossessionCount"
                             ) as? Int ?: 0) >= Config.getInt("sky-block-max")
                         ) {
@@ -501,37 +513,39 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
                         val skyblock_master =
                             DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
 
-                        DatabaseManager.setUserData(
-                            "$skyblock_master.skyblock.possession_count",
-                            sender,
-                            (DatabaseManager.getUserData(
+                        if (skyblock_master != null) {
+                            DatabaseManager.setUserDataByName(
                                 "$skyblock_master.skyblock.possession_count",
-                                sender,
-                                "getPlayerPossessionCount"
-                            ) as? Int ?: 1) - 1,
-                            "setPlayerPossessionCount"
-                        )
-                        DatabaseManager.setUserData(
-                            "$skyblock_master.skyblock.possession.$id",
-                            sender,
-                            null,
-                            "setPlayerPossession"
-                        )
+                                skyblock_master,
+                                (DatabaseManager.getUserDataByName(
+                                    "$skyblock_master.skyblock.possession_count",
+                                    skyblock_master,
+                                    "getPlayerPossessionCount"
+                                ) as? Int ?: 1) - 1,
+                                "setPlayerPossessionCount"
+                            )
+                            DatabaseManager.setUserDataByName(
+                                "$skyblock_master.skyblock.possession.$id",
+                                skyblock_master,
+                                false,
+                                "setPlayerPossession"
+                            )
+                        }
 
-                        DatabaseManager.setUserData(
-                            "${args[2]}.skyblock.possession_count",
-                            sender,
-                            (DatabaseManager.getUserData(
-                                "${args[2]}.skyblock.possession_count",
-                                sender,
+                        DatabaseManager.setUserDataByName(
+                            "${targetName}.skyblock.possession_count",
+                            targetName,
+                            (DatabaseManager.getUserDataByName(
+                                "${targetName}.skyblock.possession_count",
+                                targetName,
                                 "getPlayerPossessionCount"
                             ) as? Int ?: 0) + 1,
                             "setPlayerPossessionCount"
                         )
-                        DatabaseManager.setUserData(
-                            "${args[2]}.skyblock.possession.$id",
-                            sender,
-                            args[2],
+                        DatabaseManager.setUserDataByName(
+                            "${targetName}.skyblock.possession.$id",
+                            targetName,
+                            true,
                             "setPlayerPossession"
                         )
                         sender.sendMessage(
@@ -583,7 +597,12 @@ class HwaSkyBlockCommand : TabCompleter, CommandExecutor {
 
         if (DatabaseManager.getSkyBlockData(number, "getSkyBlockLeader") != name) {
             if (DatabaseManager.getShareDataList(number).contains(name)) {
-                if (DatabaseManager.getShareData(number, name, "isUseJoin") == false) {
+                if ((DatabaseManager.getUserDataByName(
+                        "$name.skyblock.sharer_join.$number",
+                        name,
+                        "getPlayerSharerJoin"
+                    ) as? Boolean) == false
+                ) {
                     player.sendMessage(
                         Prefix + ChatColor.translateAlternateColorCodes(
                             '&',

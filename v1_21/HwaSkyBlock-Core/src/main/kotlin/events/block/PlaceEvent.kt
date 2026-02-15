@@ -32,19 +32,13 @@ class PlaceEvent : Listener {
             val id = number[1]
             val leader = DatabaseManager.getSkyBlockData(id.toString(), "getSkyBlockLeader") as? String
             if (leader != null && leader != player.name) {
-                val isSharer = listOf(
-                    "can_break", "can_place", "use_door", "use_chest", "use_barrel", "use_hopper",
-                    "use_furnace", "use_blast_furnace", "use_shulker_box", "use_trapdoor", "use_button",
-                    "use_anvil", "use_farm", "use_beacon", "use_minecart", "use_boat"
-                ).any { permissionKey ->
-                    DatabaseManager.getShareData(id.toString(), player.name, null) != null
-                }
-                val hasBreakPermission = if (!isSharer) {
-                    DatabaseManager.getSkyBlockData(id.toString(), "isSkyBlockBreak") as? Boolean ?: false
+                val isSharer = DatabaseManager.getShareDataList(id.toString()).contains(player.name)
+                val hasPlacePermission = if (!isSharer) {
+                    DatabaseManager.getSkyBlockData(id.toString(), "isSkyBlockPlace") as? Boolean ?: false
                 } else {
-                    DatabaseManager.getShareData(id.toString(), player.name, null) as? Boolean ?: false
+                    DatabaseManager.getShareData(id.toString(), player.name, "isUsePlace") as? Boolean ?: false
                 }
-                if (!hasBreakPermission) {
+                if (!hasPlacePermission) {
                     val message = ChatColor.translateAlternateColorCodes(
                         '&',
                         Prefix + Objects.requireNonNull<String?>(MessageConfig.getString("message-event.no_permission"))

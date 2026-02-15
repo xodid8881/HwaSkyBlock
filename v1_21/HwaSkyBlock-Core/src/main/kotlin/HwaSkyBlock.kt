@@ -29,6 +29,7 @@ import org.hwabaeg.hwaskyblock.schedules.PlayerPermissionTask
 import org.hwabaeg.hwaskyblock.schedules.UnloadBorderTask
 import org.hwabaeg.hwaskyblock.schedules.UnloadWorldTask
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 class HwaSkyBlock : JavaPlugin() {
 
@@ -54,9 +55,17 @@ class HwaSkyBlock : JavaPlugin() {
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun registerCommands() {
-        Objects.requireNonNull<PluginCommand?>(server.getPluginCommand("섬")).setExecutor(HwaSkyBlockCommand())
-        Objects.requireNonNull<PluginCommand?>(server.getPluginCommand("섬설정"))
-            .setExecutor(HwaSkyBlockSettingCommand())
+        val mainCommand = HwaSkyBlockCommand()
+        Objects.requireNonNull<PluginCommand?>(server.getPluginCommand("섬")).apply {
+            setExecutor(mainCommand)
+            tabCompleter = mainCommand
+        }
+
+        val settingCommand = HwaSkyBlockSettingCommand()
+        Objects.requireNonNull<PluginCommand?>(server.getPluginCommand("섬설정")).apply {
+            setExecutor(settingCommand)
+            tabCompleter = settingCommand
+        }
     }
 
     lateinit var db: SQLiteManager
@@ -82,6 +91,10 @@ class HwaSkyBlock : JavaPlugin() {
 
         registerCommands()
         registerEvents()
+        onlineNameCache.clear()
+        for (player in server.onlinePlayers) {
+            onlineNameCache.add(player.name)
+        }
 
         if (!setupEconomy()) {
             logger.severe(String.format("[%s] - Vault 종속성이 발견되지 않아 비활성화됨!", description.name))
@@ -127,6 +140,8 @@ class HwaSkyBlock : JavaPlugin() {
 
         var economy: Economy? = null
             private set
+
+        val onlineNameCache: MutableSet<String> = ConcurrentHashMap.newKeySet()
 
         val plugin: HwaSkyBlock
             get() = getPlugin(HwaSkyBlock::class.java)

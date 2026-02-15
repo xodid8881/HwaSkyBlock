@@ -34,11 +34,15 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val id = number[1]
 
         val player_join =
-            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
+            DatabaseManager.getUserDataByName(
+                "$name.skyblock.sharer_join.$id",
+                name,
+                "getPlayerSharerJoin"
+            ) as? Boolean ?: true
         val block_break =
-            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, "isUseBreak") as? Boolean ?: false
         val block_place =
-            DatabaseManager.getShareData("$id", name, null) as? Boolean ?: false
+            DatabaseManager.getShareData("$id", name, "isUsePlace") as? Boolean ?: false
 
         val item = ItemStack(Material.PLAYER_HEAD, 1, 3.toShort())
         val skull = item.itemMeta as SkullMeta
@@ -150,13 +154,13 @@ class HwaSkyBlockSharerGUI(player: Player, key: String?) : Listener {
         val name = player.name
         var N = 0
         var Page = 1
-        val sharerData = DatabaseManager.getSharePermissionsMap("$id") as? Map<*, *>
-        if (sharerData != null) {
-            for (key in sharerData.keys) {
+        val sharerList = DatabaseManager.getShareDataList("$id")
+        if (sharerList.isNotEmpty()) {
+            for (key in sharerList) {
                 val PlayerPage =
                     DatabaseManager.getUserData("$name.skyblock.page", player, "getPlayerPage") as? Int ?: 0
                 if (Page == PlayerPage) {
-                    val item = getHead(player, key.toString())
+                    val item = getHead(player, key)
                     inv.setItem(N, item)
                 }
                 N = N + 1
