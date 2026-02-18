@@ -1,0 +1,15 @@
+name: SkyblockCustomPointAddon
+version: 1.0.0
+main: org.hwabaeg.hwaskyblock.addon.custompoint.SkyblockCustomPointAddon
+author: HwaBaeg
+description: Skyblock 블럭 파괴 / 수확 기반 커스텀 포인트 애드온
+api-version: "1.13"
+
+depend:
+  - HwaSkyBlock-Core
+
+softdepend:
+  - ItemsAdder
+  - Oraxen
+  - Nexo
+  - CustomCrops

@@ -8,9 +8,18 @@ plugins {
 }
 rootProject.name = "HwaSkyBlock"
 
-include(
-    ":v1_21:HwaSkyBlock-Core",
-    ":v1_21:skyblock-ranking-addon"
-)
+include(":common:hsk-core-common")
+include(":common:hsk-platform-api")
 
-include("v1_21:skyblock-custompoint-addon")
+include(":platform:v1_16")
+include(":platform:v1_17")
+include(":platform:v1_18")
+include(":platform:v1_19")
+include(":platform:v1_20")
+include(":platform:v1_21")
+
+include(":HwaSkyBlock-Core")
+include(":skyblock-ranking-addon")
+include(":skyblock-custompoint-addon")
+include(":skyblock-cattle-addon")
+include(":skyblock-dailymission-addon")

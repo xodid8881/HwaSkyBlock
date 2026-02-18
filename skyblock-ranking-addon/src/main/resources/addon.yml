@@ -1,0 +1,5 @@
+name: SkyblockRankingAddon
+version: 1.0.0
+main: org.hwabaeg.hwaskyblock.addon.ranking.SkyblockRankingAddon
+description: SkyBlock의 섬 랭킹을 보여주는 애드온입니다.
+author: HwaBaeg

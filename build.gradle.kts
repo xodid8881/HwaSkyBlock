@@ -1,3 +1,5 @@
+﻿import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm") version "2.1.20" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
@@ -6,6 +8,7 @@ plugins {
 allprojects {
     repositories {
         mavenCentral()
+        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://repo.purpurmc.org/snapshots")
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
         maven("https://jitpack.io")
@@ -14,23 +17,17 @@ allprojects {
 }
 
 subprojects {
-    afterEvaluate {
-        tasks.findByName("shadowJar")?.let { shadowTask ->
-            shadowTask.doLast {
-                val jarFile = outputs.files.singleFile
+    plugins.withId("com.github.johnrengelman.shadow") {
+        val shadowJarTask = tasks.named<ShadowJar>("shadowJar")
 
-                val outputDir = File(rootProject.buildDir, "libs")
-                outputDir.mkdirs()
+        val copyShadowJarToRoot = tasks.register<Copy>("copyShadowJarToRoot") {
+            dependsOn(shadowJarTask)
+            from(shadowJarTask.flatMap { it.archiveFile })
+            into(rootProject.layout.buildDirectory.dir("libs"))
+        }
 
-                val dest = File(outputDir, jarFile.name)
-                jarFile.copyTo(dest, overwrite = true)
-
-                println("✅ [${project.path}] Copied ${jarFile.name} → ${dest.path}")
-            }
-
-            tasks.named("build") {
-                dependsOn(shadowTask)
-            }
+        tasks.named("build") {
+            dependsOn(copyShadowJarToRoot)
         }
     }
 }

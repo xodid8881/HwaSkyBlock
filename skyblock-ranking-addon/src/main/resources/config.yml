@@ -1,0 +1,12 @@
+# ======================================
+# SkyblockRankingAddon Configuration
+# ======================================
+
+# 애드온 언어 설정
+# kor : 한국어
+# eng : English
+language: kor
+
+# 랭킹 자동 갱신 주기 (분 단위)
+# 기본값: 5분
+ranking-update-interval-minutes: 5

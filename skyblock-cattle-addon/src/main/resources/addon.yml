@@ -1,0 +1,12 @@
+﻿name: SkyblockCattleAddon
+version: 1.0.0
+main: org.hwabaeg.hwaskyblock.addon.cattle.SkyblockCattleAddon
+author: HwaBaeg
+description: HwaSkyBlock 섬 전용 가축 관리 애드온
+api-version: "1.13"
+
+depend:
+  - HwaSkyBlock-Core
+
+softdepend:
+  - Vault
