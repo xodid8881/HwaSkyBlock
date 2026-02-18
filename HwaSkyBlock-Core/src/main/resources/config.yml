@@ -1,0 +1,28 @@
+hwaskyblock-system:
+  prefix: "&a&l[스카이블럭]&7 "
+
+database:
+  type: sqlite # mysql, sqlite
+  mysql:
+    host: localhost
+    port: 3306
+    user: root
+    password: password
+    database: minecraft
+
+sky-block-max: 1 # 유저가 보유 가능한 최대 섬 수
+sky-block-number: 0 # 서버 섬 개수
+main-spawn-world: "world" # 메인 스폰 월드 이름
+sky-block-world-prefix: "HwaSkyBlock." # 섬 월드 접두사
+
+sky-block-world:
+  HwaSkyBlock:
+    world-filepath: "worlds/HwaSkyBlock"
+    item-type: GRASS_BLOCK
+    item-name: "&a&l[&f&l기본 섬&a&l]"
+    item-lore:
+      - "&a&l- &r&7클릭 시 기본 섬을 구매합니다.&f"
+      - "&a&l- &r&7구매 비용 10만원"
+    item-slot: 22
+    buy: 100000 # 구매 비용 10만원
+    max-size: 100 # 기본 크기 100x100
