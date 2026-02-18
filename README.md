@@ -189,7 +189,7 @@ Windows:
 
 Issue / PR은 언제든 환영합니다.
 
-- Wiki: https://github.com/xodid8881/HwaSkyBlock/wiki
+- Wiki: https://eight-emmental-b5a.notion.site/HwaSkyBlock-237397b18e59800ba89ffa43a3748c1b?pvs=74
 - Issues: https://github.com/xodid8881/HwaSkyBlock/issues
 - Pull Requests: https://github.com/xodid8881/HwaSkyBlock/pulls
 
